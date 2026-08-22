@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "aeos.demo.report.v1",
+  "fixtureVersion": "phase5-governance-demo.v1",
+  "organizationId": "org_demo_fixture_v1",
+  "fixtureHash": "0x298b80256584ef0c428f112ce47ba1c6e557bb48b633d41d8de70510876a8b01",
+  "fixtureBoundary": {
+    "mode": "DETERMINISTIC_OFFLINE",
+    "liveOnchainVerified": false,
+    "databasePersisted": false,
+    "externalProviderCalled": false
+  },
+  "trace": {
+    "evidence": {
+      "count": 2,
+      "ids": [
+        "ev_demo_allocation_v1",
+        "ev_demo_balance_v1"
+      ],
+      "manifestHash": "0x7d52813633a063ddee505ab6d11a748050c45eb8ce77bc9cf5e34a32299a3ecf"
+    },
+    "decision": {
+      "recommendation": "HOLD",
+      "citations": [
+        "ev_demo_allocation_v1",
+        "ev_demo_balance_v1"
+      ],
+      "citationCoverage": 1,
+      "outputHash": "0x0398da47091fe55677b6e9f41849ea67ce009430d364abb216051a07e1ac7693",
+      "actions": 0,
+      "assetExecutionAuthorized": false
+    },
+    "policy": {
+      "version": 1,
+      "contentHash": "0xc0863b1bdf0a0a9b996a1e539656894624bcd36eb1d5ce58644fc386aba09009",
+      "simulationStatus": "SUGGESTED",
+      "simulationHash": "0xefbe2753320f66557f0961d010636903bbe89738fc86a907a3178609c1633be9",
+      "advisoryOnly": true,
+      "assetExecutionAuthorized": false
+    },
+    "proposal": {
+      "target": "0x1111111111111111111111111111111111111111",
+      "calldataHash": "0x0b619422d697027af3c9bf08ec7dd69fbf112ff120e1fcf8048b472ec1de9f30",
+      "proposalId": "40804862226298422856649247461865821894620353266268911776147883619533303231225",
+      "contentHash": "0xa0731c09bc9261f6c5d3fc625cf77a1e91e583fc1dedc83b95bdb1915f84077b",
+      "consistencyVerified": true,
+      "assetExecutionAuthorized": false
+    },
+    "execution": {
+      "actionId": "0x15049dd69e28cd95e4e57381f272e4121fa08a314b88668aad478684c3d27f43",
+      "readyStatus": "READY_FOR_SAFE_REVIEW",
+      "safeHandoffHash": "0x5a238d1dad36e8bb56358c73e05b83b940a8505d20bd1da4235c619d8fed2ac0",
+      "signed": false,
+      "submitted": false,
+      "executesAssetTransfer": false,
+      "assetExecutionAuthorized": false,
+      "pausedStatus": "BLOCKED",
+      "pausedBlockers": [
+        "GUARD_NOT_PAUSED"
+      ],
+      "pausedSafeHandoff": null
+    },
+    "refusal": {
+      "recommendation": "INSUFFICIENT_EVIDENCE",
+      "blockers": [
+        "STALE_EVIDENCE"
+      ],
+      "actions": 0,
+      "assetExecutionAuthorized": false
+    }
+  },
+  "reportHash": "0xb34d013d4ada11326e85c865d004a4d0ddf7f803a56cd74e4823db16969b4599"
+}

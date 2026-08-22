@@ -1,0 +1,11 @@
+import { buildReleaseManifest,ReleaseManifestInput } from "./release-manifest-engine";
+
+const digest=(character:string)=>`sha256:${character.repeat(64)}`;
+const input=():ReleaseManifestInput=>({releaseVersion:"0.1.0",imageDigest:digest("a"),gitProvenance:{available:false,commit:null,reason:"Git repository unavailable"},artifacts:Array.from({length:6},(_,index)=>({name:`artifact-${index}`,path:`reports/artifact-${index}.json`,sha256:digest(String(index+1)),sizeBytes:index+1})),limitations:[{id:"AEOS-LIM-001",status:"OPEN",releaseImpact:"BLOCKS_PRODUCTION",area:"testnet",summary:"Live acceptance pending",owner:"DAO"}],validations:{apiTests:103,agentEval:"18/18",contractTests:"9/9",demoReportHash:`0x${"b".repeat(64)}`,npmVulnerabilities:0,containerVulnerabilities:0,containerPackages:197}});
+
+describe("release manifest freeze",()=>{
+  it("is deterministic, sorted, and explicitly unsigned/unpublished",()=>{const first=buildReleaseManifest(input());const second=buildReleaseManifest(input());expect(second).toEqual(first);expect(first.releaseStatus).toBe("CANDIDATE_NOT_DEPLOYED");expect(first.authority).toEqual({manifestSigned:false,imageSigned:false,deployed:false,containsPrivateKey:false,aeosSigningCapability:false,aeosBroadcastCapability:false,assetExecutionAuthorized:false});expect(first.image).toEqual({digest:digest("a"),signed:false,pushed:false})});
+  it("changes the release hash when a bound artifact changes",()=>{const first=input();const second=input();second.artifacts[0].sha256=digest("f");expect(buildReleaseManifest(second).releaseHash).not.toBe(buildReleaseManifest(first).releaseHash)});
+  it("rejects duplicate or missing known limitations",()=>{const missing=input();missing.limitations=[];expect(()=>buildReleaseManifest(missing)).toThrow("RELEASE_LIMITATIONS_REQUIRED");const duplicate=input();duplicate.limitations.push({...duplicate.limitations[0]});expect(()=>buildReleaseManifest(duplicate)).toThrow("RELEASE_LIMITATION_DUPLICATE")});
+  it("fails closed for invalid image provenance or nonzero vulnerability counts",()=>{const image=input();image.imageDigest="latest";expect(()=>buildReleaseManifest(image)).toThrow("RELEASE_IMAGE_DIGEST_INVALID");const vulnerable=input();vulnerable.validations.containerVulnerabilities=1;expect(()=>buildReleaseManifest(vulnerable)).toThrow("RELEASE_SECURITY_VALIDATION_INVALID")});
+});

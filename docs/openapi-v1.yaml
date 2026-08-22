@@ -1,0 +1,572 @@
+openapi: 3.1.0
+info:
+  title: AEOS API
+  version: 0.1.0
+  description: Every response returns a validated or server-generated X-Request-ID that also links structured logs and new audit events. Cookie-authenticated unsafe requests require an allowed Origin and the session-bound X-CSRF-Token returned by auth/verify. Domain command endpoints accept Idempotency-Key and preserve the first completed response for 24 hours; reuse with different input returns 409.
+servers: [{ url: http://localhost:4000/api/v1 }]
+security: [{ cookieAuth: [] }]
+paths:
+  /health/live:
+    get:
+      security: []
+      summary: Process liveness check independent of external dependencies
+      responses: { '200': { description: API process is live } }
+  /health/ready:
+    get:
+      security: []
+      summary: Fail-closed PostgreSQL and required-migration readiness check
+      responses: { '200': { description: Instance may receive traffic }, '503': { description: Database unavailable or required migration missing } }
+  /metrics:
+    get:
+      security: []
+      summary: Bearer-protected tenant-free Prometheus operational aggregates
+      responses: { '200': { description: Prometheus text }, '401': { description: Missing or incorrect bearer token }, '503': { description: Metrics disabled or collection failed } }
+  /auth/nonce:
+    post:
+      security: []
+      summary: Create a five-minute server-generated EIP-4361 challenge
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [walletAddress, chainId], properties: { walletAddress: { type: string }, chainId: { type: integer, minimum: 1 } } } } }
+      responses: { '201': { description: Exact message to sign; no transaction or asset authority }, '400': { description: Invalid wallet or chain } }
+  /auth/verify:
+    post:
+      security: []
+      summary: Verify the exact one-time challenge and issue an opaque HttpOnly session cookie
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [challengeId, message, signature], properties: { challengeId: { type: string }, message: { type: string }, signature: { type: string } } } } }
+      responses: { '201': { description: Safe session metadata and session-bound CSRF token; opaque session token and signature omitted, headers: { Set-Cookie: { schema: { type: string } } } }, '401': { description: Missing, expired, consumed, mutated, or mismatched challenge }, '429': { description: Authentication rate limit exceeded } }
+  /auth/session:
+    get:
+      security: [{ cookieAuth: [] }]
+      summary: Read the authenticated wallet and selected organization context
+      responses: { '200': { description: Authenticated session context }, '401': { description: Invalid or expired session } }
+  /auth/select-organization:
+    post:
+      security: [{ cookieAuth: [] }]
+      summary: Select an organization only through an active membership
+      responses: { '201': { description: Updated organization and role context }, '401': { description: Active membership required } }
+  /auth/logout:
+    post:
+      security: [{ cookieAuth: [] }]
+      summary: Revoke the server-side session and clear the cookie
+      responses: { '201': { description: Session revoked }, '401': { description: Invalid or expired session } }
+  /organizations:
+    get:
+      security: [{ cookieAuth: [] }]
+      summary: List active organizations for the authenticated user only
+      responses: { '200': { description: Membership-scoped organizations }, '401': { description: Authentication required } }
+    post:
+      security: [{ cookieAuth: [] }]
+      summary: Create an organization, ADMIN membership, selection, and immutable audit event
+      responses: { '201': { description: Organization created without asset authority }, '401': { description: Authentication required } }
+  /organizations/{id}/memberships:
+    get:
+      security: [{ cookieAuth: [] }]
+      summary: List members of the selected organization for ADMIN or AUDITOR
+      parameters: [{ in: path, name: id, required: true, schema: { type: string } }]
+      responses: { '200': { description: Organization-scoped memberships }, '403': { description: Role is not permitted }, '404': { description: Non-selected organization is concealed } }
+  /organization-configuration/adapter:
+    get:
+      summary: Inspect the ADMIN-only Mock or EVM read-only configuration validator and zero-authority boundary
+      responses: { '200': { description: Read-only methods, chain policy, Mock warning, and zero signing/submission authority }, '403': { description: ADMIN role required } }
+  /organization-configuration:
+    get:
+      summary: List immutable organization configuration versions newest first
+      responses: { '200': { description: Organization-scoped configuration history }, '403': { description: ADMIN role required } }
+  /organization-configuration/current:
+    get:
+      summary: Read the latest immutable organization network and contract configuration
+      responses: { '200': { description: Current version and inspection snapshot }, '404': { description: No configuration version exists } }
+  /organization-configuration/prepare:
+    post:
+      summary: Normalize addresses, inspect chain/contracts, and create an exact five-minute wallet approval message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [networkName, chainId, governorAddress, timelockAddress, safeAddress, treasuryAddress, treasuryGuardAddress]
+              properties:
+                networkName: { type: string, minLength: 2, maxLength: 80 }
+                chainId: { type: integer, minimum: 1 }
+                governorAddress: { type: string }
+                timelockAddress: { type: string }
+                safeAddress: { type: string }
+                treasuryAddress: { type: string }
+                treasuryGuardAddress: { type: string }
+                blockExplorerUrl: { type: string, pattern: '^https://' }
+      responses: { '201': { description: Exact message and immutable inspection request; Mock is explicitly not on-chain verified }, '400': { description: Invalid chain, address, relationship, or contract interface }, '503': { description: Read-only RPC inspection unavailable } }
+  /organization-configuration/requests/{id}/activate:
+    post:
+      summary: Re-verify the current ADMIN wallet signature and activate an immutable configuration version
+      parameters: [{ in: path, name: id, required: true, schema: { type: string } }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [message, signature], properties: { message: { type: string }, signature: { type: string, writeOnly: true } } } } }
+      responses: { '201': { description: Immutable version and append-only audit; signature is not stored and no asset authority is granted }, '401': { description: Message or wallet signature mismatch }, '409': { description: Request expired, consumed, or configuration already versioned } }
+  /evidence:
+    get:
+      summary: Search organization-scoped verified evidence
+      parameters:
+        - { in: query, name: status, schema: { enum: [VERIFIED, REJECTED, UNVERIFIED] } }
+        - { in: query, name: freshness, schema: { enum: [FRESH, STALE, ARCHIVED] } }
+        - { in: query, name: chainId, schema: { type: integer } }
+        - { in: query, name: predicate, schema: { type: string } }
+        - { in: query, name: minQuality, schema: { type: integer, minimum: 0, maximum: 100 } }
+        - { in: query, name: limit, schema: { type: integer, minimum: 1, maximum: 100, default: 20 } }
+        - { in: query, name: cursor, schema: { type: string } }
+      responses: { '200': { description: Cursor page of Evidence } }
+  /evidence/{id}:
+    get:
+      summary: Get Evidence without leaking cross-organization existence
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+      responses: { '200': { description: Evidence }, '404': { description: Not found } }
+  /evidence/mock-ingest:
+    post:
+      summary: Explicit deterministic Mock Attestcoin adapter
+      responses: { '201': { description: Verified Evidence or quarantine receipt } }
+  /evidence/snapshots/create:
+    post:
+      summary: Create immutable reproducible Evidence snapshot
+      responses: { '201': { description: Snapshot } }
+  /evidence/quarantine:
+    get: { summary: List organization-scoped rejected attestations, responses: { '200': { description: Quarantine entries } } }
+  /audit-events:
+    get: { summary: List append-only organization audit events, responses: { '200': { description: Audit events } } }
+  /cockpit/projection:
+    get:
+      summary: Read one organization-scoped cockpit projection from immutable database state
+      responses: { '200': { description: Evidence, Decision Job, Treasury Workflow, Registry and Audit projection with stable hash and zero asset authority }, '401': { description: Authenticated active organization required } }
+  /cockpit/stream-policy:
+    get:
+      summary: Inspect SSE v2 PostgreSQL event wakeup, persisted fallback, heartbeat, reconnect and shared-admission leases
+      responses: { '200': { description: Versioned zero-authority stream policy including LISTEN/NOTIFY fan-out, 15-second persisted fallback, shared capacity and crash-recovery lease }, '401': { description: Authenticated active organization required } }
+  /cockpit/stream:
+    get:
+      summary: Stream organization-scoped projection changes and heartbeats using SSE
+      parameters: [{ in: header, name: Last-Event-ID, required: false, schema: { type: string, pattern: '^0x[0-9a-f]{64}$' } }]
+      responses: { '200': { description: Event-woken persisted projections and query-independent heartbeats; bounded lease forces periodic session/RBAC revalidation }, '401': { description: Authenticated active organization required }, '503': { description: Shared per-organization/total capacity exhausted or admission storage unavailable; safe retry delay returned without tenant identity or storage detail } }
+  /audit-events/{id}/explorer-links:
+    get:
+      summary: Project validated transaction, address and block links from the active immutable organization configuration
+      responses: { '200': { description: Trusted-base, matching-chain links with no network or asset authority }, '404': { description: Event not found without cross-tenant leakage } }
+  /audit-exports:
+    get:
+      summary: List immutable tenant-scoped audit export snapshots
+      responses: { '200': { description: Export metadata without duplicating full manifests } }
+    post:
+      summary: Freeze a deterministic JSON audit package with a stable manifest hash
+      parameters: [{ in: header, name: Idempotency-Key, required: false, schema: { type: string, maxLength: 200 } }]
+      requestBody:
+        content: { application/json: { schema: { type: object, properties: { eventType: { type: string, maxLength: 120 }, from: { type: string, format: date-time }, to: { type: string, format: date-time } } } } }
+      responses: { '201': { description: Immutable export manifest, source event hashes and zero asset authority }, '400': { description: Inverted range or more than 1000 matching events }, '403': { description: ADMIN or AUDITOR required } }
+  /audit-exports/{id}:
+    get:
+      summary: Download one immutable JSON audit export package
+      responses: { '200': { description: Full manifest and verification hash }, '404': { description: Not found without cross-tenant leakage } }
+  /audit-exports/{id}/verify:
+    get:
+      summary: Recompute the stored manifest hash and compare every source audit event
+      responses: { '200': { description: Stored-manifest and immutable-source verification result }, '404': { description: Export not found } }
+  /alerts/configuration:
+    get:
+      summary: Describe deterministic stored-state anomaly producers, the internal alert consumer, and Mock-only notification boundary
+      responses: { '200': { description: Versioned periodic producers and rule consumer with zero network, credential, signer, broadcast, or asset authority }, '403': { description: ADMIN or AUDITOR role required } }
+  /alerts:
+    get:
+      summary: List tenant-scoped deterministic anomaly alerts
+      parameters:
+        - { in: query, name: severity, schema: { enum: [MEDIUM, HIGH, CRITICAL] } }
+        - { in: query, name: acknowledged, schema: { type: boolean } }
+        - { in: query, name: limit, schema: { type: integer, minimum: 1, maximum: 100, default: 50 } }
+      responses: { '200': { description: Alerts with derived acknowledgement state and zero asset authority } }
+  /alerts/{id}:
+    get:
+      summary: Read one immutable alert and its append-only acknowledgement history
+      responses: { '200': { description: Alert detail }, '404': { description: Not found without cross-tenant leakage } }
+  /alerts/{id}/acknowledgements:
+    post:
+      summary: Append a human acknowledgement without mutating or resolving the source alert
+      parameters: [{ in: header, name: Idempotency-Key, required: false, schema: { type: string, maxLength: 200 } }]
+      responses: { '201': { description: Immutable acknowledgement and audit event; no asset authority }, '403': { description: ADMIN, OPERATOR, or GUARDIAN required }, '404': { description: Alert not found } }
+  /decisions:
+    post:
+      summary: Queue a persisted deterministic advisory committee job over a frozen Evidence Snapshot
+      parameters:
+        - { in: header, name: Idempotency-Key, required: false, schema: { type: string, maxLength: 200 } }
+      responses: { '202': { description: Persisted queued or existing idempotent Decision Job }, '404': { description: Organization-scoped Evidence or policy not found }, '409': { description: Idempotency key reused with different input } }
+  /decisions/{id}:
+    get:
+      summary: Get a decision, agent run states, challenges, and human review history
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+      responses: { '200': { description: Decision detail }, '404': { description: Not found without cross-tenant leakage } }
+  /decisions/{id}/review:
+    post:
+      summary: Append an explicit human approval or rejection; never grants asset execution authority
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+      responses: { '201': { description: Review receipt }, '404': { description: Not found }, '409': { description: Already reviewed or deterministic refusal cannot be approved } }
+  /decision-jobs/{id}:
+    get:
+      summary: Poll organization-scoped queued, running, completed, failed, or timed-out Decision progress
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+      responses: { '200': { description: Decision Job and completed Decision when available }, '404': { description: Not found without cross-tenant leakage } }
+  /decision-jobs/{id}/retry:
+    post:
+      summary: Requeue a failed or timed-out Decision Job within its persisted retry budget
+      parameters:
+        - { in: path, name: id, required: true, schema: { type: string } }
+      responses: { '202': { description: Requeued Decision Job }, '404': { description: Not found }, '409': { description: Invalid state or retry budget exhausted } }
+  /advisory-provider:
+    get:
+      summary: Describe the active advisory-only Provider and its zero-execution tool boundary
+      responses: { '200': { description: Provider ID, model version, kind, credential requirement, and tool allowlists } }
+  /outbox-publisher:
+    get:
+      summary: Describe the asynchronous Mock event publisher and its zero-network/zero-authority boundary
+      responses: { '200': { description: Publisher mode, consumer identity, idempotency requirement, and empty signing/broadcast authority }, '403': { description: ADMIN or AUDITOR role required } }
+  /attestcoin/configuration:
+    get:
+      summary: Describe the active Mock or USC adapter and its zero-custody authority boundary
+      responses: { '200': { description: Adapter, network, precompile, signer-custody, and execution-authority metadata } }
+  /attestcoin/health:
+    get:
+      summary: Read tenant-scoped Attestcoin call history and current circuit state without an active provider probe
+      responses: { '200': { description: Provider mode, circuit state, bounded recent call summary, and zero-authority metadata } }
+  /attestcoin/proof-jobs:
+    get:
+      summary: List organization-scoped Attestcoin proof jobs
+      responses: { '200': { description: Proof jobs } }
+    post:
+      summary: Validate and freeze a finalized Ethereum Sepolia source transaction
+      responses: { '201': { description: Idempotent receipt-verified proof job }, '409': { description: Source transaction is bound to a different requester wallet }, '503': { description: Real USC adapter is disabled or source RPC unavailable } }
+  /attestcoin/proof-jobs/{id}:
+    get:
+      summary: Get one organization-scoped proof job
+      responses: { '200': { description: Proof job }, '404': { description: Not found without cross-tenant leakage } }
+  /attestcoin/proof-jobs/{id}/proof:
+    post:
+      summary: Fetch and statically verify a USC transaction proof on Creditcoin CC3
+      responses: { '201': { description: Proof snapshot hash }, '400': { description: Invalid proof quarantined }, '503': { description: Attestation or proof not ready; retryable } }
+  /attestcoin/proof-jobs/{id}/verification-request:
+    post:
+      summary: Build an unsigned zero-value CC3 verifyAndEmit request for explicit user-wallet confirmation
+      responses: { '201': { description: Immutable wallet transaction request }, '400': { description: Proof is not ready } }
+  /attestcoin/proof-jobs/{id}/verification-confirmation:
+    post:
+      summary: Validate the submitted CC3 transaction and create immutable verified Evidence
+      responses: { '201': { description: Verified job linked to Evidence }, '400': { description: Transaction, calldata, signer, receipt, or event mismatch } }
+  /treasury-workflows:
+    get:
+      summary: List organization-scoped multi-treasury workflows and their advisory/exclusive scheduling class
+      responses: { '200': { description: At most 100 immutable workflow records with zero asset authority } }
+    post:
+      summary: Queue a registry-bound organization-scoped Treasury workflow
+      parameters: [{ in: header, name: Idempotency-Key, required: true, schema: { type: string, maxLength: 200 } }]
+      responses: { '202': { description: Immutable queued advisory or exclusive workflow }, '409': { description: Idempotency mismatch or Treasury registry binding failure } }
+  /treasury-workflows/evidence-bound-adaptive-pid:
+    post:
+      summary: Queue a stateful Evidence-bound adaptive PID task that serializes per Treasury while allowing cross-Treasury concurrency
+      parameters: [{ in: header, name: Idempotency-Key, required: true, schema: { type: string, maxLength: 200 } }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [treasuryId, policyVersionId, evidenceSnapshotId], properties: { treasuryId: { type: string, pattern: '^trs_[a-z0-9][a-z0-9_-]{2,62}$' }, policyVersionId: { type: string }, evidenceSnapshotId: { type: string }, decisionId: { type: string }, previousAdaptivePidSnapshotId: { type: string }, priority: { type: integer, minimum: 0, maximum: 100, default: 50 }, maxAttempts: { type: integer, minimum: 1, maximum: 5, default: 3 } } } } }
+      responses: { '202': { description: Registry/active-Policy-bound EXCLUSIVE advisory workflow; no signing, broadcast or asset authority }, '409': { description: Missing active Treasury registry or active Policy version } }
+  /treasury-workflows/{id}:
+    get:
+      summary: Read one organization-scoped workflow and its immutable event history
+      responses: { '200': { description: Workflow, frozen input, result hashes and events }, '404': { description: Not found without cross-tenant leakage } }
+  /policies:
+    get:
+      summary: List immutable policy versions within one organization
+      responses: { '200': { description: Policy versions ordered newest first } }
+    post:
+      summary: Create a new immutable draft treasury policy version
+      responses: { '201': { description: Draft policy }, '400': { description: Invalid PID, amount precision, allowlist, or hard-limit composition } }
+  /policies/{id}:
+    get:
+      summary: Get one organization-scoped policy version
+      responses: { '200': { description: Policy version }, '404': { description: Not found without cross-tenant leakage } }
+  /policies/{id}/activate:
+    post:
+      summary: Activate a draft policy and retire the previously active version without granting execution authority
+      responses: { '201': { description: Active policy }, '404': { description: Policy not found }, '409': { description: Only draft policies can be activated } }
+  /policies/{id}/simulations:
+    get:
+      summary: List immutable deterministic simulations for a policy version
+      responses: { '200': { description: Simulation records } }
+    post:
+      summary: Freeze deterministic gas/balance impact and run evidence-gated PI/PID plus all hard risk checks
+      responses: { '201': { description: Advisory-only SUGGESTED or BLOCKED result with gas cost, before/after native and token balances, source labels, and complete checks }, '400': { description: Invalid amount, zero gas/transfer, precision overflow, or other deterministic input }, '404': { description: Policy or Evidence Snapshot not found } }
+  /policies/{id}/adaptive-pid-snapshots:
+    get:
+      summary: List immutable organization-scoped adaptive PID advisory snapshots for one Policy version
+      responses: { '200': { description: Frozen Evidence/RAG inputs, governed gains, P/I/D components, Safety state and hashes with zero asset authority }, '404': { description: Policy not found without cross-tenant leakage } }
+    post:
+      summary: Run deterministic gain scheduling inside the active DAO Policy envelope and freeze an advisory snapshot
+      parameters: [{ in: header, name: Idempotency-Key, required: false, schema: { type: string, maxLength: 200 } }]
+      responses: { '201': { description: Immutable ADVISORY or HOLD snapshot; black-swan and insufficient-Evidence states force zero output }, '400': { description: Adaptive envelope or scenario input is invalid }, '404': { description: Policy, Evidence Snapshot or matching Decision not found }, '409': { description: Policy version is not the active DAO Policy } }
+  /policies/{id}/adaptive-pid-snapshots/{snapshotId}:
+    get:
+      summary: Read one immutable adaptive PID snapshot through organization and Policy scope
+      responses: { '200': { description: Frozen input/result hashes, eight-role RAG manifest hashes when Decision-bound, and advisory-only Safety output }, '404': { description: Snapshot not found without cross-tenant leakage } }
+  /policies/{id}/evidence-bound-adaptive-pid-snapshots:
+    post:
+      summary: Derive all current PID observations from exact typed Evidence in one immutable Snapshot and inherit controller state from an optional prior immutable PID snapshot
+      parameters: [{ in: header, name: Idempotency-Key, required: false, schema: { type: string, maxLength: 200 } }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [treasuryId, evidenceSnapshotId], properties: { treasuryId: { type: string, minLength: 3, maxLength: 200 }, evidenceSnapshotId: { type: string }, decisionId: { type: string }, previousAdaptivePidSnapshotId: { type: string } } } } }
+      responses: { '201': { description: Immutable evidence-derived ADVISORY/HOLD result with five exact metric Evidence refs, source provenance, no causal/performance claim and zero asset authority }, '400': { description: Missing, duplicate, stale, conflicting, low-quality, wrong-treasury, skewed or unconfigured observed-state Evidence; transaction inclusion cannot substitute for a metric }, '404': { description: Policy, Evidence Snapshot, Decision or prior PID snapshot not found without cross-tenant leakage }, '409': { description: Policy version is not active } }
+  /policy-scenario-comparisons:
+    get:
+      summary: List immutable organization-scoped policy scenario comparisons
+      responses: { '200': { description: Comparison snapshots ordered newest first } }
+    post:
+      summary: Compare two to five immutable policy versions over the deterministic synthetic calibration suite
+      parameters: [{ in: header, name: Idempotency-Key, required: false, schema: { type: string, maxLength: 200 } }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [policyVersionIds], properties: { policyVersionIds: { type: array, minItems: 2, maxItems: 5, uniqueItems: true, items: { type: string } } } } } }
+      responses: { '201': { description: Immutable synthetic-only metrics and advisory ranking; governance approval remains required and asset authority is false }, '400': { description: Duplicate, malformed, or invalid policy set }, '404': { description: One or more organization-scoped policies not found } }
+  /policy-scenario-comparisons/{id}:
+    get:
+      summary: Read one immutable comparison with frozen policy inputs, per-step results, metrics and stable hashes
+      responses: { '200': { description: Deterministic comparison snapshot }, '404': { description: Not found without cross-tenant leakage } }
+  /counterfactual-methodologies:
+    get:
+      summary: List governed prospective counterfactual methodology versions in the selected organization
+      responses: { '200': { description: Immutable DRAFT, HUMAN_APPROVED and RETIRED methodology versions; no counterfactual result, net benefit, causality or asset authority } }
+    post:
+      summary: Pre-register a fixed counterfactual baseline, horizon, factors, costs and missing-data refusal before outcome observation
+      parameters: [{ in: header, name: Idempotency-Key, required: false, schema: { type: string, maxLength: 200 } }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [methodologyKey, name, treasuryId, policyVersionId, methodology], properties: { methodologyKey: { type: string, minLength: 3, maxLength: 120 }, name: { type: string, minLength: 3, maxLength: 160 }, description: { type: string, maxLength: 1000 }, treasuryId: { type: string, minLength: 3, maxLength: 200 }, policyVersionId: { type: string }, methodology: { type: object, description: Fixed treasury.counterfactual-methodology.v1 input; server rejects unsupported baselines, factors, cost treatment or imputation } } } } }
+      responses: { '201': { description: Immutable DRAFT with frozen active-Policy hash and zero authority }, '400': { description: Unsupported or hindsight-prone methodology, invalid horizon/factor/benchmark/cost/missing-data rule, inactive Policy or unsafe text }, '404': { description: Policy not found without cross-tenant leakage } }
+  /counterfactual-methodologies/{id}:
+    get:
+      summary: Read one immutable prospective methodology and lifecycle history
+      responses: { '200': { description: Frozen methodology, hashes and human lifecycle events }, '404': { description: Not found without cross-tenant leakage } }
+  /counterfactual-methodologies/{id}/approve:
+    post:
+      summary: Record human committee approval effective only for executions after this event
+      parameters: [{ in: header, name: Idempotency-Key, required: false, schema: { type: string, maxLength: 200 } }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [rationale], properties: { rationale: { type: string, minLength: 3, maxLength: 1000 } } } } }
+      responses: { '200': { description: HUMAN_APPROVED prospective version; this is explicitly not observed on-chain DAO approval and produces no assessment }, '400': { description: Invalid transition, inactive bound Policy or another effective version already exists }, '404': { description: Not found without cross-tenant leakage } }
+  /counterfactual-methodologies/{id}/retire:
+    post:
+      summary: Retire a human-approved methodology without mutating its historical content or events
+      parameters: [{ in: header, name: Idempotency-Key, required: false, schema: { type: string, maxLength: 200 } }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [rationale], properties: { rationale: { type: string, minLength: 3, maxLength: 1000 } } } } }
+      responses: { '200': { description: RETIRED immutable version with zero authority }, '400': { description: Invalid lifecycle transition }, '404': { description: Not found without cross-tenant leakage } }
+  /treasury-outcomes:
+    get:
+      summary: List immutable descriptive Treasury outcome assessments in the selected organization, optionally filtered by Treasury ID
+      responses: { '200': { description: Outcome records with causal attribution, counterfactual, learning and authority explicitly withheld } }
+    post:
+      summary: Compare two Evidence-bound PID observations and optionally correlate one confirmed Safe execution without claiming causation
+      parameters: [{ in: header, name: Idempotency-Key, required: false, schema: { type: string, maxLength: 200 } }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [treasuryId, beforeAdaptivePidSnapshotId, afterAdaptivePidSnapshotId], properties: { treasuryId: { type: string, minLength: 3, maxLength: 200 }, beforeAdaptivePidSnapshotId: { type: string }, afterAdaptivePidSnapshotId: { type: string }, safeObservationId: { type: string } } } } }
+      responses: { '201': { description: Immutable IMPROVED/WORSENED/UNCHANGED_DESCRIPTIVE assessment; no causal attribution, counterfactual, net benefit, automatic memory/Skill promotion or asset authority }, '400': { description: Treasury, Policy, Evidence-bound source, observation order or execution-window lineage mismatch }, '404': { description: PID snapshots or confirmed Safe observation not found without cross-tenant leakage } }
+  /treasury-outcomes/{id}:
+    get:
+      summary: Read one immutable organization-scoped descriptive outcome and its exact before/after/execution lineage
+      responses: { '200': { description: Frozen assessment and stable hash }, '404': { description: Not found without cross-tenant leakage } }
+  /treasury-outcomes/{outcomeId}/transaction-costs:
+    get:
+      summary: List immutable Evidence-bound observed transaction-cost assessments for one execution-linked Treasury outcome
+      responses: { '200': { description: Cost assessments with counterfactual, net benefit, causality, automatic learning and asset authority withheld }, '404': { description: Parent outcome not found without cross-tenant leakage } }
+    post:
+      summary: Bind verified historical cost Evidence to the exact confirmed Safe transaction without claiming performance or causality
+      parameters: [{ in: header, name: Idempotency-Key, required: false, schema: { type: string, maxLength: 200 } }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [evidenceSnapshotId], properties: { evidenceSnapshotId: { type: string } } } } }
+      responses: { '201': { description: Immutable common-numeraire network fee, protocol fee and execution-shortfall total; slippage and price impact remain non-additive diagnostics }, '400': { description: Incomplete execution identity, unverified/conflicting/low-quality Evidence, component overlap, non-observed input, methodology, execution or numeraire mismatch }, '404': { description: Execution-linked outcome or Evidence snapshot not found without cross-tenant leakage } }
+  /treasury-outcomes/{outcomeId}/transaction-costs/{costId}:
+    get:
+      summary: Read one immutable transaction-cost assessment and its exact Evidence, Safe, Policy and outcome lineage
+      responses: { '200': { description: Frozen observed cost assessment and stable hash }, '404': { description: Not found without cross-tenant leakage } }
+  /treasury-outcomes/{outcomeId}/counterfactual-assessments:
+    get:
+      summary: List immutable model-based counterfactual estimates for one execution-linked Treasury outcome
+      responses: { '200': { description: Estimates distinguish modeled baseline from observed facts and retain zero causal, learning and asset authority }, '404': { description: Parent outcome not found without cross-tenant leakage } }
+    post:
+      summary: Revalue prospectively frozen starting units with verified end prices and deduct observed disjoint costs
+      parameters: [{ in: header, name: Idempotency-Key, required: false, schema: { type: string, maxLength: 200 } }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [methodologyVersionId, transactionCostAssessmentId, evidenceSnapshotId], properties: { methodologyVersionId: { type: string }, transactionCostAssessmentId: { type: string }, evidenceSnapshotId: { type: string } } } } }
+      responses: { '201': { description: Immutable arithmetic estimate versus the fixed baseline after observed costs; external factors are observed but not claimed statistically controlled and causality remains NOT_ESTABLISHED }, '400': { description: Retrospective method, horizon, lineage, Evidence, numeraire, price, NAV, drawdown, benchmark, cost or deterministic arithmetic guard failed }, '404': { description: Organization-scoped Outcome, method, cost or Evidence snapshot not found } }
+  /treasury-outcomes/{outcomeId}/counterfactual-assessments/{assessmentId}:
+    get:
+      summary: Read one immutable counterfactual estimate with method, Evidence, cost and execution lineage
+      responses: { '200': { description: Frozen model-based estimate and stable hash }, '404': { description: Not found without cross-tenant leakage } }
+  /outcome-memory-candidates:
+    get:
+      summary: List organization-scoped governed non-causal Outcome Memory candidates
+      responses: { '200': { description: Immutable candidates with review state and zero automatic learning, Skill promotion or asset authority } }
+    post:
+      summary: Create a non-causal operating-lesson candidate bound to one immutable Treasury Outcome and its matching counterfactual assessment
+      parameters: [{ in: header, name: Idempotency-Key, required: false, schema: { type: string, maxLength: 200 } }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [treasuryOutcomeId, counterfactualAssessmentId, reviewMode, lesson, invalidationConditions, aclRoles], properties: { treasuryOutcomeId: { type: string }, counterfactualAssessmentId: { type: string }, reviewMode: { type: string, enum: [HUMAN_COMMITTEE, HUMAN_COMMITTEE_AND_DAO] }, lesson: { type: string, minLength: 10, maxLength: 5000 }, invalidationConditions: { type: array, minItems: 1, maxItems: 20, items: { type: string } }, aclRoles: { type: array, minItems: 1, maxItems: 6, items: { type: string } }, validUntil: { type: string, format: date-time } } } } }
+      responses: { '201': { description: Immutable CANDIDATE excluded from RAG and explicitly classified NON_CAUSAL_OPERATING_LESSON }, '400': { description: Unsafe lesson, invalid validity or malformed governance input }, '404': { description: Matching same-organization Outcome and counterfactual lineage not found } }
+  /outcome-memory-candidates/{id}:
+    get:
+      summary: Read one immutable candidate with source lineage, reviews, events and optional promotion
+      responses: { '200': { description: Governed candidate lifecycle }, '404': { description: Not found without cross-tenant leakage } }
+  /outcome-memory-candidates/reconcile-expired:
+    post:
+      summary: Deterministically retire up to 100 promoted Enterprise Memories whose governed validity has elapsed according to PostgreSQL time
+      parameters: [{ in: header, name: Idempotency-Key, required: false, schema: { type: string, maxLength: 200 } }]
+      responses: { '201': { description: Immutable EXPIRED retirement records; later RAG searches exclude retired memories while historical Decision retrieval manifests remain unchanged and no asset authority is created }, '403': { description: ADMIN role required } }
+  /outcome-memory-candidates/{id}/reviews:
+    post:
+      summary: Record one independent REVIEWER or TREASURY_COMMITTEE approval or rejection; creators cannot self-review and both roles are required
+      parameters: [{ in: header, name: Idempotency-Key, required: false, schema: { type: string, maxLength: 200 } }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [outcome, rationale], properties: { outcome: { type: string, enum: [APPROVE, REJECT] }, rationale: { type: string, minLength: 3, maxLength: 2000 } } } } }
+      responses: { '201': { description: Immutable review; HUMAN_APPROVED only after distinct approvals from both required roles }, '409': { description: Self-review, duplicate person/role or closed lifecycle } }
+  /outcome-memory-candidates/{id}/dao-confirmation:
+    post:
+      summary: Observe a matching non-mock finalized SUCCEEDED or EXECUTED DAO proposal after dual human approval
+      parameters: [{ in: header, name: Idempotency-Key, required: false, schema: { type: string, maxLength: 200 } }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [proposalId], properties: { proposalId: { type: string } } } } }
+      responses: { '201': { description: DAO_CONFIRMED observation reference; AEOS still has no vote, signing or execution authority }, '409': { description: Human approval incomplete or latest observation is mock, fixture, reorged, unconfirmed or non-final } }
+  /outcome-memory-candidates/{id}/promote:
+    post:
+      summary: Explicitly promote an approved governed candidate into Approved Enterprise Memory
+      parameters: [{ in: header, name: Idempotency-Key, required: false, schema: { type: string, maxLength: 200 } }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [rationale], properties: { rationale: { type: string, minLength: 3, maxLength: 2000 } } } } }
+      responses: { '201': { description: Approved immutable Enterprise Memory with non-causal warning and invalidation conditions; no automatic Skill or asset authority }, '409': { description: Required dual-human/DAO approval missing, expired or already promoted } }
+  /outcome-memory-candidates/{id}/supersede:
+    post:
+      summary: Retire one promoted Enterprise Memory in favor of a distinct same-organization, same-Treasury, independently governed and Approved replacement
+      parameters: [{ in: header, name: Idempotency-Key, required: false, schema: { type: string, maxLength: 200 } }]
+      requestBody:
+        required: true
+        content: { application/json: { schema: { type: object, required: [replacementCandidateId, rationale], properties: { replacementCandidateId: { type: string }, rationale: { type: string, minLength: 3, maxLength: 2000 } } } } }
+      responses: { '201': { description: Immutable SUPERSEDED retirement ledger; subsequent eight-Agent RAG manifests exclude the old memory without mutating historical manifests or granting asset authority }, '404': { description: Candidate or replacement not found without cross-tenant leakage }, '409': { description: Promotion, approval, Treasury lineage, validity or lifecycle guard failed } }
+  /proposals:
+    get:
+      summary: List immutable organization-scoped governance proposal drafts
+      responses: { '200': { description: Proposal drafts } }
+    post:
+      summary: Build a deterministic ERC20 proposal draft from an approved Decision and passing Simulation
+      responses: { '201': { description: Immutable non-executable proposal draft with decoded calldata }, '400': { description: Approval, simulation, snapshot, policy, action, or calldata consistency guard failed }, '404': { description: Referenced organization-scoped object not found } }
+  /proposals/{id}:
+    get:
+      summary: Read a proposal content hash, provenance chain, decoded action, and transaction arrays
+      responses: { '200': { description: Proposal draft }, '404': { description: Not found without cross-tenant leakage } }
+  /governance-adapter:
+    get:
+      summary: Describe the active observation-only governance adapter and its authority boundary
+      responses: { '200': { description: State/voting read capabilities plus zero proposal, vote, queue, signing, and execution authority } }
+  /proposals/{id}/observations:
+    get:
+      summary: List append-only organization-scoped governance observations with frozen voting metadata
+      responses: { '200': { description: Observation chain, effective mirrored state, and latest voting period/quorum/vote snapshot }, '404': { description: Proposal not found } }
+  /proposals/{id}/mock-observations:
+    post:
+      summary: Append an explicitly non-final Mock Governor observation with optional all-or-none voting metadata
+      responses: { '201': { description: Immutable idempotent observation with Mock-only evidence labels }, '400': { description: Invalid identity, lifecycle transition, voting metadata, block regression, confirmation regression, or reorg reference }, '404': { description: Proposal not found } }
+  /proposals/{id}/sync-governor:
+    post:
+      summary: Read confirmed OpenZeppelin Governor state, voting period, quorum and votes for the deterministic proposal ID
+      responses: { '201': { description: Immutable confirmed read-only observation; never proposal, vote, queue, or execution authorization }, '404': { description: Proposal not found }, '503': { description: Read-only adapter not configured, RPC unavailable, chain/interface mismatch, voting metadata unavailable, or unknown proposal } }
+  /treasury-guard-adapter:
+    get:
+      summary: Describe the active paused Mock or EVM read-only TreasuryGuard adapter
+      responses: { '200': { description: Read, signing, submission, and authority capabilities } }
+  /proposals/{id}/execution-preflights:
+    get:
+      summary: List immutable execution preflight snapshots for one organization-scoped Proposal
+      responses: { '200': { description: Preflight history }, '404': { description: Proposal not found } }
+    post:
+      summary: Re-evaluate Evidence, policy, simulation, Governor, calldata, Guard, pause, and replay checks
+      responses: { '201': { description: BLOCKED result or unsigned READY_FOR_SAFE_REVIEW handoff }, '400': { description: Invalid frozen policy, proposal action, or resimulation input }, '404': { description: Referenced object not found }, '503': { description: TreasuryGuard confirmed read unavailable } }
+  /execution-preflights/{id}:
+    get:
+      summary: Read an immutable preflight and its exact input/result hashes
+      responses: { '200': { description: Execution preflight }, '404': { description: Not found without cross-tenant leakage } }
+  /safe-transaction-adapter:
+    get:
+      summary: Describe the fail-closed Mock or GET/RPC-only Safe observation adapter
+      responses: { '200': { description: Read-only methods and explicit zero signing, submission, signature-storage, and asset authority } }
+  /execution-preflights/{id}/safe-observations:
+    get:
+      summary: List immutable organization-scoped Safe transaction observations
+      responses: { '200': { description: Ordered confirmation and receipt history }, '404': { description: Preflight not found without cross-tenant leakage } }
+    post:
+      summary: Observe an externally proposed Safe transaction hash without signing or submitting it
+      responses: { '201': { description: Idempotent PENDING_SIGNATURES, READY_TO_EXECUTE, EXECUTED, or FAILED snapshot }, '400': { description: Preflight blocked, Safe identity changed, terminal state contradicted, or confirmed execution reorg detected }, '404': { description: Preflight not found }, '503': { description: Safe service/RPC unavailable or exact handoff, finality, expiry, ExecutionSuccess, or ActionAuthorized proof failed } }
+  /execution-preflights/{id}/reconciliation-attempts:
+    get:
+      summary: Inspect immutable Safe recovery attempts and deterministic manual retry guidance
+      responses: { '200': { description: Ordered outcomes, sanitized error codes, bounded retry delay, and zero automatic submission authority }, '404': { description: Preflight not found without cross-tenant leakage } }
+  /safe-observations/{id}:
+    get:
+      summary: Read one immutable Safe observation without exposing signatures
+      responses: { '200': { description: Safe observation }, '404': { description: Not found without cross-tenant leakage } }
+components:
+  parameters:
+    RequestId:
+      in: header
+      name: X-Request-ID
+      required: false
+      schema: { type: string, pattern: '^[A-Za-z0-9][A-Za-z0-9._:-]{0,99}$' }
+      description: Caller correlation ID. Invalid or missing values are replaced; the accepted value is returned in every response and linked to audit events created by the request.
+    CsrfToken:
+      in: header
+      name: X-CSRF-Token
+      required: true
+      schema: { type: string }
+      description: Session-bound opaque token required with an allowed Origin on cookie-authenticated unsafe methods.
+    IdempotencyKey:
+      in: header
+      name: Idempotency-Key
+      required: false
+      schema: { type: string, minLength: 1, maxLength: 200 }
+      description: Organization-scoped command key; replay preserves status/body and changed input is rejected.
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: aeos_session
+  schemas:
+    ErrorEnvelope:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message, request_id]
+          properties: { code: { type: string }, message: {}, request_id: { type: string }, details: {} }
+    CitationCoverage:
+      type: object
+      required: [totalClaims, materialClaims, citedMaterialClaims, coverage]
+      properties:
+        totalClaims: { type: integer, minimum: 0 }
+        materialClaims: { type: integer, minimum: 0 }
+        citedMaterialClaims: { type: integer, minimum: 0 }
+        coverage: { type: number, minimum: 0, maximum: 1 }

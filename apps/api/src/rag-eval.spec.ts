@@ -1,0 +1,2 @@
+import { readFileSync } from "node:fs";import { resolve } from "node:path";import { runRagEval } from "./rag-eval.runner";
+describe("PRD/09 RAG Eval",()=>{it("passes normal, no-answer, conflict, cross-tenant and injection golden cases",()=>{const report=runRagEval(JSON.parse(readFileSync(resolve(__dirname,"../../../fixtures/rag-evals/v1.json"),"utf8")));expect(report.passed).toBe(true);expect(report.summary).toEqual({passed:5,failed:0,total:5});expect(report.metrics).toEqual({recallAtK:1,citationAccuracy:1,answerSupportRate:1,refusalQuality:1,crossTenantLeakage:0})})});

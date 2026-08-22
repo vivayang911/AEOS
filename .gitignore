@@ -1,0 +1,41 @@
+node_modules/
+.next/
+dist/
+coverage/
+*.tsbuildinfo
+.env
+.env.*
+!.env.example
+__pycache__/
+.pytest_cache/
+.venv/
+out/
+cache/
+broadcast/
+
+# Local archives, runtime logs, and generated release material
+*.rar
+*.zip
+*.7z
+*.log
+release/
+
+# Credentials, signing material, and wallet-local state
+*.pem
+*.key
+*.p12
+*.pfx
+*.keystore
+keystore/
+wallets/
+reports/deployment/*wallet-handoff.json
+reports/deployment/*wallet-submission.json
+reports/deployment/*wallet-server*.log
+
+# Local development continuity records (kept on the workstation only)
+CODEX-DEVELOPMENT-BRIEF.md
+docs/context/
+
+# Local coding-agent instructions
+AGENTS.md
+CLAUDE.md

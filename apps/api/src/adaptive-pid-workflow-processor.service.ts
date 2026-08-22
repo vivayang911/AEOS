@@ -1,0 +1,18 @@
+import{Injectable,OnApplicationBootstrap,OnApplicationShutdown}from"@nestjs/common";
+import{randomUUID}from"node:crypto";
+import{DatabaseService}from"./database.service";
+import{PolicyService}from"./policy.service";
+import{TreasuryWorkflowService}from"./treasury-workflow.service";
+
+@Injectable()
+export class AdaptivePidWorkflowProcessorService implements OnApplicationBootstrap,OnApplicationShutdown{
+ private timer?:NodeJS.Timeout;private readonly busy=new Set<number>();private readonly instanceId=`adaptive-pid-worker-${randomUUID()}`;
+ constructor(private readonly db:DatabaseService,private readonly workflows:TreasuryWorkflowService,private readonly policies:PolicyService){}
+ onApplicationBootstrap(){if((process.env.ADAPTIVE_PID_WORKER_ENABLED??"true").toLowerCase()==="false")return;const interval=this.integerEnv("ADAPTIVE_PID_WORKER_INTERVAL_MS",250,10,60000),concurrency=this.integerEnv("ADAPTIVE_PID_WORKER_CONCURRENCY",4,1,32);this.timer=setInterval(()=>{for(let slot=0;slot<concurrency;slot++)void this.tick(slot)},interval);this.timer.unref();for(let slot=0;slot<concurrency;slot++)void this.tick(slot)}
+ onApplicationShutdown(){if(this.timer)clearInterval(this.timer)}
+ private async tick(slot:number){if(this.busy.has(slot))return;this.busy.add(slot);try{await this.processNext(`${this.instanceId}:${slot}`)}catch(error){console.error(JSON.stringify({event:"adaptive_pid_worker_tick_failed",slot,errorCode:this.errorCode(error)}))}finally{this.busy.delete(slot)}}
+ private integerEnv(name:string,fallback:number,min:number,max:number){const value=Number(process.env[name]??fallback);return Number.isSafeInteger(value)&&value>=min&&value<=max?value:fallback}
+ async processNext(workerId:string,leaseSeconds=30){const claim=await this.workflows.claimNext(workerId,leaseSeconds,["EVIDENCE_BOUND_ADAPTIVE_PID"]);if(claim.status==="IDLE")return claim;const workflow=claim.workflow;try{const body=workflow.input?.input;if(!body||typeof body!=="object")throw new Error("ADAPTIVE_PID_WORKFLOW_INPUT_INVALID");const snapshot=await this.withLeaseHeartbeat(workerId,workflow.workflowId,claim.claimToken,leaseSeconds,()=>this.db.runWithTenant(workflow.organizationId,workerId,"SYSTEM_WORKER",()=>this.policies.createEvidenceBoundAdaptivePidSnapshot(workflow.organizationId,workflow.resourceId,body as any,workerId)));const completed=await this.workflows.complete(workerId,workflow.workflowId,claim.claimToken,{schemaVersion:"treasury.adaptive-pid-workflow-result.v1",adaptivePidSnapshotId:snapshot.id,resultHash:snapshot.resultHash,status:snapshot.status,advisoryOnly:true,assetExecutionAuthorized:false});return{status:"COMPLETED" as const,workflow:completed,adaptivePidSnapshot:snapshot,assetExecutionAuthorized:false}}catch(error){const code=this.errorCode(error);const failed=await this.workflows.fail(workerId,workflow.workflowId,claim.claimToken,code);return{status:"FAILED" as const,workflow:failed,errorCode:code,assetExecutionAuthorized:false}}}
+ private async withLeaseHeartbeat<T>(workerId:string,workflowId:string,claimToken:string,leaseSeconds:number,work:()=>Promise<T>){const heartbeatMs=Math.max(1000,Math.floor(leaseSeconds*1000/3));const timer=setInterval(()=>void this.workflows.renewLease(workerId,workflowId,claimToken,leaseSeconds).catch(error=>console.error(JSON.stringify({event:"adaptive_pid_worker_heartbeat_failed",workflowId,errorCode:this.errorCode(error)}))),heartbeatMs);timer.unref();try{return await work()}finally{clearInterval(timer)}}
+ private errorCode(error:unknown){const raw=error instanceof Error?error.message:"UNKNOWN";const normalized=raw.toUpperCase().replace(/[^A-Z0-9]+/g,"_").replace(/^_+|_+$/g,"").slice(0,48);return `ADAPTIVE_PID_${normalized||"FAILED"}`.slice(0,63)}
+}

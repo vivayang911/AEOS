@@ -1,0 +1,29 @@
+﻿services:
+  postgres:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_DB: aeos
+      POSTGRES_USER: aeos
+      POSTGRES_PASSWORD: aeos
+    ports: ["5432:5432"]
+    volumes: ["aeos-postgres:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U aeos -d aeos"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+  redis:
+    image: redis:7.4-alpine
+    ports: ["6380:6379"]
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes: ["aeos-redis:/data"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+volumes:
+  aeos-postgres:
+  aeos-redis:
+
+

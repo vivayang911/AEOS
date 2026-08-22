@@ -1,0 +1,13 @@
+[project]
+name = "aeos-agents"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = ["fastapi>=0.116,<1", "pydantic>=2.11,<3", "uvicorn[standard]>=0.35,<1"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.4,<9", "httpx>=0.28,<1"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+

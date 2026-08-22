@@ -1,0 +1,7 @@
+import { EvmTreasuryGuardReadAdapter, MockTreasuryGuardReadAdapter, createTreasuryGuardAdapterFromEnvironment } from "./treasury-guard-adapter";
+
+describe("TreasuryGuard read adapter",()=>{
+  it("defaults to a paused fail-closed Mock snapshot",async()=>{const adapter=new MockTreasuryGuardReadAdapter();expect(await adapter.read({actionId:`0x${"11".repeat(32)}`,target:"0x1111111111111111111111111111111111111111",selector:"0xa9059cbb"})).toEqual(expect.objectContaining({policyRegistry:null,paused:true,policyValidFrom:null,policyValidUntil:null,registryPolicyHash:null,policyRegistryBindingVerified:false,onchainReadVerified:false,assetExecutionAuthorized:false}));expect(adapter.configuration()).toEqual(expect.objectContaining({signsTransactions:false,submitsTransactions:false}))});
+  it("configured EVM mode still exposes read-only authority",()=>{const adapter=new EvmTreasuryGuardReadAdapter("https://rpc.invalid",11155111,"0x1111111111111111111111111111111111111111",3);expect(adapter.configuration()).toEqual(expect.objectContaining({mode:"evm-readonly",readsOnly:true,signsTransactions:false,submitsTransactions:false,assetExecutionAuthorized:false}))});
+  it("fails closed for unknown modes",()=>{const previous=process.env.TREASURY_GUARD_ADAPTER;process.env.TREASURY_GUARD_ADAPTER="unsafe";expect(()=>createTreasuryGuardAdapterFromEnvironment()).toThrow("Unsupported TREASURY_GUARD_ADAPTER");if(previous===undefined)delete process.env.TREASURY_GUARD_ADAPTER;else process.env.TREASURY_GUARD_ADAPTER=previous});
+});
