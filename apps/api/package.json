@@ -34,6 +34,8 @@
     "prepare:aeos-evidence-source": "npm run build && node scripts/prepare-aeos-evidence-source-deployment.cjs",
     "prepare:aeos-evidence-source-wallet-handoff": "npm run build && node scripts/prepare-aeos-evidence-source-wallet-handoff.cjs",
     "prepare:treasury-observation-commit": "npm run build && node scripts/prepare-treasury-observation-commit.cjs",
+    "prepare:live-control-observation": "npm run build && node scripts/prepare-live-control-observation.cjs",
+    "verify:live-control-observation": "npm run build && node scripts/verify-live-control-observation.cjs",
     "verify:aeos-evidence-source-deployment": "npm run build && node scripts/verify-aeos-evidence-source-deployment.cjs",
     "prepare:evidence-anchor-wallet-handoff": "npm run build && node scripts/prepare-evidence-anchor-wallet-handoff.cjs",
     "verify:evidence-anchor-deployment": "npm run build && node scripts/verify-evidence-anchor-deployment.cjs",

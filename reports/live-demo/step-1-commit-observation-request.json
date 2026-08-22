@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "aeos.live-attestcoin-step.v1",
+  "step": 1,
+  "status": "PREPARED_UNSIGNED",
+  "tenantBinding": "SERVER_SELECTED_ORGANIZATION_COMMITMENT",
+  "rawTenantIdentifiersDisclosed": false,
+  "payload": {
+    "schemaVersion": "aeos.project-reported-control-observation.v1",
+    "sourceKind": "PROJECT_REPORTED",
+    "verificationScope": "TRANSACTION_INCLUSION_ONLY",
+    "sourceChainId": 11155111,
+    "sourceContract": "0x5de85313c5622e3707c3fed8932f51e5991e62c2",
+    "reporter": "0x444d510728fb8072351cb5d0e88432e6a8501dfa",
+    "observationId": "0x379805918fce18b207d6491ae946f5cfd19f3de8ff979c350c092c5418a559a2",
+    "organizationCommitment": "0x54749dcf1164b0cf5c9efb6cf96e6163004cfb24bddd3b7a5104bdae0266817e",
+    "treasuryCommitment": "0x72e65dd802308cdd9bbb43789fdf89c46e105ed8dc58d6ea965b9f69444f29c1",
+    "observedAt": 1787397110,
+    "treasuryRegistryStatus": "UNREGISTERED_LOGICAL_IDENTITY",
+    "controlState": {
+      "evidenceFirst": true,
+      "daoInControl": true,
+      "advisoryOnly": true,
+      "assetExecutionAuthorized": false
+    },
+    "truthBoundary": {
+      "payloadEconomicTruthVerified": false,
+      "attestcoinRequestedToVerifyTransactionInclusion": true
+    }
+  },
+  "evidencePayloadHash": "0x8466343861795808d4513ca549a3fdc3c1cd462d24b58203251801698276a11f",
+  "commitRequest": {
+    "schemaVersion": "aeos-evidence-source.commit-request.v1",
+    "chainId": 11155111,
+    "sourceContract": "0x5de85313c5622e3707c3fed8932f51e5991e62c2",
+    "reporter": "0x444d510728fb8072351cb5d0e88432e6a8501dfa",
+    "observation": {
+      "organizationCommitment": "0x54749dcf1164b0cf5c9efb6cf96e6163004cfb24bddd3b7a5104bdae0266817e",
+      "treasuryCommitment": "0x72e65dd802308cdd9bbb43789fdf89c46e105ed8dc58d6ea965b9f69444f29c1",
+      "observationId": "0x379805918fce18b207d6491ae946f5cfd19f3de8ff979c350c092c5418a559a2",
+      "evidencePayloadHash": "0x8466343861795808d4513ca549a3fdc3c1cd462d24b58203251801698276a11f",
+      "observedAt": 1787397110
+    },
+    "unsignedTransaction": {
+      "from": "0x444d510728fb8072351cb5d0e88432e6a8501dfa",
+      "to": "0x5de85313c5622e3707c3fed8932f51e5991e62c2",
+      "value": "0",
+      "data": "0xad78846e379805918fce18b207d6491ae946f5cfd19f3de8ff979c350c092c5418a559a254749dcf1164b0cf5c9efb6cf96e6163004cfb24bddd3b7a5104bdae0266817e72e65dd802308cdd9bbb43789fdf89c46e105ed8dc58d6ea965b9f69444f29c18466343861795808d4513ca549a3fdc3c1cd462d24b58203251801698276a11f000000000000000000000000000000000000000000000000000000006a8983f6",
+      "dataHash": "0x4d7d49e375c53d3ccb469f6cf1d251df70436d84d7a79d09cf3e689be41a6b1b"
+    },
+    "requiresUserWalletConfirmation": true,
+    "signed": false,
+    "submitted": false,
+    "containsPrivateKey": false,
+    "aeosSigningCapability": false,
+    "aeosBroadcastCapability": false,
+    "assetExecutionAuthorized": false,
+    "requestHash": "0x6bc4cb993025f5437b3a70f78a0a229bc8737e491ba06cbc289def790f46726e"
+  }
+}

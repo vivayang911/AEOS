@@ -70,6 +70,14 @@ npm run prepare:treasury-observation-commit
 
 The output is an unsigned, zero-value `commitObservation` request. The user wallet alone may sign it. After finality, its transaction hash becomes the input to the existing USC proof job; the later Creditcoin `verifyAndAnchor` step remains a separate user-confirmed transaction.
 
+For the public hackathon round trip, prefer the bounded control-observation builder:
+
+```powershell
+npm run prepare:live-control-observation
+```
+
+It derives the payload hash and calldata together, publishes only domain-separated organization/Treasury commitments, and labels the payload `PROJECT_REPORTED` with verification scope `TRANSACTION_INCLUSION_ONLY`. Until a complete Governor/Timelock/Safe/Guard registry exists, it also marks the Treasury identity `UNREGISTERED_LOGICAL_IDENTITY`; do not invent infrastructure addresses to hide that gap. Attestcoin can prove that the committed source transaction was included; that proof does not independently establish the economic truth of project-reported payload content.
+
 ## Required acceptance sequence
 
 1. Wallet deploys this source on Sepolia; readback returns `VERIFIED`.

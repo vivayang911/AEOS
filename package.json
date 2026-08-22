@@ -18,6 +18,8 @@
     "prepare:aeos-evidence-source": "npm run prepare:aeos-evidence-source -w @aeos/api",
     "prepare:aeos-evidence-source-wallet-handoff": "npm run prepare:aeos-evidence-source-wallet-handoff -w @aeos/api",
     "prepare:treasury-observation-commit": "npm run prepare:treasury-observation-commit -w @aeos/api",
+    "prepare:live-control-observation": "npm run prepare:live-control-observation -w @aeos/api",
+    "verify:live-control-observation": "npm run verify:live-control-observation -w @aeos/api",
     "verify:aeos-evidence-source-deployment": "npm run verify:aeos-evidence-source-deployment -w @aeos/api",
     "prepare:evidence-anchor-wallet-handoff": "npm run prepare:evidence-anchor-wallet-handoff -w @aeos/api",
     "start:evidence-anchor-wallet-handoff": "node scripts/evidence-anchor-wallet-handoff-server.cjs",
