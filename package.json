@@ -22,6 +22,7 @@
     "verify:live-control-observation": "npm run verify:live-control-observation -w @aeos/api",
     "prepare:treasury-observation-wallet-handoff": "npm run prepare:treasury-observation-wallet-handoff -w @aeos/api",
     "start:treasury-observation-wallet-handoff": "node scripts/treasury-observation-wallet-handoff-server.cjs",
+    "verify:treasury-observation-receipt": "npm run verify:treasury-observation-receipt -w @aeos/api",
     "verify:aeos-evidence-source-deployment": "npm run verify:aeos-evidence-source-deployment -w @aeos/api",
     "prepare:evidence-anchor-wallet-handoff": "npm run prepare:evidence-anchor-wallet-handoff -w @aeos/api",
     "start:evidence-anchor-wallet-handoff": "node scripts/evidence-anchor-wallet-handoff-server.cjs",
