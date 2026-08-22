@@ -1,0 +1,2 @@
+const { readFileSync }=require("node:fs");const { resolve }=require("node:path");const { verifyTreasuryGuardArtifact }=require("../dist/contract-surface-engine");
+const path=resolve(process.env.TREASURY_GUARD_ARTIFACT_PATH||resolve(__dirname,"../../../contracts/out/TreasuryGuard.sol/TreasuryGuard.json"));const result=verifyTreasuryGuardArtifact(JSON.parse(readFileSync(path,"utf8")));console.log(JSON.stringify(result));if(result.status!=="VERIFIED")process.exitCode=1;

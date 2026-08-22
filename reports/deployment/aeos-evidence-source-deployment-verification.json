@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "aeos-evidence-source.deployment-verification.v1",
+  "address": "0x5de85313c5622e3707c3fed8932f51e5991e62c2",
+  "deploymentTransactionHash": "0xd1f047671a64974d4192b7442b18895c93539b50243dd34dc1501f67f02a8a40",
+  "confirmationsObserved": 7,
+  "minimumConfirmations": 2,
+  "status": "VERIFIED",
+  "passedChecks": [
+    "CHAIN_ID_MATCH",
+    "CONTRACT_CODE_PRESENT",
+    "REPORTER_MATCH",
+    "DEPLOYMENT_TRANSACTION_HASH_VALID",
+    "DEPLOYMENT_INIT_CODE_MATCH",
+    "DEPLOYMENT_TRANSACTION_IS_CONTRACT_CREATION",
+    "DEPLOYMENT_TRANSACTION_VALUE_ZERO",
+    "DEPLOYMENT_RECEIPT_SUCCESS",
+    "CONTRACT_CREATION_RECEIPT",
+    "DEPLOYMENT_FINAL"
+  ],
+  "expectedPlanHash": "0x6b677bc038e87fff819b49126a9c6a6f2b0dc9dc606dccf43ba8009501ec13c6",
+  "expectedInitCodeHash": "0xd98019720440a76a3a57fac02a614f0e4698f9631992aaeab7a37ac76560037c",
+  "immutableReporter": "0x444d510728fb8072351cb5d0e88432e6a8501dfa",
+  "readsOnly": true,
+  "privateKeyReceived": false,
+  "aeosSigningCapability": false,
+  "aeosBroadcastCapability": false,
+  "assetExecutionAuthorized": false
+}

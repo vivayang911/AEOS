@@ -1,0 +1,46 @@
+"use client";
+
+import {createContext,useContext,useEffect,useMemo,useState,type ReactNode} from "react";
+
+export type AeosLocale="en"|"zh-CN"|"ja";
+const LOCALE_COOKIE="aeos_locale";
+
+const zh:Record<string,string>={
+  "Cockpit":"驾驶舱","Treasury overview":"国库总览","Attestcoin Oracle":"Attestcoin 预言机","Verified data flow":"可信数据流","Evidence Explorer":"证据浏览器","Immutable facts":"不可变事实","Decision Room":"决策委员会","Eight-Agent committee":"八智能体委员会","Strategy & PID":"策略与 PID","Advisory control":"建议型控制","RAG Knowledge":"RAG 知识库","Governed memory":"受治理记忆","Skills Center":"技能中心","Read / advise only":"只读 / 仅建议","Governance":"治理","DAO authorization":"DAO 授权","Audit Log":"审计日志","Immutable trail":"不可变轨迹","Settings":"设置","Organization control":"组织控制",
+  "Skip to main content":"跳转到主要内容","Primary navigation":"主导航","AEOS cockpit home":"AEOS 驾驶舱首页","TREASURY PORTFOLIO":"国库组合","Institutional DAO":"机构型 DAO","Multi-treasury workspace":"多国库工作区","EIGHT-AGENT COMMITTEE":"八智能体委员会","AUTHORITY BOUNDARY":"权限边界","Advice is not authorization":"建议不等于授权","AI, PID, RAG and Skills can recommend. Only DAO governance may authorize asset actions.":"AI、PID、RAG 与技能只能提出建议。只有 DAO 治理可以授权资产操作。","EXECUTION WITHHELD":"禁止执行","WORKSPACE":"工作区","Select DAO workspace":"选择 DAO 工作区","Organization session required":"需要组织会话","TREASURY":"国库","Core Treasury / USDC":"核心国库 / USDC","System context":"系统上下文","Creditcoin Testnet / 102031":"Creditcoin 测试网 / 102031","SESSION VERIFIED":"会话已验证","READ ONLY":"只读","WAITING FOR SIGNATURE":"等待签名","SIWE SIGN IN":"SIWE 登录","Interface language":"界面语言",
+  "DETERMINISTIC DEMO FIXTURE":"确定性演示数据","Evidence First":"证据优先","Attestcoin provides facts, not decisions":"Attestcoin 提供事实，而非决策","ADVISORY ONLY / EXECUTION WITHHELD":"仅供建议 / 禁止执行","Overview":"总览","Market Analysis":"市场分析","Attestcoin Flow":"Attestcoin 数据流","Evidence":"证据","Decision Committee":"决策委员会","Audit":"审计","CORE TREASURY / CREDITCOIN TESTNET":"核心国库 / CREDITCOIN 测试网","Treasury NAV / USDC":"国库净值 / USDC","TURNOVER":"换手率","BUY / SELL":"买入 / 卖出","NOT LIVE":"非实时","BUY FLOW":"买入流量","SELL FLOW":"卖出流量","NET FLOW":"净流量","VOLUME":"成交量","SLIPPAGE EST.":"预计滑点",
+  "TRUST EVIDENCE LAYER":"可信证据层","Attestcoin Verification and Classification Flow":"Attestcoin 验证与分类分流","VERIFIED PIPELINE / MOCK ADAPTER":"已验证管线 / 模拟适配器","CROSS-CHAIN SOURCES":"跨链数据源","ATTESTCOIN USC":"ATTESTCOIN USC","Proof Job":"证明任务","NORMALIZE":"标准化","Quality 96 / 100":"质量 96 / 100","Evidence ID frozen":"证据 ID 已冻结","CLASSIFICATION ROUTING":"分类分流","Liquidity / Governance":"流动性 / 治理","Protocol / Treasury":"协议 / 国库","LIQUIDITY":"流动性","GOVERNANCE":"治理","PROTOCOL":"协议","FROZEN RAG MANIFEST":"冻结的 RAG 清单","Verified Evidence + governed memory":"已验证证据 + 受治理记忆",
+  "CLOSED-LOOP CONTROL":"闭环控制","PID Advisory Console":"PID 建议控制台","ADVISORY ONLY":"仅供建议","TARGET":"目标","OUTPUT":"输出","RAG KNOWLEDGE":"RAG 知识库","Frozen Retrieval":"冻结检索","8 role-scoped manifests":"8 个角色范围清单","SKILLS CENTER":"技能中心","Governed Loading":"受治理加载","6 skills available":"6 个可用技能","NO SIGNER / NO BROADCAST":"无签名器 / 禁止广播",
+  "ATTESTCOIN ACTIONS":"ATTESTCOIN 动作","Oracle Data Flow":"预言机数据流","Query received":"已接收查询","Source receipt confirmed":"数据源回执已确认","USC proof generated":"USC 证明已生成","CC3 verification observed":"已观察 CC3 验证","Evidence normalized":"证据已标准化","Routed to RAG and Agents":"已分流至 RAG 与智能体","DECISION COMMITTEE":"决策委员会","Eight-Agent Matrix":"八智能体矩阵","OPEN":"打开","DEPARTMENT A2A":"部门 A2A","Challenge Network":"质询网络","REVERSE EVIDENCE REQUEST BROKER":"反向证据需求代理","Agent Demand Loop":"智能体需求闭环","DAO IN CONTROL":"DAO 掌控权","AI, Attestcoin, RAG, PID and Skills have zero asset execution authority.":"AI、Attestcoin、RAG、PID 与技能均无资产执行权限。",
+  "DEMONSTRATION WORKSPACE":"演示工作区","Organization-scoped read model":"组织范围读取模型","Return to Cockpit":"返回驾驶舱","DATA SCOPE":"数据范围","ACTIVE ORGANIZATION":"当前组织","IMMUTABLE REFERENCES":"不可变引用","AI AUTHORITY":"AI 权限","ASSET EXECUTION":"资产执行","LIVE MVP VIEW":"实时 MVP 视图"
+};
+
+const ja:Record<string,string>={
+  "Cockpit":"コックピット","Treasury overview":"トレジャリー概要","Attestcoin Oracle":"Attestcoin オラクル","Verified data flow":"検証済みデータフロー","Evidence Explorer":"エビデンス検索","Immutable facts":"不変の事実","Decision Room":"意思決定室","Eight-Agent committee":"8エージェント委員会","Strategy & PID":"戦略 & PID","Advisory control":"助言型制御","RAG Knowledge":"RAG ナレッジ","Governed memory":"統制された記憶","Skills Center":"スキルセンター","Read / advise only":"読取 / 助言のみ","Governance":"ガバナンス","DAO authorization":"DAO 承認","Audit Log":"監査ログ","Immutable trail":"不変の履歴","Settings":"設定","Organization control":"組織管理",
+  "Skip to main content":"メインコンテンツへ","Primary navigation":"メインナビゲーション","AEOS cockpit home":"AEOS コックピットホーム","TREASURY PORTFOLIO":"トレジャリー・ポートフォリオ","Institutional DAO":"機関型 DAO","Multi-treasury workspace":"複数トレジャリー・ワークスペース","EIGHT-AGENT COMMITTEE":"8エージェント委員会","AUTHORITY BOUNDARY":"権限境界","Advice is not authorization":"助言は承認ではありません","AI, PID, RAG and Skills can recommend. Only DAO governance may authorize asset actions.":"AI、PID、RAG、スキルは提案のみ可能です。資産操作を承認できるのは DAO ガバナンスだけです。","EXECUTION WITHHELD":"実行禁止","WORKSPACE":"ワークスペース","Select DAO workspace":"DAO ワークスペースを選択","Organization session required":"組織セッションが必要","TREASURY":"トレジャリー","Core Treasury / USDC":"コア・トレジャリー / USDC","System context":"システム状況","Creditcoin Testnet / 102031":"Creditcoin テストネット / 102031","SESSION VERIFIED":"セッション検証済み","READ ONLY":"読取専用","WAITING FOR SIGNATURE":"署名待ち","SIWE SIGN IN":"SIWE サインイン","Interface language":"表示言語",
+  "DETERMINISTIC DEMO FIXTURE":"決定論的デモデータ","Evidence First":"エビデンス優先","Attestcoin provides facts, not decisions":"Attestcoin は事実を提供し、意思決定は行いません","ADVISORY ONLY / EXECUTION WITHHELD":"助言のみ / 実行禁止","Overview":"概要","Market Analysis":"市場分析","Attestcoin Flow":"Attestcoin フロー","Evidence":"エビデンス","Decision Committee":"意思決定委員会","Audit":"監査","CORE TREASURY / CREDITCOIN TESTNET":"コア・トレジャリー / CREDITCOIN テストネット","Treasury NAV / USDC":"トレジャリー NAV / USDC","TURNOVER":"回転率","BUY / SELL":"買い / 売り","NOT LIVE":"非ライブ","BUY FLOW":"買いフロー","SELL FLOW":"売りフロー","NET FLOW":"ネットフロー","VOLUME":"出来高","SLIPPAGE EST.":"推定スリッページ",
+  "TRUST EVIDENCE LAYER":"信頼エビデンス層","Attestcoin Verification and Classification Flow":"Attestcoin 検証・分類フロー","VERIFIED PIPELINE / MOCK ADAPTER":"検証済みパイプライン / モックアダプター","CROSS-CHAIN SOURCES":"クロスチェーン情報源","ATTESTCOIN USC":"ATTESTCOIN USC","Proof Job":"証明ジョブ","NORMALIZE":"正規化","Quality 96 / 100":"品質 96 / 100","Evidence ID frozen":"エビデンス ID 固定済み","CLASSIFICATION ROUTING":"分類ルーティング","Liquidity / Governance":"流動性 / ガバナンス","Protocol / Treasury":"プロトコル / トレジャリー","LIQUIDITY":"流動性","GOVERNANCE":"ガバナンス","PROTOCOL":"プロトコル","FROZEN RAG MANIFEST":"固定済み RAG マニフェスト","Verified Evidence + governed memory":"検証済みエビデンス + 統制された記憶",
+  "CLOSED-LOOP CONTROL":"閉ループ制御","PID Advisory Console":"PID 助言コンソール","ADVISORY ONLY":"助言のみ","TARGET":"目標","OUTPUT":"出力","RAG KNOWLEDGE":"RAG ナレッジ","Frozen Retrieval":"固定済み検索","8 role-scoped manifests":"8つの役割別マニフェスト","SKILLS CENTER":"スキルセンター","Governed Loading":"統制されたロード","6 skills available":"6スキル利用可能","NO SIGNER / NO BROADCAST":"署名なし / ブロードキャストなし",
+  "ATTESTCOIN ACTIONS":"ATTESTCOIN アクション","Oracle Data Flow":"オラクル・データフロー","Query received":"クエリ受信","Source receipt confirmed":"情報源レシート確認済み","USC proof generated":"USC 証明生成済み","CC3 verification observed":"CC3 検証確認済み","Evidence normalized":"エビデンス正規化済み","Routed to RAG and Agents":"RAG とエージェントへ配信","DECISION COMMITTEE":"意思決定委員会","Eight-Agent Matrix":"8エージェント・マトリクス","OPEN":"開く","DEPARTMENT A2A":"部門 A2A","Challenge Network":"検証ネットワーク","REVERSE EVIDENCE REQUEST BROKER":"逆方向エビデンス要求ブローカー","Agent Demand Loop":"エージェント要求ループ","DAO IN CONTROL":"DAO が統制","AI, Attestcoin, RAG, PID and Skills have zero asset execution authority.":"AI、Attestcoin、RAG、PID、スキルに資産実行権限はありません。",
+  "DEMONSTRATION WORKSPACE":"デモ・ワークスペース","Organization-scoped read model":"組織スコープ読取モデル","Return to Cockpit":"コックピットへ戻る","DATA SCOPE":"データ範囲","ACTIVE ORGANIZATION":"現在の組織","IMMUTABLE REFERENCES":"不変参照","AI AUTHORITY":"AI 権限","ASSET EXECUTION":"資産実行","LIVE MVP VIEW":"ライブ MVP ビュー"
+};
+
+const dictionaries:Record<Exclude<AeosLocale,"en">,Record<string,string>>={"zh-CN":zh,ja};
+type LanguageValue={locale:AeosLocale;setLocale:(locale:AeosLocale)=>void;tr:(source:string)=>string};
+const LanguageContext=createContext<LanguageValue|undefined>(undefined);
+
+function readLocaleCookie():AeosLocale{
+  const value=document.cookie.split("; ").find(item=>item.startsWith(`${LOCALE_COOKIE}=`))?.split("=")[1];
+  return value==="zh-CN"||value==="ja"||value==="en"?value:"en";
+}
+
+export function LanguageProvider({children}:{children:ReactNode}){
+  const[locale,setLocaleState]=useState<AeosLocale>("en");
+  useEffect(()=>setLocaleState(readLocaleCookie()),[]);
+  const setLocale=(next:AeosLocale)=>{setLocaleState(next);document.cookie=`${LOCALE_COOKIE}=${next}; Path=/; Max-Age=31536000; SameSite=Lax`;document.documentElement.lang=next;};
+  useEffect(()=>{document.documentElement.lang=locale},[locale]);
+  const value=useMemo<LanguageValue>(()=>({locale,setLocale,tr:(source)=>locale==="en"?source:dictionaries[locale][source]??source}),[locale]);
+  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
+}
+
+export function useLanguage(){const value=useContext(LanguageContext);if(!value)throw new Error("useLanguage must be used inside LanguageProvider");return value;}

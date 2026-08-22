@@ -1,0 +1,117 @@
+# AEOS PRD strict traceability matrix
+
+Audit date: 2026-08-21. This register is the development source of truth alongside the complete documents in `PRD/`. A detailed domain PRD takes precedence over a roadmap summary. Nothing may be omitted merely because a shorter implementation is easier.
+
+`AEOS_Concept_Design.md` is also scanned as a competition and product-vision input. Its adoption rules and ten-role-to-eight-Agent reconciliation are recorded in [concept-competition-reconciliation.md](concept-competition-reconciliation.md). Concept enhancements may strengthen but never reduce or override the PRD.
+
+The authoritative committee roster remains exactly eight roles: Governor, Research, Strategy, Quant, Risk, Compliance, Portfolio and Treasury.
+
+## Status rules
+
+- `NOT_STARTED`: the required behavior is absent or only a placeholder exists.
+- `PARTIAL`: some behavior exists, but at least one stated requirement or acceptance test is missing.
+- `LOCAL_VERIFIED`: the complete scoped requirement has implementation and repeatable local evidence.
+- `EXTERNAL_PENDING`: local implementation is ready, but acceptance requires wallet, network, credentials, organizer, or deployed infrastructure.
+- `ACCEPTED`: every stated acceptance condition, including required external proof, has passed.
+
+Only `ACCEPTED` means complete. `LOCAL_VERIFIED` and `EXTERNAL_PENDING` must not be reported as full PRD acceptance.
+
+## Document-level reconciliation
+
+| PRD requirement IDs | Status | Implemented evidence | Missing work that must not be simplified |
+|---|---|---|---|
+| PRD-01.1–01.9 | PARTIAL | Evidence-first boundaries, deterministic controls, immutable snapshots | Complete measurable MVP loop, live network evidence, product metrics and every promised module |
+| PRD-02.1–02.8 | PARTIAL | Evidence ingestion/search, Decision review, policy/proposal/governance foundations | Complete all P0 stories and exact acceptance criteria; missing pages and live wallet-to-chain flow |
+| PRD-03.1–03.9 | PARTIAL / MULTI-INSTANCE COCKPIT EVENTING LOCAL_VERIFIED | Monorepo, 53-table tenant RLS, pgvector RAG, immutable Treasury Registry, horizontally claimable workflows, shared SSE capacity and Audit-backed PostgreSQL event wakeups | Deployed worker topology/autoscaling, production broker/load acceptance, object storage, Redis runtime queue/cache, multi-RPC behavior and production retrieval infrastructure |
+| PRD-04.1–04.7 | PARTIAL / ATTESTCOIN READ MODEL + PAGE DEMOS + AUTHENTICATED HTTP SSE CAPACITY LOCAL_VERIFIED | Cockpit shell, all primary MVP routes, dashboard/evidence/decision foundations, deterministic page Demos, authenticated organization-scoped Attestcoin configuration/health/proof-job read model, event-woken read-only SSE with persisted fallback, heartbeat, bounded writer, session lease, SIWE/Last-Event-ID E2E and eight-connection capacity verification | Positive authenticated Attestcoin browser E2E; proof-job detail/actions; replace other page fixtures; complete forms, native EventSource reconnect, responsive/accessibility/i18n and remaining specified client behavior |
+| PRD-05.1–05.7 | PARTIAL / STATEFUL MULTI-TREASURY PID + COCKPIT EVENTING LOCAL_VERIFIED | Nest services, transactional Outbox, deterministic PostgreSQL leasing/recovery/heartbeats, workload-filtered PID Worker, concurrent advisory claims, same-Treasury stateful serialization, cross-Treasury/cross-organization claims and Audit-backed cockpit wakeups | Wire all remaining domain producers, deploy separate worker topology, Redis queue/cache, full DLQ lifecycle, sustained multi-process production-like load, object storage, versioned prompt/model operations and complete service contracts |
+| PRD-06.1–06.7 | PARTIAL / EIGHT-ROLE + FROZEN-INPUT + DEMAND-LOOP SLICES LOCAL_VERIFIED | Ordered eight-role committee, distinct tools, Risk/Compliance challenges, immutable A2A, frozen Retrieval/Evidence routing, Agent-Run-bound bounded Mock Broker, automatic structured gap records, immutable A2A/request links, full child Decision reruns, requester-role RLS and forged-citation validation, 21/21 Agent Eval and 5/5 RAG Eval | Complete live proof-backed demand loop and all P0 browser/operational/no-answer/conflict/quarantine acceptance without changing zero-authority boundaries |
+| PRD-07.1–07.7 | PARTIAL / SEPOLIA SOURCE DEPLOYMENT + LIVE CHAININFO DISCOVERY + BROKER + PROVENANCE-GATED OBSERVED-STATE VERIFIED / EXTERNAL_PENDING | Project-owned source contract deployed/read-back verified on Sepolia; current source support/latest attestation read from Creditcoin ChainInfo with Mock-unobserved and unsupported/unattested fail-closed states; read-only Attestcoin/USC proof boundaries; immutable bounded Mock Evidence Request Broker; PID provenance requires a completed proof-job relation rather than provider text/JSON | Commit and validate one real source observation; complete wallet-submitted BlockProver/ASC verification and confirmed testnet Evidence; supply verified market-metric derivations without mislabeling transaction inclusion as a market feed |
+| PRD-08.1–08.6 | PARTIAL / CLASSIFICATION-ROUTING + TYPED STATE/COST EVIDENCE LOCAL_VERIFIED | Immutable Evidence, quality/freshness/conflict/manifest logic, append-only routing, exact typed allocation/volatility/liquidity/peg/incident refs, and five exact execution-cost refs with Treasury/transaction/block/methodology checks | Relations/supersedes correction graph, object payload storage, production derivation/proof lineage for composite market/cost metrics and all navigation/trace views |
+| PRD-09.1–09.6 | PARTIAL / FROZEN-AGENT-INPUT + GOVERNED SKILL + GOVERNED OUTCOME-MEMORY LIFECYCLE LOCAL_VERIFIED | Organization/RLS/ACL ingestion, safety scan, immutable sources/chunks/memory, pgvector Mock hybrid retrieval, stable citations/conflicts/no-answer, eight role-partitioned immutable Decision manifests, governed Skill lineage, dual-reviewed non-causal Outcome candidates, explicit promotion, database-time expiry and same-Treasury governed supersession with immutable retirement lineage | Real embedding/reranker, invalidation-condition evaluation, object/backup physical deletion propagation, positive live DAO-finality integration, latency/load and production lifecycle acceptance |
+| PRD-10.1–10.6 | PARTIAL / REGISTRY-BOUND MULTI-TREASURY SAFETY + CONFIRMED OUTCOME/COST/MODEL ESTIMATE LOCAL_VERIFIED / EXTERNAL_PENDING | Proposal/Governor foundations, immutable policy calls/readback, append-only Treasury Registry, current-active binding, tenant/Treasury serialization, confirmed Safe correlation, observed costs, Policy-bound prospective methodology and immutable Evidence-complete model estimate | Wallet-confirm/inspect registry versions; live proposal/vote/timelock/configuration/unpause/execution, production cost derivation, statistically controlled/causal evaluation, UI and testnet acceptance |
+| PRD-11.1–11.7 | PARTIAL / GOVERNED ADAPTIVE PID + MULTI-TREASURY SCHEDULING + NON-CAUSAL MODEL FEEDBACK LOCAL_VERIFIED | Deterministic PID, DAO-bounded dynamic envelope, HOLD guardrails, eight-role RAG/Skill refs, Evidence-derived state, queue-to-snapshot Worker, same-Treasury state serialization, cross-Treasury concurrency, descriptive outcomes/cost/method/model estimate; causality/net benefit remain withheld | Supported live metric/cost sources, statistical control/causal identification, historical calibration, sustained production-like load, approved UI, staging calibration and remaining controller acceptance |
+| PRD-12.1–12.7 | PARTIAL / EVIDENCE ANCHOR DEPLOYED + GUARD-REGISTRY EXTERNAL | Verified EvidenceAnchorASC testnet creation transaction, exact init code, code/getter/finality readback; artifact-bound Guard/Registry unsigned plans; batch-hash-bound same-block policy/value/allowlist verification; fail-closed unsigned unpause handoff; 5 invariants and gas snapshot | Real `verifyAndAnchor` proof lifecycle/Explorer event, Guard/Registry deployments and DAO atomic configuration/unpause, live governance, fork/real calldata, migration drill and independent audit |
+| PRD-13.1–13.5 | PARTIAL / IMMUTABLE PID/OUTCOME/COUNTERFACTUAL/OUTCOME-MEMORY + SKILL LEDGERS + LOCAL LOGICAL RESTORE VERIFIED | 53 migrations; immutable Decision/Evidence/registry/workflow/adaptive-PID/Skill/Outcome/cost/methodology/assessment/candidate-review-promotion-retirement lineage; 65 application tenant-RLS tables; isolated restore equality across 72 tables, 67 RLS tables/policies and 85 triggers with measured local 5.461-second recovery | Exact remaining entities/relations, UUIDv7 policy, object references, retention/partitioning, production backup scheduling and WAL/PITR restore proof |
+| PRD-14.1–14.5 | PARTIAL / AUTHENTICATED SSE V2 + PID/OUTCOME/COST/METHOD/ASSESSMENT CONTRACT LOCAL_VERIFIED | OpenAPI/error/idempotency foundations, documented Evidence-bound PID, Outcome/cost/methodology/assessment lifecycle and cockpit contracts, and real SIWE/session/organization/Last-Event-ID HTTP E2E | Worker operations contract, exact remaining endpoint shapes, `If-Match`, generated client, breaking-change CI and remaining pagination/webhook contracts |
+| PRD-15.1–15.6 | PARTIAL / AUTHENTICATED MULTI-INSTANCE SSE + ZERO-AUTHORITY ASSESSMENT LOCAL_VERIFIED | SIWE, request-wide RLS context, least privilege, tenant/Treasury locks, security gates, shared SSE limits, and database-fixed flags preventing methodology/Outcome/assessment promotion into causality, on-chain approval, learning or execution authority | ASVS checklist, sustained multi-process/global load and threat testing, multi-RPC/KMS/incident/legal controls, red-team and full threat-model acceptance |
+| PRD-16.1–16.5 | PARTIAL / MULTI-TREASURY PID INTEGRATION + AUTHENTICATED SSE LOAD + COUNTERFACTUAL DB/ENGINE VERIFIED | Unit/integration/PostgreSQL/agent/contract/demo plus queue-to-Evidence-bound-PID completion, same-Treasury serialization, cross-Treasury concurrency, heartbeats, immutable/RLS/idempotency/authority checks, real SIWE/SSE capacity/fan-out and isolated restore | Required ≥80%/≥95% enforced coverage, native browser lease/reconnect, sustained/global/multi-organization/OS socket/PID-worker load, multi-process API kill and staging chaos, P0 testnet E2E, fork/accessibility and production PITR acceptance |
+| PRD-17.1–17.6 | PARTIAL / LOCAL EVENTING FAULT + LOGICAL RESTORE VERIFIED | Local Compose/container/readiness, tenant-free shared-capacity/fan-out metrics, exact listener termination/reconnect, 128-event burst observation, persisted fallback, runbooks and measured self-cleaning logical snapshot recovery with explicit non-SLO/RPO/RTO labels | Dev/staging/prod deployments, authenticated socket/API-process/database failover chaos and SLO alerts, traces, signed image/provenance, encrypted scheduled backups, off-site WAL/PITR and production-like restore |
+| PRD-18.1–18.9 | PARTIAL | Multiple roadmap slices exist | Roadmap cannot override missing detail requirements; finish each phase exit criterion in dependency order |
+| PRD-README | PARTIAL | Index is present | Keep all 18 detailed documents reconciled; the index is not an acceptance substitute |
+
+## Minimum acceptance floor, applicability and clause interpretation
+
+This table is an **internal engineering acceptance floor**, not a statement of legal, regulatory, audit or investment-industry certification. Where the PRD uses aspirational terms such as enterprise-grade, real-time or autonomous, the interpretation below requires measurable evidence and preserves DAO authority; a demo, Mock, local pass or visual surface alone cannot satisfy a live/production clause.
+
+| PRD document | Minimum requirement before `ACCEPTED` | Applicability | Clause interpretation |
+|---|---|---|---|
+| PRD-01 Product overview | One reproducible Evidence → Decision → DAO-controlled action/withhold → Outcome loop plus stated product metrics | Whole product and competition narrative | “Autonomous” means automated analysis/workflow inside hard policy, never independent signing or asset custody |
+| PRD-02 Product requirements | Every P0 story and its exact acceptance checks pass end to end | MVP release | A partial vertical slice does not waive fields, errors, roles, pages or external proofs in the detailed story |
+| PRD-03 Architecture | Deployed boundaries, tenant isolation, immutable stores, queues/caches and documented failure modes operate together | Runtime topology and data plane | A monorepo or local Compose proves structure only; it is not production scalability or resilience evidence |
+| PRD-04 Frontend | Every specified route renders and completes its workflow with session scope, accessibility, responsive behavior and truthful source labels | Browser cockpit | “Real-time” requires a measured transport/source; deterministic demo motion must remain explicitly simulated |
+| PRD-05 Backend | Versioned APIs, transactional writes/outbox, bounded workers, idempotency, recovery and observable failure paths pass | API and worker services | Concurrency means safe independent work plus same-resource serialization, not unbounded threads |
+| PRD-06 Agents | Exactly eight named roles use frozen Evidence/RAG inputs, bounded A2A, challenges, refusal and human/DAO gates | Decision committee | Agent output is a recommendation snapshot; no role gains wallet, vote, broadcast or execution authority |
+| PRD-07 Attestcoin | Supported live proof request, wallet submission, confirmed canonical receipt and verified Evidence lineage pass | Cross-chain Evidence paths | Attestcoin proves the supported predicate; transaction inclusion must not be relabeled as market price or liquidity data |
+| PRD-08 Evidence | Immutable normalized Evidence, provenance, quality/freshness/conflict, relations and trace navigation pass | All decisions and control inputs | “Verified” describes cryptographic/provenance checks, not truth beyond the proved claim or causal validity |
+| PRD-09 RAG and Memory | Governed ingest/ACL/search/refusal plus promotion, expiry, invalidation, supersession and deletion lifecycle pass under load | Agent retrieval and enterprise memory | Retrieval affects only future frozen manifests; historical Decision manifests and source snapshots remain immutable |
+| PRD-10 Governance | Proposal, voting/finality observation, timelock/configuration and user-controlled execution pass on the target testnet | DAO control plane | Application committee approval is not an on-chain DAO vote unless a canonical finalized observation proves it |
+| PRD-11 PID | Policy-bounded deterministic controller, dynamic gains, Evidence inputs, stress holds, calibration and measured outcomes pass | Treasury advice/control simulation | PID controls recommended exposure/actions, not external market prices; benefit/causality requires a valid evaluation design |
+| PRD-12 Contracts | Deployment, verification, roles, invariants, fork/real-calldata tests, atomic policy binding and audit pass | On-chain guardrails | Local bytecode/tests are necessary but do not substitute for deployed address, receipt, Explorer and role readback |
+| PRD-13 Data model | All required entities, RLS, immutability, retention, backup and production-like restore/PITR evidence pass | Persistent and object data | Table counts show coverage, not correctness; recovery timing is an observation unless the required RTO/RPO environment is matched |
+| PRD-14 API | Complete OpenAPI, errors, pagination, concurrency controls, generated-client compatibility and breaking-change gate pass | External/internal service contracts | Documented endpoints must match runtime behavior; path count alone is not contract completeness |
+| PRD-15 Security | Threat model, least privilege, secret/KMS controls, ASVS checks, load/abuse tests and independent review pass | Entire system | RLS and zero-authority flags are defense layers, not a substitute for deployment, key-management or operational controls |
+| PRD-16 Testing | Required coverage thresholds and all unit/integration/E2E/load/chaos/testnet suites pass in the stated environments | Release acceptance | A local green suite may justify `LOCAL_VERIFIED`, never external or production acceptance by inference |
+| PRD-17 DevOps | Environment deployments, SLO telemetry/alerts, signed provenance, encrypted scheduled backup and restore drills pass | Delivery and operations | Local Compose and SBOM are foundations; availability, throughput, RTO and RPO require measured production-like evidence |
+| PRD-18 Roadmap | Every phase exit criterion is met in dependency order with unresolved external gates explicitly carried | Program sequencing | A roadmap summary cannot override or narrow a detailed PRD requirement |
+| PRD README/index | All 18 documents remain discoverable, hash/integrity checked and reconciled in this matrix | Documentation governance | The index routes requirements; it is not itself implementation or acceptance evidence |
+
+## P0 user-story truth table
+
+| Story | Status | Acceptance gap |
+|---|---|---|
+| US-01 Connect DAO | PARTIAL / EXTERNAL_PENDING | Live interface inspection, complete wallet/configuration E2E and real deployed addresses |
+| US-02 Create treasury strategy | PARTIAL | Complete typed Strategy Studio, conflict validation, effective-time lifecycle and P0 E2E |
+| US-03 Retrieve verified Evidence | PARTIAL / EXTERNAL_PENDING | Live confirmed Attestcoin path, original proof display and complete Evidence relation/storage behavior |
+| US-04 Generate committee recommendation | PARTIAL / EIGHT-ROLE + FROZEN-RAG SLICE LOCAL_VERIFIED | Eight roles, A2A, deterministic refusal and role-scoped frozen RAG input pass; Evidence Demand Loop and complete P0 browser E2E remain |
+| US-05 Simulation and risk checks | PARTIAL | Backend simulation exists; complete confirmed gas/balance source, UI and P0 E2E remain |
+| US-06 Create and review proposal | PARTIAL / EXTERNAL_PENDING | Live proposal submission, voting period/quorum and full chain-synchronized UI remain |
+| US-07 Execute and retrospect | PARTIAL / DESCRIPTIVE + COST + MODEL ESTIMATE LOCAL_VERIFIED / EXTERNAL_PENDING | Immutable descriptive outcomes, complete-block Safe correlation, observed costs, prospective methodology and an Evidence-complete fixed-unit model estimate are local; user-controlled testnet execution, statistical control, net-benefit/causal retrospective and production validation remain |
+| US-08 Emergency pause | PARTIAL / EXTERNAL_PENDING | Contract/local fail-closed behavior exists; deployed role recovery, immediate UI visibility and E2E remain |
+
+## Functional requirements
+
+| Requirement | Status |
+|---|---|
+| FR-01 Wallet login, SIWE session and RBAC | PARTIAL |
+| FR-02 Multi-DAO and multi-network configuration | PARTIAL / EXTERNAL_PENDING |
+| FR-03 Attestcoin query, proof verification, cache and retry | PARTIAL / EXTERNAL_PENDING |
+| FR-04 Evidence normalization, scoring, search and citations | PARTIAL |
+| FR-05 Agent workflow, structured output and human approval | PARTIAL / EIGHT-ROLE SLICE LOCAL_VERIFIED |
+| FR-06 Strategy versions, PID parameters and deterministic limits | PARTIAL / GOVERNED ADAPTIVE PID + SKILL OVERLAY LOCAL_VERIFIED |
+| FR-07 Proposal building, simulation, voting state and execution | PARTIAL / EXTERNAL_PENDING |
+| FR-08 Audit and traceability | PARTIAL |
+| FR-09 Monitoring and alerts | PARTIAL |
+| FR-10 Calibration and optimization | PARTIAL / SYNTHETIC BACKTEST + DESCRIPTIVE OUTCOME + NON-CAUSAL COUNTERFACTUAL MODEL LOCAL_VERIFIED; no causal, realized-performance or automatic-learning claim |
+| FR-11 Delegated governance and multi-organization templates | NOT_STARTED / PARTIAL FOUNDATION |
+
+## Competition hard gates
+
+The BUIDL CTC 2026 Fall submission is **not ready**. A distinct working `EvidenceAnchorASC` is deployed and read-back verified on Creditcoin Testnet, and the deterministic unsigned handoff plus receipt/finality/event/reorg confirmation path passes safety/tenant tests. Meaningful end-to-end ASC integration still requires a real source transaction, USC proof, wallet-confirmed `verifyAndAnchor`, Explorer event and resulting immutable Evidence/Decision. A public GitHub README, deck/whitepaper URL and demo video URL are also absent. Existing `TreasuryGuard.sol` remains separate and must not be relabeled as an ASC.
+
+## Mandatory per-batch protocol
+
+1. **Before implementation:** run `npm run verify:prd`; read the entire changed/relevant PRD documents and `AEOS_Concept_Design.md`, not only this matrix; identify the earliest incomplete acceptance criterion and list exact IDs in the batch note.
+2. **During implementation:** preserve organization isolation, immutable snapshots, Evidence-first decisions, DAO control and zero AI asset authority; implement every field/error/edge case in scope.
+3. **After implementation:** add proportionate tests; run typecheck, tests, production build and relevant DB/contract/E2E verification; compare results to every selected PRD clause.
+4. **Reconciliation:** update this matrix, `docs/prd-implementation-status.md`, `CODEX-DEVELOPMENT-BRIEF.md` and `README.md` with evidence. A requirement may advance only when its acceptance evidence exists.
+5. **Failure rule:** failed, skipped or externally blocked checks remain incomplete and must be reported explicitly.
+6. **Non-simplification/progress rule:** every batch reports scoped completion, whole-PRD status and explicit unfinished work. Mock, placeholder, reduced-edge-case and `LOCAL_VERIFIED` work never count as full acceptance and may not replace a PRD requirement.
+
+## Current locally verified continuation
+
+The counterfactual, multi-treasury PID, governed Outcome Memory and page-demo slices advance only local implementation evidence; every PRD row remains `PARTIAL`. The seven shared function pages now complete visible deterministic workflows, but their fixtures are not live backend evidence. The complete 89-suite/350-test Release Gate passes. Outcome candidates freeze same-tenant Outcome/counterfactual lineage, require creator separation and two distinct human roles, exclude candidates from RAG and require explicit promotion; fake DAO finality is rejected. Database-time expiry and same-Treasury governed supersession now exclude retired Memory from later eight-Agent manifests without mutating earlier bundle hashes. The isolated restore verifies 53 migrations, 72 tables, 67 RLS tables/policies and 85 triggers in a measured local 5.461 seconds. None of this establishes statistical control, causality, realized performance, automatic learning, positive live DAO finality, sustained production throughput/SLO, production RTO/RPO or asset authority.
+
+2026-08-22 reconciliation: the project-owned Sepolia Evidence Source advances FR-03 and the competition hard gate to `PARTIAL / SOURCE DEPLOYMENT VERIFIED`. The user-confirmed zero-value deployment transaction `0xd1f0...8a40` created `0x5DE8...62C2`; ten read-only checks bind the exact init code, immutable reporter, receipt and finality. It does not satisfy the happy path until the Sepolia observation call, USC proof, Creditcoin `verifyAndAnchor`, immutable Evidence ingestion and a cited eight-Agent Decision are observed. Targeted wallet-handoff tests pass 4/4 and deployment/contract-surface tests pass 25/25. The complete post-deployment Release Gate passes: 90/90 API suites (361/361 tests), 19/19 Web tests, 21/21 Agent Eval, 5/5 RAG Eval, 24/24 contracts, database restore/RLS, production builds, security surfaces, secret scan and SBOM.
+
+

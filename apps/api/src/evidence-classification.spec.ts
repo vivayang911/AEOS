@@ -1,0 +1,11 @@
+import { classifyEvidence,evidenceClassificationLabels,validateEvidenceClassification } from "./evidence-classification";
+
+const source=(predicate:string,value:unknown={})=>({id:"ev_1",contentHash:"0xevidence",subject:{type:"wallet",id:"eip155:1:0x1"},predicate,value,source:{provider:"attestcoin"},verificationStatus:"VERIFIED"});
+describe("deterministic Evidence Intelligence classification",()=>{
+  it("classifies balance Evidence without changing proof truth",()=>{const result=classifyEvidence(source("asset.balance",{amount:"100",symbol:"USDC"}));expect(result.labels).toEqual(["LIQUIDITY","TREASURY"]);expect(result.routes).toEqual(["Research","Strategy","Quant","Risk","Portfolio","Treasury"]);expect(result.verificationStatus).toBe("VERIFIED");expect(result.assetExecutionAuthorized).toBe(false)});
+  it("routes governance Evidence through Governor and independent controls",()=>{const result=classifyEvidence(source("governance.proposal.quorum",{proposalId:"1"}));expect(result.labels).toEqual(["GOVERNANCE"]);expect(result.routes).toEqual(["Governor","Strategy","Risk","Compliance","Treasury"])});
+  it("uses a deterministic protocol fallback for unknown navigation text",()=>{expect(classifyEvidence(source("unknown.fact")).labels).toEqual(["PROTOCOL"])});
+  it("keeps labels in the versioned canonical order",()=>{const result=classifyEvidence(source("security.risk.treasury.liquidity.growth.governance.protocol"));expect(result.labels).toEqual(evidenceClassificationLabels)});
+  it("rejects truth promotion, authority escalation and hash tampering",()=>{const valid=classifyEvidence(source("asset.balance"));expect(()=>validateEvidenceClassification({...valid,verificationStatus:"ONCHAIN_VERIFIED"},source("asset.balance"))).toThrow("cannot change verification truth");expect(()=>validateEvidenceClassification({...valid,assetExecutionAuthorized:true as false},source("asset.balance"))).toThrow("cannot grant asset authority");expect(()=>validateEvidenceClassification({...valid,classificationHash:"0xforged"},source("asset.balance"))).toThrow("not deterministic")});
+  it("is reproducible for identical immutable inputs",()=>{expect(classifyEvidence(source("blockchain.transaction.included"))).toEqual(classifyEvidence(source("blockchain.transaction.included")))});
+});

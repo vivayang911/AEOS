@@ -1,0 +1,36 @@
+:global(.attestcoin-live){border:1px solid #17637a;background:linear-gradient(145deg,#071722,#09131a);box-shadow:inset 0 0 28px rgba(20,180,215,.04)}
+:global(.attestcoin-live>header){display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 14px;border-bottom:1px solid #173d4a}
+:global(.attestcoin-live h2){margin:5px 0 0;font-size:14px}
+:global(.attestcoin-live button){padding:7px 9px;border:1px solid #20758a;background:#08212b;color:#55dbf3;font-size:7px;letter-spacing:.08em}
+:global(.attestcoin-live button:disabled){opacity:.45}
+:global(.attestcoin-live-metrics){display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:#17303a}
+:global(.attestcoin-live-metrics div){padding:11px;background:#0b151c}
+:global(.attestcoin-live-metrics small),:global(.attestcoin-live-metrics b),:global(.attestcoin-live-metrics span){display:block}
+:global(.attestcoin-live-metrics small){color:#58717e;font-size:6px;letter-spacing:.12em}
+:global(.attestcoin-live-metrics b){margin-top:6px;color:#c8e7ed;font-size:9px;overflow-wrap:anywhere}
+:global(.attestcoin-live-metrics span){margin-top:4px;color:#56cfe3;font-size:6px}
+:global(.attestcoin-source-line){display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1.3fr;align-items:center;gap:8px;padding:12px 14px;border-top:1px solid #142c35;border-bottom:1px solid #142c35}
+:global(.attestcoin-source-line span){color:#607987;font-size:7px}
+:global(.attestcoin-source-line b){display:block;margin-top:4px;color:#b9dae1;font-size:8px;overflow-wrap:anywhere}
+:global(.attestcoin-source-line i){color:#36cbe8;font-style:normal}
+:global(.attestcoin-note),:global(.attestcoin-state){margin:0;padding:14px;color:#788d98;font-size:8px;line-height:1.6}
+:global(.attestcoin-chain-readback){display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#16313b;border-bottom:1px solid #173d4a}
+:global(.attestcoin-chain-readback div){padding:11px;background:#08171f;min-width:0}
+:global(.attestcoin-chain-readback small),:global(.attestcoin-chain-readback b),:global(.attestcoin-chain-readback span){display:block;overflow-wrap:anywhere}
+:global(.attestcoin-chain-readback small){color:#58717e;font-size:6px;letter-spacing:.11em}
+:global(.attestcoin-chain-readback b){margin-top:6px;color:#70e4ef;font-size:8px}
+:global(.attestcoin-chain-readback span){margin-top:4px;color:#8099a4;font-size:6px;line-height:1.5}
+:global(.attestcoin-note){border-bottom:1px solid #423517;color:#e3b547;background:#171508}
+:global(.attestcoin-state strong),:global(.attestcoin-state span){display:block}
+:global(.attestcoin-state strong){color:#bcdce2}
+:global(.attestcoin-state span){margin-top:5px}
+:global(.attestcoin-error){border-color:#60362f;color:#ef806f}
+:global(.attestcoin-job-list){overflow:auto}
+:global(.attestcoin-job-list>div){display:grid;grid-template-columns:1.15fr 1.25fr 1fr 1fr 1fr 1.2fr;min-width:850px;border-top:1px solid #162e38}
+:global(.attestcoin-job-list span),:global(.attestcoin-job-list code),:global(.attestcoin-job-list time){padding:9px 11px;color:#8ca3ad;font-size:7px;overflow-wrap:anywhere}
+:global(.attestcoin-job-list span b),:global(.attestcoin-job-list span small){display:block}
+:global(.attestcoin-job-list span b){color:#5cdeef}
+:global(.attestcoin-job-list span small){margin-top:4px;color:#ef806f}
+:global(.attestcoin-job-head span){color:#58717e;font-size:6px;letter-spacing:.1em}
+:global(.attestcoin-live>footer){padding:9px 14px;border-top:1px solid #173d4a;color:#58717e;font-size:6px;letter-spacing:.06em}
+@media(max-width:760px){:global(.attestcoin-live-metrics),:global(.attestcoin-chain-readback){grid-template-columns:1fr 1fr}:global(.attestcoin-source-line){grid-template-columns:1fr}:global(.attestcoin-source-line i){display:none}}

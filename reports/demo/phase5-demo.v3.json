@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "aeos.demo.report.v2",
+  "fixtureVersion": "phase5-governance-demo.v3-eight-agent",
+  "organizationId": "org_demo_fixture_v1",
+  "fixtureHash": "0x0dc01c50b2806411cb671d78c56255227fabe38edf99e7db94ce4d26240a2bf5",
+  "fixtureBoundary": {
+    "mode": "DETERMINISTIC_OFFLINE",
+    "liveOnchainVerified": false,
+    "databasePersisted": false,
+    "externalProviderCalled": false
+  },
+  "trace": {
+    "evidence": {
+      "count": 2,
+      "ids": [
+        "ev_demo_allocation_v1",
+        "ev_demo_balance_v1"
+      ],
+      "manifestHash": "0x7d52813633a063ddee505ab6d11a748050c45eb8ce77bc9cf5e34a32299a3ecf"
+    },
+    "decision": {
+      "recommendation": "HOLD",
+      "agentRoster": [
+        "Governor",
+        "Research",
+        "Strategy",
+        "Quant",
+        "Risk",
+        "Compliance",
+        "Portfolio",
+        "Treasury"
+      ],
+      "a2aMessages": 13,
+      "citations": [
+        "ev_demo_allocation_v1",
+        "ev_demo_balance_v1"
+      ],
+      "citationCoverage": 1,
+      "outputHash": "0xae50c930ce240383eb0b42ab648ff2075c3bb8350fb558fe99468105245b53a8",
+      "actions": 0,
+      "assetExecutionAuthorized": false
+    },
+    "policy": {
+      "version": 1,
+      "contentHash": "0xc0863b1bdf0a0a9b996a1e539656894624bcd36eb1d5ce58644fc386aba09009",
+      "simulationStatus": "SUGGESTED",
+      "simulationHash": "0xefbe2753320f66557f0961d010636903bbe89738fc86a907a3178609c1633be9",
+      "advisoryOnly": true,
+      "assetExecutionAuthorized": false
+    },
+    "proposal": {
+      "target": "0x1111111111111111111111111111111111111111",
+      "calldataHash": "0x0b619422d697027af3c9bf08ec7dd69fbf112ff120e1fcf8048b472ec1de9f30",
+      "proposalId": "42558149686853423790923267639525856323780512500964510142249651763302218255548",
+      "contentHash": "0xdad8ff8a281cc3cf0044aac81614a97d7a7311b1a71ee8c9d36d1adcb57b93fb",
+      "consistencyVerified": true,
+      "assetExecutionAuthorized": false
+    },
+    "execution": {
+      "actionId": "0x1b30bf3814de76b744a1b8847206db38b9153e3c08139a6db34f4d4fd6427ff9",
+      "readyStatus": "READY_FOR_SAFE_REVIEW",
+      "safeHandoffHash": "0xe43a68a7af124c0a92e08a1ba29d2ce5e668a625cc23d4f7fdddfe2a1e5f1cb6",
+      "signed": false,
+      "submitted": false,
+      "executesAssetTransfer": false,
+      "assetExecutionAuthorized": false,
+      "pausedStatus": "BLOCKED",
+      "pausedBlockers": [
+        "GUARD_NOT_PAUSED"
+      ],
+      "pausedSafeHandoff": null
+    },
+    "refusal": {
+      "recommendation": "INSUFFICIENT_EVIDENCE",
+      "blockers": [
+        "STALE_EVIDENCE"
+      ],
+      "actions": 0,
+      "assetExecutionAuthorized": false
+    }
+  },
+  "reportHash": "0x082eaa84c4e222fb74b08b3b082174895c75377f953340f6c15de8cad6f32255"
+}

@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "aeos.demo.fixture.v3",
+  "fixtureVersion": "phase5-governance-demo.v3-eight-agent",
+  "organizationId": "org_demo_fixture_v1",
+  "objective": "Assess the verified treasury snapshot with the complete eight-Agent committee and prepare a governed review package without granting execution authority.",
+  "evidence": [
+    {
+      "id": "ev_demo_balance_v1",
+      "organizationId": "org_demo_fixture_v1",
+      "value": { "amount": "125000000", "decimals": 6, "symbol": "USDC" },
+      "verification": { "status": "VERIFIED" },
+      "freshness": "FRESH",
+      "qualityScore": 96,
+      "conflictGroupId": null
+    },
+    {
+      "id": "ev_demo_allocation_v1",
+      "organizationId": "org_demo_fixture_v1",
+      "value": { "allocationBps": 3200, "asset": "USDC" },
+      "verification": { "status": "VERIFIED" },
+      "freshness": "FRESH",
+      "qualityScore": 94,
+      "conflictGroupId": null
+    }
+  ],
+  "policy": {
+    "version": 1,
+    "minimumEvidenceQuality": 80,
+    "targetAllocationBps": 4000,
+    "pid": { "kpBps": 5000, "kiBps": 1000, "kdBps": 0, "deadbandBps": 25, "maxAdjustmentBps": 500, "integralLimitBps": 2000 },
+    "riskLimits": {
+      "maxSingleAdjustmentBps": 500,
+      "maxSlippageBps": 100,
+      "minLiquidityUsd": "100000",
+      "maxDailyTurnoverUsd": "50000",
+      "allowedTargetContracts": ["0x1111111111111111111111111111111111111111"],
+      "allowedFunctionSelectors": ["0xa9059cbb"]
+    }
+  },
+  "simulationInput": {
+    "observedAllocationBps": 3200,
+    "previousErrorBps": 700,
+    "integralErrorBps": 100,
+    "deltaTimeSeconds": 86400,
+    "requestedSlippageBps": 50,
+    "liquidityUsd": "200000",
+    "dailyTurnoverUsd": "10000",
+    "targetContract": "0x1111111111111111111111111111111111111111",
+    "functionSelector": "0xa9059cbb",
+    "evidenceSnapshotId": "snap_demo_fixture_v1",
+    "estimatedGasUnits": "100000",
+    "maxFeePerGasWei": "20000000000",
+    "nativeBalanceBeforeWei": "3000000000000000",
+    "tokenBalanceBeforeBaseUnits": "125000000",
+    "transferAmountBaseUnits": "1000000"
+  },
+  "action": {
+    "kind": "ERC20_TRANSFER",
+    "tokenContract": "0x1111111111111111111111111111111111111111",
+    "recipient": "0x2222222222222222222222222222222222222222",
+    "amountBaseUnits": "1000000",
+    "amountUsd": "10000"
+  },
+  "governance": { "chainId": 11155111, "governor": "0x4444444444444444444444444444444444444444", "description": "AEOS deterministic eight-Agent demo proposal v3" },
+  "guard": { "address": "0x5555555555555555555555555555555555555555", "blockNumber": 300, "blockHash": "0x3030303030303030303030303030303030303030303030303030303030303030", "confirmations": 3 },
+  "deadline": 1786039200,
+  "expiresAt": "2026-08-06T12:00:00.000Z",
+  "expected": {
+    "recommendation": "HOLD",
+    "simulationStatus": "SUGGESTED",
+    "readyPreflightStatus": "READY_FOR_SAFE_REVIEW",
+    "pausedPreflightStatus": "BLOCKED",
+    "pausedBlocker": "GUARD_NOT_PAUSED",
+    "refusalRecommendation": "INSUFFICIENT_EVIDENCE",
+    "refusalBlocker": "STALE_EVIDENCE"
+  }
+}

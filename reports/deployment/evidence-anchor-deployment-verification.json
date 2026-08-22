@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "evidence-anchor.deployment-verification.v1",
+  "address": "0x5de85313c5622e3707c3fed8932f51e5991e62c2",
+  "deploymentTransactionHash": "0xf8efed6e45f8979ee13a995a293fef46d7ae58fb9a1de0dbb1e44e970c594dd2",
+  "confirmationsObserved": 5,
+  "minimumConfirmations": 2,
+  "status": "VERIFIED",
+  "passedChecks": [
+    "CHAIN_ID_MATCH",
+    "CONTRACT_CODE_PRESENT",
+    "NATIVE_QUERY_VERIFIER_MATCH",
+    "SOURCE_CHAIN_KEY_MATCH",
+    "DEPLOYMENT_TRANSACTION_HASH_VALID",
+    "DEPLOYMENT_INIT_CODE_MATCH",
+    "DEPLOYMENT_TRANSACTION_IS_CONTRACT_CREATION",
+    "DEPLOYMENT_TRANSACTION_VALUE_ZERO",
+    "DEPLOYMENT_RECEIPT_SUCCESS",
+    "CONTRACT_CREATION_RECEIPT",
+    "DEPLOYMENT_FINAL"
+  ],
+  "expectedPlanHash": "0x8391d418491181902364cfc23cdad905ff833f3d2c1d1b01443231114d7e6279",
+  "expectedInitCodeHash": "0x7a1de72bbf924789bdd2e761a70ae1098b6287297c9b3fff94a8210d6e1216a1",
+  "nativeQueryVerifier": "0x0000000000000000000000000000000000000fd2",
+  "allowedSourceChainKey": 1,
+  "readsOnly": true,
+  "privateKeyReceived": false,
+  "aeosSigningCapability": false,
+  "aeosBroadcastCapability": false,
+  "assetExecutionAuthorized": false
+}

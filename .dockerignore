@@ -1,0 +1,14 @@
+.git
+.env
+.env.*
+!.env.example
+node_modules
+**/node_modules
+**/dist
+**/.next
+**/.venv
+contracts/cache
+contracts/out
+reports
+coverage
+*.log

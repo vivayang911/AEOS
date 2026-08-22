@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>AEOS Deterministic Wallet Handoff</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main>
+      <header><span class="eyebrow">AEOS · DAO CONTROLLED</span><h1>Deterministic Contract Deployment</h1><p>Zero-value contract creation. The application cannot sign for you.</p></header>
+      <section class="guard"><strong>ADVISORY ONLY — USER WALLET CONFIRMATION REQUIRED</strong></section>
+      <section id="facts" class="grid" aria-label="Deployment facts"></section>
+      <section class="checks">
+        <h2>Guardrails</h2>
+        <ol id="check-list">
+          <li data-check="wallet">Wallet not connected</li>
+          <li data-check="chain">Chain not verified</li>
+          <li data-check="account">Deployer not verified</li>
+          <li data-check="nonce">Pending nonce not verified</li>
+          <li data-check="bytecode">Init code hash not verified</li>
+        </ol>
+      </section>
+      <section class="actions">
+        <button id="switch-network">Request target network</button>
+        <button id="reset-account">Reset site account permission</button>
+        <button id="reconnect-account">Reconnect target account</button>
+        <button id="validate">Connect &amp; validate wallet</button>
+        <button id="deploy" disabled>Request MetaMask deployment</button>
+      </section>
+      <section class="status" aria-live="polite"><h2>Status</h2><pre id="status">Loading immutable handoff…</pre></section>
+    </main>
+    <script src="/app.js"></script>
+  </body>
+</html>

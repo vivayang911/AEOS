@@ -1,0 +1,225 @@
+# AEOS PRD implementation status
+
+Last reconciled: 2026-08-21
+
+This file records implementation evidence for individual slices. It must be read with the authoritative [strict whole-PRD traceability matrix](prd-traceability-matrix.md). `Accepted locally` here never means that a parent PRD chapter is complete: only `ACCEPTED` in the strict matrix means every stated acceptance condition has passed. `Partial` means a usable vertical slice exists but one or more PRD requirements remain. `External` means acceptance additionally depends on deployed contracts, a user-controlled wallet, credentials, or infrastructure outside this repository. Cockpit-style frontend development is approved, but as of 2026-08-13 every new page or overall frontend modification requires a prototype and explicit owner confirmation before UI code changes; only verified routes are marked locally accepted.
+
+| PRD area | Status | Verified implementation | Remaining acceptance work |
+| --- | --- | --- | --- |
+| Project principles / system architecture | Accepted locally | Evidence-first flow, deterministic guardrails, DAO authorization boundary, tenant RLS, append-only audit, request tracing, Transactional Outbox | Staging and production deployment evidence |
+| Phase 1 Evidence MVP | Accepted locally and in PostgreSQL | Mock Attestcoin adapter, quarantine, freshness/quality/conflicts, immutable evidence snapshots, search, audit and RLS | Live Attestcoin USC proof round-trip is external |
+| Identity, organization and RBAC | Accepted locally and in PostgreSQL; frontend boundary implemented | Server-built SIWE, hashed one-time challenges/sessions, HttpOnly credentialed requests, memory-only CSRF, wallet/organization cockpit, role recovery and isolation | Explicit user-wallet sign-in E2E and membership invitation workflow |
+| Organization contract configuration | Partial / registry locally verified / external | Immutable signed organization configuration; append-only per-treasury chain/Treasury/Governor/Timelock/Safe/Guard/Registry versions; retirement; RLS; audited workflow binding | Wallet re-confirmation/read-only interface inspection for each treasury version; per-treasury policy-ID validation, budget/risk/Evidence-source versions; real testnet addresses |
+| Phase 2 Agent Decision Room | Partial overall; eight-role, frozen-RAG-input, Evidence-routing, Mock Broker and committee revision slices locally verified | Eight roles; distinct tools; Risk/Compliance gates; immutable A2A; frozen Retrieval Manifests/classifications; immutable Agent-Run-bound `evidence.request.v1`; bounded Mock Broker; structured committee gaps; immutable request/A2A links; child Decision snapshots and full eight-role rerun; human review; 21/21 Agent Eval and 5/5 RAG Eval | Live Attestcoin Broker satisfaction; complete no-answer/conflict/quarantine P0 browser and operational E2E; real LLM remains optional |
+| Strategy policy, simulation and PID | Partial / adaptive PID, governed Skill, Evidence-bound input and multi-treasury stateful scheduling locally verified | Immutable draft/activation; deterministic PI/PID; complete policy checks; bounded gains/HOLD; approved Enterprise-Memory-derived Skills; explicit Policy binding; exact typed current Evidence refs; prior immutable PID-state inheritance; same-Treasury serialization and cross-Treasury worker concurrency; no causal/performance claim | Supported verified source/derivation for every live metric, confirmed RPC gas/balance adapter, historical calibration, sustained production-like multi-process load and redesigned UI |
+| Proposal and governance observation | US-06 read/review backend accepted locally and in PostgreSQL; submission external | Deterministic proposal/calldata hashes; immutable read-only Governor state, voting-period, quorum and vote snapshots; ERC-6372 clock evidence; reorg sequence; explicit Mock/derived labels | User-wallet/DAO proposal submission, actual voting and complete quorum/timelock chain acceptance |
+| Execution safety / Safe observation | Partial / external; registry-bound multi-treasury orchestration locally verified | Preflight; immutable stage-one DAO policy batch; same-block Registry/Guard readback; Safe handoff/reconciliation; workflow only against current active registry version; exclusive work serialized per organization/chain/treasury; stale queues cancelled on rotation | Connect every execution producer to deployed workers; validate complete per-treasury policy/budget scope; user-wallet Safe submission and full testnet feedback loop |
+| Smart-contract safety / ASC | EvidenceAnchorASC deployed/read-back verified; Guard/Registry deployment remains external | Artifact-bound zero-value Guard/Registry plans; verified EvidenceAnchorASC creation transaction, exact init code, receipt/finality, deployed code and immutable getters; 18 behavior/fuzz tests; 5 invariant properties at 64 runs × 4096 calls each; gas and three surface gates | Real proof-backed `verifyAndAnchor`/Explorer event, Guard/Registry deployments and DAO atomic configuration, fork/real-calldata/independent-audit acceptance |
+| Audit and observability | FR-08 backend accepted locally | Append-only tenant audit, request correlation, immutable deterministic JSON exports with source verification, trusted-configuration Explorer link projection, sanitized logs, health/metrics, Transactional Outbox, provider-call aggregates and alert aggregates | Audit frontend, dashboards/traces and external notification routing |
+| Notifications and anomaly detection | FR-09 backend accepted locally and in PostgreSQL | Versioned deterministic Outbox rules, periodic stale-Evidence/governance/permission/pause producers, stable source fingerprints, immutable tenant alerts, append-only acknowledgements, Mock-only boundary, metrics and runbook | External notification routing remains deferred until a provider and credentials are selected; redesigned UI is paused |
+| Attestcoin integration | Backend accepted locally/PostgreSQL; live round-trip external | Bounded USC source receipt/proof verification, immutable snapshots and rejection quarantine, transient-only retry, deadlines, fail-closed circuit breaker, immutable tenant call observations, deterministic outage alerts and passive health reporting | Successful Sepolia source transaction and explicit user-wallet CC3 submission |
+| RAG and organization memory | Partial; frozen Agent input, Skill lineage and governed non-causal Outcome lifecycle locally verified | Organization/RLS and role-ACL ingestion, safety scan/redaction, immutable sources/chunks/memory, pgvector Mock hybrid retrieval, stable citations/conflict/no-answer, eight role-partitioned immutable Decision manifests, Skill distillation restricted to current approved Enterprise Memory, Outcome candidate dual review/optional real DAO finality/explicit promotion, database-time expiry and same-Treasury governed supersession | Real embedding/reranker, deterministic/manual invalidation-condition evaluation, object storage/physical backup deletion propagation, positive live DAO-finality integration, latency/load and complete deletion lifecycle acceptance |
+| Database design | Partial | Migrations through 053, immutable critical/registry/workflow/adaptive-PID/Skill/Treasury-Outcome/cost/counterfactual/Outcome-Memory lifecycle records, pgvector indices, 65 application tenant-RLS tables, and isolated restore equality across 72 tables/67 RLS policies/85 triggers with measured local 5.461-second recovery | Large-payload object storage, general evidence relations/supersession, partition/retention automation, production backup schedule, encrypted off-site retention and WAL/PITR restoration |
+| API specification | Partial | Versioned 88-path OpenAPI, consistent errors, request IDs, command idempotency, authenticated lifecycle contracts including Outcome Memory expiry/supersession | Internal worker operations contract, exact remaining endpoint shapes, `If-Match` optimistic locking and schema-breaking-change/client-generation CI |
+| Security and compliance | Partial but release-gated | No backend signer/broadcast authority, deterministic periodic anomaly producers and alert rules, immutable audit exports, secrets scan, dependency scan, headers, log safety, RLS and contract surface checks | Staging incident exercise and external audit/static analysis |
+| Testing strategy | Partial | Unit/integration/PostgreSQL/contract/fuzz/invariant/gas/eval/demo/build gates; concurrent same/different treasury and organization claims; immutable workflow events/RLS; isolated logical backup/restore regression | Multi-process load/chaos tests, wallet-to-testnet E2E, enforced coverage thresholds, accessibility/fork and production WAL/PITR restore acceptance |
+| Deployment and operations | Partial | Docker assets, release/security gates, runbooks, metrics, prior image evidence and measured local logical restore drill | Git/CI, current image rebuild/Scout evidence, staging deployment, production backup/WAL/PITR/off-site retention, dashboards and alert routing |
+| Frontend design | Approved V3 terminal cockpit, authenticated Evidence, Agent Decision Room and bounded SSE foundation accepted locally | Responsive three-locale shell and `/dashboard`; deterministic candlestick/flow Demo; Attestcoin verification/classification; eight-Agent/A2A/reverse request; PID/RAG/Skills; SIWE organization panel; Evidence/Decision routes; all primary MVP routes; one-click deterministic six-stage demonstrations on the seven shared function pages; organization-scoped read-only SSE with heartbeat/backpressure/lease and immutable activity projection; no caller-controlled tenant/actor fields; 18/18 UI contract tests | Replace remaining route fixtures with live authenticated projections; multi-instance fan-out and staging load/fault acceptance; explicit wallet/role/accessibility/SSE reconnect E2E |
+| Agnes AI advisory Provider | Partial / live adapter smoke locally verified | Opt-in official-endpoint Adapter; deterministic eight-Agent skeleton remains authoritative; Agnes can write bounded narrative only; invalid Evidence short-circuits before network; strict JSON/safe-text/eight-role/output validation; no actions, signer, broadcast or silent Mock fallback; ignored local secret; live synthetic smoke passed | Persist sanitized Provider-call observations/cost metrics, governed organization timeout/model policy, load/rate-limit/circuit acceptance, complete credential rotation and staging E2E |
+
+## Current development order
+
+1. Before every batch, pass `npm run verify:prd`, reread the complete relevant PRD documents and declare exact requirement IDs.
+2. Slice 1 in `docs/next-development-plan.md` is locally verified: preserve it through all later work and retain the deterministic committee as fail-closed fallback.
+3. Preserve the locally verified Slice 2 deterministic Evidence classification/routing and its proof-truth boundary.
+4. Preserve the locally verified Slice 3 immutable `evidence.request.v1` and deterministic Mock Broker.
+5. Preserve locally verified Slice 4 and use official stable Foundry v1.7.1 through `FORGE_BIN` for its passing complete Release Gate.
+6. Implement the full non-asset-moving Evidence Anchor ASC and wallet-explicit source-chain -> Attestcoin -> Creditcoin -> Evidence -> cited Decision demonstration required by the competition and PRD/12.
+7. Complete remaining PRD/09 production adapters/operations and feedback/cockpit/P0/operational acceptance without weakening DAO control.
+8. After every batch, rerun the gate and all proportionate verification, reconcile documentation, and report scoped/whole-PRD completion plus explicit unfinished work. Failed, Mock-only, simplified or skipped checks stay incomplete.
+
+| Advisory Provider reliability | Partial / local verified | New-policy 15-second budget within hard 1–30 second range; immutable tenant-RLS call observations with hashes/versions/duration/outcome only; tenant/provider three-failure circuit; aggregate unlabeled metrics; no prompt/response/credential storage or asset authority | Supersede older five-second policies through governance; token/cost availability, distributed circuit, alert wiring, load/fault/staging acceptance |
+| Complete MVP cockpit routes | Partial / local verified | All ten primary navigation destinations render; Attestcoin/RAG/Skills have dedicated pages; Strategy/Governance/Audit/Settings no longer 404; top tabs use real routes; unknown URL shows cockpit recovery directory; seven shared pages now run visible deterministic pending/running/complete workflows with replay and zero authority | Live authenticated API-backed projections on every page, wallet/role browser E2E, accessibility audit and staging acceptance |
+# 2026-08-13 cockpit localization update
+
+- `LOCAL_VERIFIED / PARTIAL`: the interface defaults to English and the top bar switches between English, Simplified Chinese and Japanese. Global navigation and the homepage market, Attestcoin, PID, RAG, Skills and authority-boundary surfaces are translated; the shared MVP safety frame also follows the selected locale.
+- The preference is a non-sensitive SameSite cookie only. It does not contain or influence `organization_id`, wallet/session data, Provider content, DAO authorization or asset execution.
+- Browser verification passed English/Chinese/Japanese switching, document language updates, refresh persistence and zero console errors. Domain-specific secondary-page narrative localization remains incomplete.
+
+## 2026-08-13 chromatic cockpit update
+
+- `LOCAL_VERIFIED / PARTIAL`: the approved terminal layout now uses semantic cyan, violet, amber, green and red borders/glows for Evidence, knowledge, governance, verified and blocked states respectively.
+- This is a visual-strengthening slice only. It does not alter Evidence truth, classification, tenant isolation, Agent authority, governance state or execution permissions.
+- Browser verification confirms the dashboard has no horizontal overflow and zero console errors. Full responsive screenshot coverage and user acceptance of final visual tuning remain incomplete.
+
+## 2026-08-13 enterprise Demo update
+
+- `LOCAL_VERIFIED / PARTIAL`: enterprise security/workspace status is primary and the wallet is a secondary governance step-up signer. Existing SIWE and tenant security controls are retained.
+- The one-click deterministic Demo runs the complete evidence-to-feedback presentation cycle and produces visible 250ms simulated fluctuation across the chart and Treasury indicators. It is labeled simulated and performs no API write, signature, broadcast or asset action.
+- Real-time production acceptance remains incomplete until organization-scoped live projections, verified source freshness, disconnect/reconnect handling, backpressure and staging load tests exist.
+
+## 2026-08-13 control-impact Demo update
+
+- `LOCAL_VERIFIED / PARTIAL`: the Demo now makes the RAG → AI → PID → DAO Gate causal chain visible and compares uncontrolled versus exposure-controlled Treasury outcomes under the exact same deterministic shock.
+- Displayed benefits are explicitly counterfactual simulation metrics, not historical or realized returns. Operations remain `READ / ADVISE / BOUND / WITHHELD / NO EXECUTION` and never imply price control or AI asset authority.
+- Browser verification confirms RAG citations and operation states advance with the Demo, with zero console errors. Historical-data calibration and live realized-impact reconciliation remain incomplete.
+
+## 2026-08-13 organization-scoped cockpit projection update
+
+- `LOCAL_VERIFIED / PARTIAL`: authenticated read-only snapshot and SSE endpoints now project tenant-RLS Evidence, Decision Job, Treasury Workflow, current Treasury Registry and immutable Audit state. The server session is the only tenant source; no request field/header selects `organization_id`.
+- Stable projection hashes are SSE IDs and `Last-Event-ID` suppresses an unchanged first replay. The Web cockpit auto-reconnects, validates tenant/authority fields, shows stream state and retains the clearly labeled Demo fallback when no organization is active.
+- 70/70 API suites (282/282 tests), 18/18 Web tests, typecheck, API/Web builds, PRD gate, zero-finding 343-file secret scan and browser fallback/Demo inspection pass. The 2026-08-14 reliability continuation below supersedes the earlier heartbeat/backpressure gap; multi-instance fan-out, wallet/role E2E, live adapter freshness and staging load/fault acceptance remain incomplete.
+
+## 2026-08-14 cockpit SSE reliability update
+
+- `LOCAL_VERIFIED / PARTIAL`: the versioned stream policy now provides 15-second zero-authority heartbeat events, one-second reconnect retry, a 55-second connection lease for mandatory SessionGuard revalidation, and overlap-drop polling backpressure with no unbounded query queue.
+- Projection and heartbeat messages are organization-bound and rejected client-side if the selected session organization or `assetExecutionAuthorized=false` invariant differs. Tenant-free Prometheus metrics expose only active and total connections.
+- Verification passes at 71/71 API suites / 285/285 tests, 18/18 Web, workspace typecheck, API/Web builds, PRD gate, 346-file zero-finding secret scan and browser fallback/Demo inspection. Multi-instance fan-out/shared counters, authenticated heartbeat/reconnect browser E2E and staging load/chaos/SLO acceptance remain incomplete.
+
+## 2026-08-14 cockpit SSE admission-control update
+
+- `LOCAL_VERIFIED / PARTIAL`: single-instance admission now caps streams at eight per organization and 64 total by default, with strictly bounded configuration. The ninth same-organization stream receives a generic retryable 503 while another organization remains independently admissible until the global limit.
+- Release is idempotent across unsubscribe/completion/error/lease expiry. Aggregate metrics add accepted, rejected and capacity counts without tenant labels or organization identifiers.
+- Verification passes at 71/71 API suites / 288/288 tests, 18/18 Web, workspace typecheck, API/Web builds, PRD gate and 346-file zero-finding secret scan. Distributed admission/fan-out, actual socket load, authenticated browser capacity E2E and staging chaos/SLO acceptance remain incomplete.
+
+## 2026-08-14 cockpit PostgreSQL shared-admission update
+
+- `LOCAL_VERIFIED / PARTIAL`: migration `042_cockpit_stream_leases.sql` and a transactionally serialized admission service now enforce the configured per-organization and global SSE capacity across multiple API instances sharing PostgreSQL. The 65-second operational lease provides bounded process-crash recovery around the existing 55-second authentication lease.
+- SessionGuard remains the tenant source; the internal cross-instance count never enters an API response. Lease RLS prevents tenant inspection of another organization and rows contain no user/session/signature/credential/domain snapshot content. Database failure and capacity exhaustion fail closed with distinct generic retryable codes; neither grants execution authority.
+- Two-instance PostgreSQL integration proves shared organization/global caps, expiry reclamation, idempotent release/re-admission, cross-tenant hiding and `assetExecutionAuthorized=false`. Verification passes at 72/72 API suites / 291/291 tests, 18/18 Web tests, workspace typecheck, API/Web production builds, the complete tenant-RLS gate, a self-cleaning 42-migration/58-table/53-RLS-table logical restore drill (measured RTO 2.791 seconds; production WAL/PITR still false), the PRD gate and a 349-file zero-finding secret scan. Event fan-out, actual socket/process load, authenticated browser E2E, staging chaos and measured SLO remain incomplete.
+
+## 2026-08-14 cockpit PostgreSQL event fan-out update
+
+- `LOCAL_VERIFIED / PARTIAL`: migration 043 emits one bounded organization/Audit-ID notification after each immutable Audit insert commits. Stream policy v2 routes the wakeup within every listening API instance, validates and filters it by session organization, refreshes the persisted projection and never forwards the internal notification payload to clients.
+- The former one-second per-connection query loop is replaced by an initial query, event wakeups and a 15-second persisted fallback. Heartbeats run independently every 15 seconds without querying; projection hashes, `Last-Event-ID`, overlap-drop backpressure, session revalidation leases, RLS and shared capacity remain enforced.
+- Live PostgreSQL integration proves two listeners receive the same committed organization event, another organization receives zero, malformed notifications are rejected and listener metrics contain no tenant labels. Production Nest startup/readiness, 73/73 API suites / 298/298 tests, 18/18 Web tests, workspace typecheck, API/Web builds, the 43-migration restore drill, PRD gate and 352-file zero-finding secret scan pass. Real socket/process load, listener fault injection, notification storms, authenticated browser E2E, staging chaos and measured SLO remain incomplete.
+
+## 2026-08-14 cockpit fan-out recovery and burst update
+
+- `LOCAL_VERIFIED / PARTIAL`: a release-gated fault harness identifies only its own process-specific PostgreSQL listener, terminates that backend, waits for automatic reconnect and proves two independent listeners both receive the first committed recovery event.
+- A 128-event committed Audit burst must then produce 128 unique zero-authority wakeups at each listener. The latest local observation was 1.084 seconds to reconnect and 41 ms for dual-listener burst delivery. These values are explicitly local observations, not API/staging/production SLOs.
+- Full verification remains 73/73 API suites / 298/298 tests and 18/18 Web tests with workspace typecheck, API/Web builds, PRD gate and a 353-file zero-finding secret scan. Authenticated SSE socket concurrency/load, slow consumers, API process-kill behavior, staging database failover/chaos and formal SLO acceptance remain incomplete.
+
+## 2026-08-14 authenticated cockpit HTTP/SSE E2E update
+
+- `LOCAL_VERIFIED / PARTIAL`: a production Nest HTTP test completes runtime-wallet SIWE, secure HttpOnly session issuance, CSRF/idempotency-protected organization creation, explicit organization selection, authenticated SSE delivery and `Last-Event-ID` reconnect. A forged tenant header is ignored; another organization's committed event is hidden and the session organization's committed immutable event is delivered.
+- Request tenant context now wraps the actual RxJS request subscription before idempotency and domain interceptors, fixing the RLS failure discovered by the real HTTP path. Projection reads are sequential within one tenant transaction, and a regression test rejects concurrent use of one `pg` client.
+- Full verification passes at 74/74 API suites / 300/300 tests, 18/18 Web tests, workspace typecheck, API/Web builds, the authenticated HTTP/SSE gate, complete tenant-RLS gate, PRD gate and a 356-file zero-finding secret scan. Native browser EventSource lease/reconnect, authenticated multi-socket and slow-consumer load, multi-process API kill, staging chaos/failover, durable replay and formal SLO acceptance remain incomplete.
+
+## 2026-08-14 authenticated SSE capacity and bounded-consumer update
+
+- `LOCAL_VERIFIED / PARTIAL`: eight simultaneous SIWE-authenticated streams for one session-selected organization remain active; the ninth is rejected before SSE headers with an actual tenant-free HTTP 503 and stable `COCKPIT_STREAM_CAPACITY_EXHAUSTED` code. Releasing one connection reopens capacity and all database leases return to zero.
+- The manual SSE writer retains at most one coalesced pending message while a socket is blocked. A forced backpressure unit test proves latest-wins behavior; a real 128-event immutable Audit burst reaches the latest persisted event after a bounded consumer pause. Latest local recovery observation: 391 ms, explicitly not a production SLO.
+- Full verification passes at 75/75 API suites / 303/303 tests, 18/18 Web tests, both authenticated SSE gates, workspace typecheck, API/Web builds, tenant-RLS gate, PRD gate and a 358-file zero-finding secret scan. Native browser EventSource lease/reconnect, sustained/global/multi-organization load, OS-level pressure, API process kill and staging chaos/SLO acceptance remain incomplete.
+
+## 2026-08-15 governed adaptive PID update
+
+- `LOCAL_VERIFIED / PARTIAL`: immutable DAO Policy content can now opt into a strictly bounded adaptive envelope. The deterministic engine schedules dynamic gains across normal/volatile/liquidity-stress regimes and forces zero-output HOLD for insufficient Evidence or black-swan inputs; gain steps, derivative, integral and outputs remain bounded and advisory-only.
+- Migration 044 freezes each idempotent tenant-RLS snapshot against active Policy/Evidence hashes and, when Decision-bound, exactly eight role-scoped RAG Manifest hashes. Skill refs are intentionally empty with `governedSkillsApplied=false` pending the governed distillation ledger. Ten-millisecond sample resolution is verified, not end-to-end execution latency.
+- Full verification passes at 76/76 API suites / 310/310 tests, 18/18 Web tests, typecheck, API/Web production builds, adaptive PID and tenant-RLS PostgreSQL gates, 44-migration/59-table/54-RLS-table/59-trigger isolated restore (3.089 seconds), PRD gate and a 362-file zero-finding secret scan. Live observations/outcomes, governed Skill lifecycle, multi-treasury scheduler/load, approved UI prototype, staging chaos and formal latency/SLO acceptance remain incomplete.
+
+## 2026-08-15 governed Skill distillation update
+
+- `LOCAL_VERIFIED / PARTIAL`: migration 045 adds immutable organization-RLS Skill versions, lifecycle events and deterministic backtests. Same-organization current approved Enterprise Memory is mandatory lineage; unsafe input, duplicate lineage, cross-tenant sources and mutation are rejected.
+- Approval requires the fixed synthetic safety suite. The record explicitly denies a historical-performance claim. Policy draft/activation freezes explicit approved references, and adaptive snapshots preserve Skill IDs/content hashes plus the before/after overlay.
+- Skills can only lower absolute PID output or force HOLD. They cannot increase exposure, write Policy, sign, broadcast, vote or execute assets. Append-only retirement blocks future snapshots without altering prior evidence.
+- The complete Release Gate passes at 78/78 API suites / 315/315 tests, 18/18 Web tests, workspace typecheck, API/Web builds, governed-Skill/adaptive-PID PostgreSQL gates, complete 55-table tenant-RLS verification, isolated 45-migration/62-table/57-RLS-table/65-trigger restore (2.913-second bounded local RTO), 23/23 Foundry tests, invariant/gas/security gates and SBOM. Historical/live backtests, realized outcome promotion, multi-treasury adaptive load, frontend prototype, staging chaos and formal SLO acceptance remain incomplete.
+
+## 2026-08-15 Evidence-bound adaptive PID correction
+
+- `LOCAL_VERIFIED / PARTIAL`: the scenario endpoint remains caller-supplied and explicitly simulated. The new Evidence-bound endpoint derives allocation, volatility, liquidity drop, peg deviation and scoped critical-incident state from exact immutable Snapshot refs and inherits history from a previous immutable Evidence-bound PID snapshot.
+- It fails closed on missing/duplicate predicates, hash mismatch, stale/low-quality/conflicting data, wrong Treasury, excess time skew, invalid prior state or unsupported Policy observation settings. A transaction-inclusion fact is not accepted as a substitute metric.
+- Attestcoin provenance requires a completed proof-job relation containing proof/request/receipt hashes. Provider names or source JSON cannot promote truth. Mock facts stay Mock; all inputs deny causal and historical-performance claims.
+- Complete Release Gate passes at 79/79 API suites / 319/319 tests, 18/18 Web tests, full typecheck/build, PostgreSQL derivation/state/immutability/tenant integration, complete RLS, isolated restore, 23/23 Foundry tests, five invariant properties, gas/security gates and SBOM. Live metric sourcing, composite derivation proofs, outcomes, load and UI remain incomplete.
+
+## 2026-08-15 Treasury Outcome descriptive feedback
+
+- `LOCAL_VERIFIED / PARTIAL`: migration 046 and authenticated create/list/detail APIs add immutable, organization-RLS Treasury Outcome assessments over two same-Treasury, same-Policy, Evidence-derived adaptive PID snapshots.
+- An optional Safe correlation is accepted only for an on-chain-confirmed `EXECUTED` observation with complete transaction hash, block number and block hash, matching Proposal/Preflight Policy, and an observation time inside the before/after window. This proves identity and ordering, not causation.
+- Classification is limited to absolute target-error movement (`IMPROVED_DESCRIPTIVE`, `WORSENED_DESCRIPTIVE`, `UNCHANGED_DESCRIPTIVE`). Causal attribution is fixed to `NOT_ESTABLISHED`; transaction cost, counterfactual and net benefit remain unavailable; Memory/Skill promotion and asset execution authority are fixed false.
+- Complete Release Gate passes at 81/81 API suites / 324/324 tests, 18/18 Web tests, workspace typecheck, API/Web production builds, Treasury Outcome PostgreSQL checks, the complete 56-table tenant-RLS gate, 23/23 Foundry tests, five invariant properties, gas/security gates and CycloneDX SBOM. The isolated restore verifies 46 migrations, 63 tables, 58 RLS tables/policies and 67 triggers in a measured local 3.095 seconds; production WAL/PITR remains unverified. This status does not claim AI/PID performance improvement.
+
+## 2026-08-15 Evidence-bound Treasury transaction costs
+
+- `LOCAL_VERIFIED / PARTIAL`: migration 047 and authenticated nested APIs add immutable organization-RLS transaction-cost assessments for an execution-linked Treasury Outcome.
+- Five verified Policy-quality Evidence facts must name the exact Treasury, transaction hash, block number and block hash. Network fee, protocol fee and execution shortfall are integer atomic-unit amounts in one numeraire; shortfall explicitly excludes the first two. Slippage and market-impact bps remain diagnostics and are not added, avoiding double counting.
+- Historical fixed-transaction facts do not fail solely because ordinary freshness elapsed. Rejected, low-quality, conflicting, estimated, mixed-numeraire, unsafe-overlap, wrong-methodology or wrong-execution inputs fail closed. Evidence/content/methodology/provider refs and the result hash are immutable.
+- Complete Release Gate passes at 83/83 API suites / 329/329 tests, 18/18 Web tests, workspace typecheck, API/Web builds, PostgreSQL transaction-cost integration, the 57-table tenant-RLS gate, 23/23 Foundry tests, five invariant properties, gas/security gates and CycloneDX SBOM. The isolated restore verifies 47 migrations, 64 tables, 59 RLS tables/policies and 69 triggers in a measured local 3.315 seconds; production WAL/PITR remains unverified. Counterfactual, net benefit, causal attribution, historical-performance claims, automatic Memory/Skill promotion and asset authority remain unavailable.
+
+## 2026-08-15 governed prospective counterfactual methodology preregistration
+
+- `LOCAL_VERIFIED / PARTIAL`: migration 048 and authenticated create/list/detail/approve/retire APIs add immutable organization-RLS methodology versions and lifecycle events.
+- The only accepted baseline is constant-unit mark-to-market; horizon, external factors, benchmark, opportunity/risk formulas, exact Evidence predicates, observed disjoint costs and missing-data refusal are frozen before eligible execution. AI cannot select or rewrite the baseline.
+- Lifecycle is append-only `DRAFT → HUMAN_APPROVED → RETIRED`; approval is effective only for later executions and only one matching version may be approved until retirement. Human committee approval is not relabeled as an observed on-chain DAO approval.
+- No counterfactual result, net benefit, causality, historical performance, automatic learning or asset authority is produced. Complete Release Gate passes at 85/85 API suites / 334/334 tests, 18/18 Web tests, full typecheck/build, PostgreSQL/RLS, 23/23 Foundry tests, security/SBOM and an isolated 48-migration/66-table/61-RLS-table/73-trigger restore measured locally at 3.422 seconds. Production WAL/PITR remains unverified.
+
+## 2026-08-20 counterfactual assessment continuation
+
+- `LOCAL_VERIFIED / PARTIAL`: migration 049, deterministic engine, authenticated nested API and integration harness implement a fixed-unit/end-price model estimate after observed disjoint costs.
+- The result is explicitly a model output rather than an observed fact. Benchmark return is used; other external factors remain observed diagnostics and are not mislabeled statistically controlled. Causality, historical-performance, automatic learning and asset authority remain false.
+- A PostgreSQL `Date` normalization defect that dropped millisecond precision was fixed and regression-tested. Targeted 6/6 tests and the database lineage/idempotency/immutability/tenant-isolation harness pass.
+- The complete Release Gate passes at 87/87 API suites / 340/340 tests, 18/18 Web tests, full typecheck/build, the 60-table application RLS gate, 23/23 Foundry tests and security/SBOM/contract gates. The isolated logical restore verifies 49 migrations, 67 tables, 62 RLS tables/policies and 75 triggers in a measured local 3.763 seconds. Production backup scheduling, production RTO/RPO and WAL/PITR remain unverified.
+
+## 2026-08-20 multi-treasury adaptive PID scheduling
+
+- `LOCAL_VERIFIED / PARTIAL`: migrations 050–051 add the stateful `EVIDENCE_BOUND_ADAPTIVE_PID` workload and lease heartbeat. The authenticated scheduler derives chain/address only from the current same-tenant Treasury Registry and requires an active Policy.
+- Same-Treasury PID tasks are exclusive because previous snapshot/integral state is ordered; different treasuries and organizations remain concurrently claimable. A bounded filtered Worker restores tenant context, runs the existing Evidence-bound PID service and stores only an immutable advisory result.
+- PostgreSQL verification proves filtered claims, heartbeats, same-Treasury serialization, cross-Treasury/cross-organization concurrency, advisory parallelism, immutable input/events, cross-tenant hiding and an actual queue-to-PID-snapshot completion. AI/PID has no signing, broadcast or asset authority.
+- The current complete Release Gate passes at 88/88 API suites / 343/343 tests, 18/18 Web tests, full typecheck/build, 60 application-RLS tables, 23/23 Foundry tests and security/SBOM/contract gates. The isolated logical restore verifies 51 migrations, 67 tables, 62 RLS tables/policies and 75 triggers in a measured local 4.051 seconds. Sustained multi-process/production load, latency SLOs, production backup scheduling and WAL/PITR remain unverified.
+
+### 2026-08-21 governed Outcome Memory continuation
+
+- A same-organization Outcome plus matching counterfactual assessment can create only a non-causal operating-lesson candidate. Immutable lineage freezes source hashes; candidates remain excluded from RAG until explicit promotion.
+- Creator self-review is rejected. Distinct `REVIEWER` and `TREASURY_COMMITTEE` approvals are mandatory; DAO mode additionally rejects Mock, fixture, reorged, unconfirmed and non-final observations.
+- Explicit ADMIN promotion creates Approved Enterprise Memory while retaining invalidation conditions, non-causal labeling and zero automatic Skill/asset authority. Positive real DAO-finality integration is still externally pending.
+- Complete Release Gate: 89/89 API suites, 348/348 tests, 18/18 Web tests, 21/21 Agent and 5/5 RAG evals, 64 application RLS tables and complete contract/security/SBOM gates. The gate scanned 408 files and the post-documentation scan covered 409; both had zero findings. Restore drill: 52 migrations, 71 tables, 66 RLS tables/policies, 83 triggers, 4.842 local seconds; no production RTO/RPO/WAL/PITR claim.
+
+### 2026-08-21 governed Outcome Memory retirement continuation
+
+- `LOCAL_VERIFIED / PARTIAL`: migration 053 adds an immutable tenant-RLS retirement ledger. PostgreSQL-time expiry is bounded to 100 records per reconciliation; supersession requires a distinct same-organization, same-Treasury replacement that completed the same explicit promotion path and remains Approved.
+- The integration proves the old Memory is excluded from later search and every eligible role in a newly generated eight-Agent Retrieval Manifest, the replacement enters later manifests, and the earlier bundle hash remains unchanged. Expiry is idempotent and neither path mutates a Decision or grants asset authority.
+- Full Release Gate: 89/89 API suites, 350/350 tests, 18/18 Web tests, 21/21 Agent and 5/5 RAG evals, 65 application RLS tables, all database/contract/security/SBOM gates. Restore drill: 53 migrations, 72 tables, 67 RLS tables/policies, 85 triggers, 5.461 local seconds.
+- Still open: automatic interpretation of free-text invalidation conditions is intentionally not implemented; it requires a governed deterministic predicate schema or an explicit human action. Positive live DAO finality, deletion propagation, production load and WAL/PITR remain unverified.
+
+### 2026-08-21 page-level MVP demonstration continuity
+
+- `LOCAL_VERIFIED / PARTIAL`: the seven shared function pages now run their own deterministic six-stage workflow and visibly expose pending, in-progress, complete and replay states.
+- The runner has no network write, signer, broadcast, vote or asset authority. Browser verification on `/attestcoin` reached completion with the DAO gate and execution-withheld message intact and no console errors.
+- Web typecheck, 18/18 contract tests and the 13-route production build pass. This closes the static-page demonstration break, but does not convert fixtures into live organization-scoped API projections.
+- Release-gate diagnosis also fixed deterministic isolation in the multi-Treasury harness: optional internal Worker organization scopes are syntax-validated and bounded, while the integration claims only its freshly created tenant fixtures. Targeted PostgreSQL verification passes every serialization, parallelism, immutability, RLS and zero-authority assertion.
+
+### 2026-08-21 authenticated Attestcoin frontend read model
+
+- `LOCAL_VERIFIED / PARTIAL`: `/attestcoin` now uses the authenticated session client to read Adapter configuration, organization-specific reliability state and organization-specific proof jobs. It never sends a caller-controlled tenant field and exposes no write action.
+- The UI distinguishes Mock from USC configuration, `NO EXTERNAL PROBE` from measured health, and empty/read-error/session/workspace states from real proof activity. Proof, request, receipt and Evidence hashes remain traceable in the job table.
+- Web typecheck, 19/19 tests, 13-route production build and disconnected browser inspection pass. A positive authenticated browser E2E and proof-job detail/action workflows remain incomplete.
+- The clean full Release Gate passes at 89 API suites / 351 tests, 19/19 Web tests, 21/21 Agent and 5/5 RAG evals, all PostgreSQL/contract/security/SBOM checks, and a 53-migration isolated logical restore (72 tables, 67 RLS tables/policies, 85 triggers) measured locally at 8.084 seconds. This remains local verification, not production RTO/RPO or WAL/PITR evidence.
+
+### 2026-08-21 live USC source discovery
+
+- `LOCAL_VERIFIED / EXTERNAL_PENDING`: the authenticated Attestcoin read model now obtains supported sources and latest attestation state from Creditcoin's ChainInfo precompile. USC work refuses a missing configured source and waits when the source block is ahead of the latest attestation. Mock cannot claim the observed list.
+- The current read-only measurement found Ethereum Mainnet (`chainKey=3`) and Sepolia (`chainKey=1`). This is dated operational evidence, not a stable PRD assumption.
+- The default Proof Builder follows the current official SDK documentation. A production-grade Sepolia RPC, actual source transaction, wallet-confirmed BlockProver call and Evidence confirmation remain incomplete.
+- The existing Governor reader is configuration-ready but no AEOS Governor/proposal currently exists, so the positive DAO-finality sample remains genuinely blocked. An EOA or unrelated proposal is not accepted as a substitute.
+- Complete gate: 89 suites / 353 API tests, 19/19 Web tests, all database/contract/security/SBOM checks; restore 53 migrations, 72 tables, 67 RLS tables/policies and 85 triggers in 6.816 local seconds.
+
+### 2026-08-21 EvidenceAnchorASC deployment handoff
+
+- `READY_FOR HUMAN WALLET CONFIRMATION / EXTERNAL_PENDING`: wallet balance, nonce and gas were read from Creditcoin Testnet and an exact unsigned deployment artifact was generated. No private key, signature or broadcast capability is present.
+- Current prediction is `0x5DE85313c5622e3707C3fED8932F51e5991e62C2` at nonce `0`; it must be regenerated if any earlier wallet transaction changes the nonce.
+- The wallet environment could not be controlled through the available browser, so the deployment transaction is not submitted and PRD-12/testnet eligibility remains partial.
+- Typecheck, 13/13 deployment-engine tests, deterministic handoff validation, PRD verification and a 414-file zero-finding secret scan pass.
+
+### Creditcoin Testnet EvidenceAnchorASC deployment verification
+
+- `VERIFIED / LIVE PROOF STILL PENDING`: the user-confirmed zero-value transaction `0xf8efed6e45f8979ee13a995a293fef46d7ae58fb9a1de0dbb1e44e970c594dd2` deployed `0x5DE85313c5622e3707C3fED8932F51e5991e62C2`.
+- The handoff page failed closed until chain `102031`, target wallet, pending nonce `0` and exact init-code hash all matched. MetaMask retained the only signing authority.
+- Read-only verification observed five confirmations and passed chain, deployed-code, native-verifier, source-key, transaction/init-code, zero-value contract-creation, receipt-address and finality checks.
+- This closes the ASC deployment sub-gate only. Real Sepolia calldata, Proof Builder/BlockProver evidence, wallet-confirmed `verifyAndAnchor`, `EvidenceAnchored` event ingestion and cited eight-Agent Decision remain incomplete.
+## 2026-08-22 Sepolia Evidence Source continuation
+
+- `PRD-07/08/12/15–18: PARTIAL / LOCAL_VERIFIED`: added a project-owned, immutable reporter-bound Sepolia observation contract rather than using an unrelated source transaction. Hash-only tenant/Treasury commitments preserve public-chain privacy while the off-chain request remains server-organization scoped.
+- Deterministic unsigned deployment, readback and observation-call preparation are implemented. The contract is nonpayable, cannot call external contracts, cannot execute assets and rejects unauthorized, malformed, future and replayed observations.
+- `PRD-07/08/12/15–18: PARTIAL / SOURCE DEPLOYMENT VERIFIED`: transaction `0xd1f047671a64974d4192b7442b18895c93539b50243dd34dc1501f67f02a8a40` deployed `AEOSTreasuryEvidenceSource` on Sepolia at `0x5DE85313c5622e3707C3fED8932F51e5991e62C2`; ten read-only chain/code/reporter/init-code/receipt/value/finality checks passed. The deployment used a deterministic wallet handoff and retained no key or execution authority.
+- PRD reconciliation remains `PARTIAL`: no source observation call, live USC proof, Creditcoin `verifyAndAnchor` event, immutable Evidence ingestion or eight-Agent cited Decision exists yet.
+- Verification: PRD gate PASS; 90/90 API suites and 361/361 tests; 19/19 Web; 21/21 Agent; 5/5 RAG; 24/24 Foundry plus gas/invariant/surface gates; 428-file secret scan with zero findings; restore 53 migrations/72 tables/67 RLS policies/85 triggers in 7.888 local seconds.

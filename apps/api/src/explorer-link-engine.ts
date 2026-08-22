@@ -1,0 +1,14 @@
+export interface ExplorerConfiguration{chainId:number;blockExplorerUrl:string;version:number;contentHash:string}
+export interface ExplorerLink{kind:"TRANSACTION"|"ADDRESS"|"BLOCK";label:string;value:string;url:string}
+const txKeys=new Set(["transactionHash","sourceTransactionHash","verificationTransactionHash","executionTxHash"]);
+const addressKeys=new Set(["address","walletAddress","requesterWallet","safeAddress","governorAddress","timelockAddress","treasuryAddress","treasuryGuardAddress","guardAddress","target","tokenContract","recipient","from","to"]);
+const blockKeys=new Set(["blockNumber","executionBlockNumber"]);const blockHashKeys=new Set(["blockHash","executionBlockHash"]);
+const txPattern=/^0x[0-9a-fA-F]{64}$/;const addressPattern=/^0x[0-9a-fA-F]{40}$/;const blockHashPattern=/^0x[0-9a-fA-F]{64}$/;const basePattern=/^https:\/\/[a-z0-9.-]+(?::\d+)?(?:\/[^\s<>]*)?$/i;
+const record=(value:unknown):Record<string,unknown>=>value&&typeof value==="object"&&!Array.isArray(value)?value as Record<string,unknown>:{};
+const normalizedChainId=(value:unknown)=>typeof value==="number"&&Number.isSafeInteger(value)&&value>0?value:typeof value==="string"&&/^\d+$/.test(value)&&Number.isSafeInteger(Number(value))?Number(value):null;
+export function projectExplorerLinks(config:ExplorerConfiguration|null,event:{data:unknown}):ExplorerLink[]{
+  if(!config||!basePattern.test(config.blockExplorerUrl)||normalizedChainId(record(event.data).chainId)!==config.chainId)return[];const base=config.blockExplorerUrl.replace(/\/$/,"");const links:ExplorerLink[]=[];const seen=new Set<string>();let visited=0;
+  const add=(kind:ExplorerLink["kind"],label:string,value:string,path:string)=>{const normalized=kind==="BLOCK"&&/^\d+$/.test(value)?value:value.toLowerCase();const key=`${kind}:${normalized}`;if(seen.has(key))return;seen.add(key);const segment=kind==="TRANSACTION"?"tx":kind==="ADDRESS"?"address":"block";links.push({kind,label:path?`${path}.${label}`:label,value:normalized,url:`${base}/${segment}/${normalized}`})};
+  const walk=(value:unknown,path:string,depth:number)=>{if(depth>5||visited++>200||!value||typeof value!=="object")return;if(Array.isArray(value)){value.slice(0,100).forEach((item,index)=>walk(item,`${path}[${index}]`,depth+1));return}for(const [key,item]of Object.entries(value as Record<string,unknown>)){const itemPath=path?`${path}.${key}`:key;if(txKeys.has(key)&&typeof item==="string"&&txPattern.test(item))add("TRANSACTION",key,item,path);else if(addressKeys.has(key)&&typeof item==="string"&&addressPattern.test(item))add("ADDRESS",key,item,path);else if(blockKeys.has(key)&&(typeof item==="number"||typeof item==="string")&&/^\d+$/.test(String(item))&&Number.isSafeInteger(Number(item)))add("BLOCK",key,String(item),path);else if(blockHashKeys.has(key)&&typeof item==="string"&&blockHashPattern.test(item))add("BLOCK",key,item,path);walk(item,itemPath,depth+1)}};
+  walk(event.data,"data",0);return links;
+}
