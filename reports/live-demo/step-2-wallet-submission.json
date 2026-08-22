@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "aeos.live-attestcoin-step.v1",
+  "step": 2,
+  "status": "WALLET_SUBMITTED",
+  "recordedAt": "2026-08-22T12:25:33.569Z",
+  "chainId": 11155111,
+  "from": "0x444D510728FB8072351cB5d0E88432e6a8501DFA",
+  "to": "0x5de85313c5622e3707c3fed8932f51e5991e62c2",
+  "transactionHash": "0xf035fdf437b434629087abf81bdf4100997c45e95f97ce8b945985f33291abab",
+  "requestHash": "0x6bc4cb993025f5437b3a70f78a0a229bc8737e491ba06cbc289def790f46726e",
+  "observationId": "0x379805918fce18b207d6491ae946f5cfd19f3de8ff979c350c092c5418a559a2",
+  "evidencePayloadHash": "0x8466343861795808d4513ca549a3fdc3c1cd462d24b58203251801698276a11f",
+  "dataHash": "0x4d7d49e375c53d3ccb469f6cf1d251df70436d84d7a79d09cf3e689be41a6b1b",
+  "walletConfirmed": true,
+  "receiptVerified": false,
+  "eventVerified": false,
+  "privateKeyReceived": false,
+  "assetExecutionAuthorized": false
+}
