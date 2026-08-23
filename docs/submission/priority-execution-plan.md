@@ -16,7 +16,7 @@ Development disclosure: AEOS is AI-assisted. AI coding agents support requiremen
 
 The competition proof-to-anchor sample is complete. The product P0 is not complete: next is the smallest real DAO Proposal → vote/quorum → queue → Timelock → Guard/Policy outcome, followed by immutable Outcome Evidence. An Evidence anchor is not a treasury asset action.
 
-Current P0-1 checkpoint: the deployed governance stack is accepted for its bounded deployment/role-wiring slice. A deterministic unsigned `SECURITY_HOLD` proposal generator is locally verified, but it deliberately refuses to run until the real `HOLD` Decision receives an append-only human approval. After approval it will re-read the deployed contracts at one safe block, simulate zero-value `TreasuryGuard.setPaused(true)` from Timelock, and freeze exact `Governor.propose` calldata. This maintains the existing pause and moves no treasury asset. Proposal submission, vote/quorum, queue, elapsed Timelock, execution and Outcome Evidence remain incomplete.
+Current P0-1 checkpoint: the deployed governance stack is accepted for its bounded deployment/role-wiring slice. The human owner approved the real `HOLD` Decision through the authenticated tenant UI. Review-hash verification, same-block contract readback and Timelock-originated zero-value `TreasuryGuard.setPaused(true)` simulation passed, freezing exact unsigned `Governor.propose` calldata. The localhost wallet page is ready but has not submitted it. This maintains the existing pause and moves no treasury asset. Proposal receipt/event verification, vote/quorum, queue, elapsed Timelock, execution and Outcome Evidence remain incomplete.
 
 ## P1 — award evidence
 
