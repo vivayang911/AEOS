@@ -84,11 +84,12 @@ export class AttestcoinService {
 
   async prepareEvidenceAnchor(org:string,jobId:string,decisionId:string){
     const job=await this.requireJob(org,jobId);
-    if(!job.proof_snapshot)throw new BadRequestException("Proof must be ready before preparing an Evidence Anchor");
+    if(job.status!=="VERIFIED"||!job.proof_snapshot||!job.verification_receipt||!job.evidence_id)throw new BadRequestException("A verified Proof Job with immutable Evidence is required before preparing an Evidence Anchor");
     const ascAddress=process.env.EVIDENCE_ANCHOR_ASC_ADDRESS;
     if(!ascAddress)throw new ServiceUnavailableException({message:"Evidence Anchor ASC is not configured",code:"EVIDENCE_ANCHOR_ASC_NOT_CONFIGURED"});
-    const decision=await this.db.query("SELECT d.id,d.output_hash,d.evidence_snapshot_id,s.manifest_hash FROM decisions d JOIN evidence_snapshots s ON s.id=d.evidence_snapshot_id AND s.organization_id=d.organization_id WHERE d.organization_id=$1 AND d.id=$2",[org,decisionId]);
+    const decision=await this.db.query("SELECT d.id,d.output_hash,d.evidence_snapshot_id,s.manifest_hash,s.manifest,e.content_hash AS proof_evidence_content_hash FROM decisions d JOIN evidence_snapshots s ON s.id=d.evidence_snapshot_id AND s.organization_id=d.organization_id JOIN evidence e ON e.organization_id=d.organization_id AND e.id=$3 WHERE d.organization_id=$1 AND d.id=$2",[org,decisionId,job.evidence_id]);
     if(!decision.rowCount)throw new NotFoundException("Decision not found");
+    const snapshotManifest=decision.rows[0].manifest;if(!Array.isArray(snapshotManifest)||!snapshotManifest.some((item:any)=>item?.evidenceId===job.evidence_id&&item?.contentHash===decision.rows[0].proof_evidence_content_hash))throw new BadRequestException("Evidence Anchor Proof Job Evidence is not frozen in the Decision snapshot");
     let manifest;
     try{manifest=buildEvidenceAnchorManifest({ascAddress,requester:job.requester_wallet,decisionId:decision.rows[0].id,decisionOutputHash:decision.rows[0].output_hash,evidenceSnapshotId:decision.rows[0].evidence_snapshot_id,evidenceSnapshotHash:decision.rows[0].manifest_hash,proof:job.proof_snapshot as UscProofSnapshot})}
     catch(error){throw new BadRequestException(error instanceof Error?error.message:"INVALID_EVIDENCE_ANCHOR_HANDOFF")}

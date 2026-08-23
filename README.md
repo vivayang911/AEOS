@@ -272,6 +272,14 @@ Treasury Outcome feedback can now enter Enterprise Memory only through a dedicat
 
 The candidate, reviews, events and promotion link are append-only, tenant-RLS isolated and audited. Candidate content is scanned for secrets/prompt injection, includes explicit invalidation conditions and ACL roles, and cannot claim historical performance or causality. It cannot self-promote, create a Skill, vote, sign, broadcast or authorize asset execution. Local PostgreSQL verifies dual-role separation, pre-promotion RAG exclusion, explicit promotion/retrieval, immutability, cross-tenant hiding and rejection of a fake DAO-finality fixture. A positive DAO-finality integration remains unverified until a real non-Mock finalized governance observation exists.
 
+### Live Attestcoin flow: Step 9 anchor request
+
+The accepted live sample has completed Steps 1–9 of the 11-step flow. `npm run prepare:live-evidence-anchor-request` resolves the active organization exclusively from the server-side SIWE session, requires the verified USC Proof Job Evidence to be an exact member of the immutable Decision Snapshot, and creates an immutable `EvidenceAnchorASC.verifyAndAnchor` handoff. The public redacted result is [`reports/live-demo/step-9-evidence-anchor-request.json`](reports/live-demo/step-9-evidence-anchor-request.json).
+
+The request targets Creditcoin Testnet chain `102031` and the read-back-verified ASC at `0x5DE85313c5622e3707C3fED8932F51e5991e62C2`. It has zero native value and is unsigned and unsubmitted. AEOS has no private key, signer custody, broadcast capability or asset-execution authority. Step 10 still requires explicit confirmation in the user's wallet; Step 11 must independently verify the canonical receipt and `EvidenceAnchored` event before the live round trip is accepted.
+
+Truth boundary: the deployed ASC calldata anchors the hashed Decision ID, immutable Snapshot manifest hash and USC source-transaction proof coordinates. The immutable off-chain Decision record maps that Decision ID to its output hash, but the current deployed contract does not place the Decision output hash directly in calldata. The live proof establishes source-transaction inclusion, not the economic truth of the reported payload or investment performance.
+
 The complete local Release Gate now passes at 89/89 API suites (348/348 tests), 18/18 Web tests, 21/21 Agent evals, 5/5 RAG evals, full production builds, 64 application tenant-RLS tables, contract/invariant/gas/security gates and SBOM generation. Its secret scan covered 408 files; the required post-documentation rescan covered 409 files, both with zero findings. The isolated restore verifies 52 migrations, 71 tables, 66 RLS tables/policies and 83 triggers in 4.842 local seconds. This is a local consistent logical-snapshot observation, not production RTO/RPO, backup scheduling or WAL/PITR evidence.
 
 ### Governed Outcome Memory retirement

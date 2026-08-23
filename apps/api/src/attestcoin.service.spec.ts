@@ -43,4 +43,16 @@ describe("AttestcoinService tenant and state guardrails", () => {
     expect(client.query.mock.calls.some(([sql]: [string]) => sql.includes("evidence_quarantine"))).toBe(true);
     expect(client.query.mock.calls.some(([sql]: [string]) => sql.includes("status='REJECTED'"))).toBe(true);
   });
+
+  it("refuses to anchor a Decision snapshot that does not contain the Proof Job Evidence",async()=>{
+    const prior=process.env.EVIDENCE_ANCHOR_ASC_ADDRESS;process.env.EVIDENCE_ANCHOR_ASC_ADDRESS="0x1111111111111111111111111111111111111111";
+    const job={id:"job_1",organization_id:"org_a",status:"VERIFIED",requester_wallet:"0x2222222222222222222222222222222222222222",proof_snapshot:{chainKey:1,headerNumber:123,txBytes:"0x1234",merkleProof:{root:`0x${"11".repeat(32)}`,siblings:[]},continuityProof:{lowerEndpointDigest:`0x${"22".repeat(32)}`,roots:[]}},verification_receipt:{status:1},evidence_id:"ev_proof"};
+    const db={query:jest.fn().mockResolvedValueOnce({rowCount:1,rows:[job]}).mockResolvedValueOnce({rowCount:1,rows:[{id:"decision_1",output_hash:`0x${"33".repeat(32)}`,evidence_snapshot_id:"snap_1",manifest_hash:`0x${"44".repeat(32)}`,manifest:[{evidenceId:"ev_other",contentHash:`0x${"55".repeat(32)}`}],proof_evidence_content_hash:`0x${"66".repeat(32)}`}]})}as any;
+    try{await expect(new AttestcoinService(db,adapter,reliability,anchorReceipt).prepareEvidenceAnchor("org_a","job_1","decision_1")).rejects.toThrow("not frozen in the Decision snapshot")}finally{if(prior===undefined)delete process.env.EVIDENCE_ANCHOR_ASC_ADDRESS;else process.env.EVIDENCE_ANCHOR_ASC_ADDRESS=prior}
+  });
+
+  it("refuses an unverified Proof Job even when proof bytes exist",async()=>{
+    const db={query:jest.fn().mockResolvedValue({rowCount:1,rows:[{id:"job_1",organization_id:"org_a",status:"PROOF_READY",proof_snapshot:{chainKey:1},verification_receipt:null,evidence_id:null}]})}as any;
+    await expect(new AttestcoinService(db,adapter,reliability,anchorReceipt).prepareEvidenceAnchor("org_a","job_1","decision_1")).rejects.toThrow("verified Proof Job")
+  });
 });
