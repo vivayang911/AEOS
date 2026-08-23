@@ -1,0 +1,198 @@
+{
+  "schemaVersion": "aeos.live-attestcoin-step.v1",
+  "step": 8,
+  "status": "DECISION_FROZEN",
+  "recordedAt": "2026-08-23T05:19:17.600Z",
+  "tenantBinding": "SERVER_RESOLVED_ACTIVE_SESSION",
+  "rawTenantIdentifiersDisclosed": false,
+  "evidence": {
+    "id": "ev_aa0b5dbc6fdf431aa6d9f20789c160bf",
+    "contentHash": "0x4d6b95382a02bf702ab695489567b66491e9c281aba7fe9b1ae7bbf4d6522a2b",
+    "classificationHash": "0xd7f75be0afb9107be2cda344cfb487efe4f787f33f1db7e87c6f9e8bcdb5844e"
+  },
+  "evidenceSnapshot": {
+    "id": "snap_5f3081a8dffc4e0b9f281e0095dc231f",
+    "manifestHash": "0x9629ec777f328a57ba6553a78763b13963cb8529b119bffac7a6a1441b36ec9d",
+    "evidenceCount": 1
+  },
+  "rag": {
+    "bundleHash": "0x4191d8ed8856f52d54ea91018cf461b0b1336c0d4db3272a4f7694a5339a11c5",
+    "manifests": [
+      {
+        "role": "Governor",
+        "id": "rmanifest_99a27926e55845b1bc9313e2bb5a47b1",
+        "manifestHash": "0xca3d22f40ec38e7f7283039f5101a3daac70aed4403ba3e45fb6355ec9ed2a36",
+        "queryHash": "0x54e71a66603513fa1e0f2632cd2773c687d46d9bbb1fb742b316e10dc2999c8c",
+        "status": "INSUFFICIENT_CONTEXT",
+        "reasonCode": "NO_SUPPORTED_CONTEXT",
+        "hasConflicts": false,
+        "embeddingModel": "deterministic-hash-embedding-v1-mock-only",
+        "rerankerVersion": "hybrid-trust-freshness-v1",
+        "itemCount": 0,
+        "evidenceSnapshotBinding": {
+          "snapshotId": "snap_5f3081a8dffc4e0b9f281e0095dc231f",
+          "manifestHash": "0x9629ec777f328a57ba6553a78763b13963cb8529b119bffac7a6a1441b36ec9d",
+          "evidenceId": "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+        }
+      },
+      {
+        "role": "Research",
+        "id": "rmanifest_67f1f303d466454a9b948d7459f39331",
+        "manifestHash": "0x7d0dfe5ed11064ff73618bdaee1b10ff62eb7d3ed4b382d0a5e3002239a50a74",
+        "queryHash": "0x54e71a66603513fa1e0f2632cd2773c687d46d9bbb1fb742b316e10dc2999c8c",
+        "status": "INSUFFICIENT_CONTEXT",
+        "reasonCode": "NO_SUPPORTED_CONTEXT",
+        "hasConflicts": false,
+        "embeddingModel": "deterministic-hash-embedding-v1-mock-only",
+        "rerankerVersion": "hybrid-trust-freshness-v1",
+        "itemCount": 0,
+        "evidenceSnapshotBinding": {
+          "snapshotId": "snap_5f3081a8dffc4e0b9f281e0095dc231f",
+          "manifestHash": "0x9629ec777f328a57ba6553a78763b13963cb8529b119bffac7a6a1441b36ec9d",
+          "evidenceId": "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+        }
+      },
+      {
+        "role": "Strategy",
+        "id": "rmanifest_7abae9b5111f447a856d65656a44f116",
+        "manifestHash": "0xbd7fea31296faf4cea4b473fe0d16206228e7219913eee612ee3b3998ca34668",
+        "queryHash": "0x54e71a66603513fa1e0f2632cd2773c687d46d9bbb1fb742b316e10dc2999c8c",
+        "status": "INSUFFICIENT_CONTEXT",
+        "reasonCode": "NO_SUPPORTED_CONTEXT",
+        "hasConflicts": false,
+        "embeddingModel": "deterministic-hash-embedding-v1-mock-only",
+        "rerankerVersion": "hybrid-trust-freshness-v1",
+        "itemCount": 0,
+        "evidenceSnapshotBinding": {
+          "snapshotId": "snap_5f3081a8dffc4e0b9f281e0095dc231f",
+          "manifestHash": "0x9629ec777f328a57ba6553a78763b13963cb8529b119bffac7a6a1441b36ec9d",
+          "evidenceId": "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+        }
+      },
+      {
+        "role": "Quant",
+        "id": "rmanifest_f1d4dfb5fd1c440bbb94d1817c22ba20",
+        "manifestHash": "0x98a73b4dddba4404e04da17ffe546f278f74b5fad507fae002880cb8b5d182a2",
+        "queryHash": "0x54e71a66603513fa1e0f2632cd2773c687d46d9bbb1fb742b316e10dc2999c8c",
+        "status": "INSUFFICIENT_CONTEXT",
+        "reasonCode": "NO_SUPPORTED_CONTEXT",
+        "hasConflicts": false,
+        "embeddingModel": "deterministic-hash-embedding-v1-mock-only",
+        "rerankerVersion": "hybrid-trust-freshness-v1",
+        "itemCount": 0,
+        "evidenceSnapshotBinding": {
+          "snapshotId": "snap_5f3081a8dffc4e0b9f281e0095dc231f",
+          "manifestHash": "0x9629ec777f328a57ba6553a78763b13963cb8529b119bffac7a6a1441b36ec9d",
+          "evidenceId": "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+        }
+      },
+      {
+        "role": "Risk",
+        "id": "rmanifest_13c96c1449084d728292327bc4b152d3",
+        "manifestHash": "0x554797f33a722758fdfe5beb9453bb1221d784408406ffbde8a3a17aac3a320d",
+        "queryHash": "0x54e71a66603513fa1e0f2632cd2773c687d46d9bbb1fb742b316e10dc2999c8c",
+        "status": "INSUFFICIENT_CONTEXT",
+        "reasonCode": "NO_SUPPORTED_CONTEXT",
+        "hasConflicts": false,
+        "embeddingModel": "deterministic-hash-embedding-v1-mock-only",
+        "rerankerVersion": "hybrid-trust-freshness-v1",
+        "itemCount": 0,
+        "evidenceSnapshotBinding": {
+          "snapshotId": "snap_5f3081a8dffc4e0b9f281e0095dc231f",
+          "manifestHash": "0x9629ec777f328a57ba6553a78763b13963cb8529b119bffac7a6a1441b36ec9d",
+          "evidenceId": "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+        }
+      },
+      {
+        "role": "Compliance",
+        "id": "rmanifest_9a36ee2c6bdc4a4abb5c1bc7f01e29c0",
+        "manifestHash": "0xc4ee561005deae1e345aa1feafeffb3e40f587393dca0a82a3a3c0f08260ad88",
+        "queryHash": "0x54e71a66603513fa1e0f2632cd2773c687d46d9bbb1fb742b316e10dc2999c8c",
+        "status": "INSUFFICIENT_CONTEXT",
+        "reasonCode": "NO_SUPPORTED_CONTEXT",
+        "hasConflicts": false,
+        "embeddingModel": "deterministic-hash-embedding-v1-mock-only",
+        "rerankerVersion": "hybrid-trust-freshness-v1",
+        "itemCount": 0,
+        "evidenceSnapshotBinding": {
+          "snapshotId": "snap_5f3081a8dffc4e0b9f281e0095dc231f",
+          "manifestHash": "0x9629ec777f328a57ba6553a78763b13963cb8529b119bffac7a6a1441b36ec9d",
+          "evidenceId": "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+        }
+      },
+      {
+        "role": "Portfolio",
+        "id": "rmanifest_e7f680c45be04ee7a17270bd6d966144",
+        "manifestHash": "0x541ff24542814135f5e0be5f1c8b9735546cf8053a114a2eb34f418804b3afe0",
+        "queryHash": "0x54e71a66603513fa1e0f2632cd2773c687d46d9bbb1fb742b316e10dc2999c8c",
+        "status": "INSUFFICIENT_CONTEXT",
+        "reasonCode": "NO_SUPPORTED_CONTEXT",
+        "hasConflicts": false,
+        "embeddingModel": "deterministic-hash-embedding-v1-mock-only",
+        "rerankerVersion": "hybrid-trust-freshness-v1",
+        "itemCount": 0,
+        "evidenceSnapshotBinding": {
+          "snapshotId": "snap_5f3081a8dffc4e0b9f281e0095dc231f",
+          "manifestHash": "0x9629ec777f328a57ba6553a78763b13963cb8529b119bffac7a6a1441b36ec9d",
+          "evidenceId": "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+        }
+      },
+      {
+        "role": "Treasury",
+        "id": "rmanifest_07fb28f2dedf4a9583c143b2ee364d2c",
+        "manifestHash": "0xad3c3938d9d324e9b18e8106ed2ab0a74dc24d129d412ca71614151f2f8b367c",
+        "queryHash": "0x54e71a66603513fa1e0f2632cd2773c687d46d9bbb1fb742b316e10dc2999c8c",
+        "status": "INSUFFICIENT_CONTEXT",
+        "reasonCode": "NO_SUPPORTED_CONTEXT",
+        "hasConflicts": false,
+        "embeddingModel": "deterministic-hash-embedding-v1-mock-only",
+        "rerankerVersion": "hybrid-trust-freshness-v1",
+        "itemCount": 0,
+        "evidenceSnapshotBinding": {
+          "snapshotId": "snap_5f3081a8dffc4e0b9f281e0095dc231f",
+          "manifestHash": "0x9629ec777f328a57ba6553a78763b13963cb8529b119bffac7a6a1441b36ec9d",
+          "evidenceId": "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+        }
+      }
+    ]
+  },
+  "decision": {
+    "jobId": "job_7a1c187e6f224b5b8099656f8a481755",
+    "id": "decision_a9a37c5bd3ff43c68f5b0af32a13b8ed",
+    "status": "REVIEW_REQUIRED",
+    "provider": "mock-deterministic",
+    "modelVersion": "mock-deterministic-v4-eight-agent",
+    "inputHash": "0x24e9e9ce13081e1b089f00ef6d6a049881643d8b24cabeaf634903cad9b1ce5e",
+    "outputHash": "0xa31891476cbc99b21899f079035b53b0caff2addd4df0178b10460d38242f132",
+    "recommendation": "HOLD",
+    "citationCoverage": {
+      "coverage": 1,
+      "totalClaims": 1,
+      "materialClaims": 1,
+      "citedMaterialClaims": 1
+    },
+    "challenges": {
+      "risk": 1,
+      "compliance": 1
+    },
+    "agentRuns": 8,
+    "a2aMessages": 13,
+    "humanApprovalRequired": true
+  },
+  "truthBoundary": {
+    "verifiedClaim": "SOURCE_TRANSACTION_INCLUSION",
+    "marketStateVerified": false,
+    "economicTruthVerified": false,
+    "ragContextAvailable": false
+  },
+  "controls": {
+    "exactEightAgentRoster": true,
+    "independentRiskChallenge": true,
+    "independentComplianceChallenge": true,
+    "immutableLineageValidated": true,
+    "signerCustody": false,
+    "broadcastCapability": false,
+    "assetExecutionAuthorized": false
+  },
+  "artifactHash": "0x4d877821a23bbdf506922f25830102ba839a6f202a743a3dba15c19d8665a3b5"
+}

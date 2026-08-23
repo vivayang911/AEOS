@@ -22,6 +22,8 @@ describe("DecisionService",()=>{
     expect(result.recommendation.orchestration.budget.agentRunsUsed).toBe(8);
     expect(result.recommendation.challenges.map((challenge:any)=>challenge.raisedBy)).toEqual(expect.arrayContaining(["Risk","Compliance"]));
     expect(result.recommendation.agentMessages).toEqual(expect.arrayContaining([expect.objectContaining({code:"OPPORTUNITY_DISCOVERY"}),expect.objectContaining({code:"TREASURY_CHECKLIST"})]));
+    const manifestInsert=client.query.mock.calls.find(([sql])=>String(sql).startsWith("INSERT INTO decision_retrieval_manifests"));
+    expect(manifestInsert).toBeDefined();expect(typeof manifestInsert![1][12]).toBe("string");expect(JSON.parse(manifestInsert![1][12])).toEqual([]);
   });
 
   it("reliably refuses stale evidence and preserves unresolved dissent",async()=>{

@@ -1,0 +1,15 @@
+import { buildLiveEightAgentDecisionArtifact } from "./live-eight-agent-decision";
+import { decisionRoles } from "./decision-engine";
+
+const evidence={id:"ev_live",contentHash:`0x${"1".repeat(64)}`,classificationHash:`0x${"2".repeat(64)}`};
+const snapshot={id:"snap_live",manifestHash:`0x${"3".repeat(64)}`,manifest:[{evidenceId:evidence.id,contentHash:evidence.contentHash}]};
+const manifests=decisionRoles.map((role,index)=>({id:`rm_${index}`,role,manifest_hash:`0x${String(index+1).repeat(64).slice(0,64)}`,query_hash:`0x${"4".repeat(64)}`,status:"INSUFFICIENT_CONTEXT",reason_code:"NO_RESULTS",has_conflicts:false,embedding_model:"deterministic-hash-embedding-v1-mock-only",reranker_version:"hybrid-trust-freshness-v1",items:[]}));
+const positions=decisionRoles.map((role,index)=>({role,citations:[evidence.id],retrievalManifestHash:manifests[index].manifest_hash,retrievalStatus:manifests[index].status,assetExecutionAuthorized:false}));
+const base={recordedAt:"2026-08-23T00:00:00.000Z",evidence,snapshot,job:{jobId:"job_live",status:"COMPLETED",decisionId:"decision_live"},decision:{id:"decision_live",status:"REVIEW_REQUIRED",provider:"mock-deterministic",evidenceSnapshotId:snapshot.id,evidenceManifestHash:snapshot.manifestHash,retrievalBundleHash:`0x${"5".repeat(64)}`,retrievalManifests:manifests,agentRuns:decisionRoles.map(role=>({role,run_state:"SUCCEEDED",model_version:"mock-deterministic-v4-eight-agent"})),agentMessages:[{evidence_ids:[evidence.id]}],inputHash:`0x${"6".repeat(64)}`,outputHash:`0x${"7".repeat(64)}`,recommendation:{schemaVersion:"decision.recommendation.v3",recommendation:"HOLD",actions:[],assetExecutionAuthorized:false,humanApprovalRequired:true,citationCoverage:{coverage:1},agentPositions:positions,challenges:[{raisedBy:"Risk"},{raisedBy:"Compliance"}]}}};
+
+describe("live Step 8 artifact",()=>{
+  it("freezes the exact Evidence, eight manifests, eight runs and zero authority",()=>{const result=buildLiveEightAgentDecisionArtifact(base);expect(result).toMatchObject({step:8,status:"DECISION_FROZEN",rawTenantIdentifiersDisclosed:false,controls:{exactEightAgentRoster:true,assetExecutionAuthorized:false},truthBoundary:{marketStateVerified:false,ragContextAvailable:false}});expect(result.rag.manifests).toHaveLength(8)});
+  it("rejects a missing independent Compliance challenge",()=>{const input=structuredClone(base);input.decision.recommendation.challenges=[{raisedBy:"Risk"}];expect(()=>buildLiveEightAgentDecisionArtifact(input)).toThrow("LIVE_STEP_8_INDEPENDENT_CHALLENGES_REQUIRED")});
+  it("rejects a forged or missing Evidence citation",()=>{const input=structuredClone(base);input.decision.recommendation.agentPositions[0].citations=["ev_forged"];expect(()=>buildLiveEightAgentDecisionArtifact(input)).toThrow("LIVE_STEP_8_AGENT_CITATION_INVALID")});
+  it("rejects a PostgreSQL JSON object where a frozen RAG item array is required",()=>{const input=structuredClone(base);(input.decision.retrievalManifests[0] as any).items={};expect(()=>buildLiveEightAgentDecisionArtifact(input as any)).toThrow("LIVE_STEP_8_RAG_ITEMS_SHAPE_INVALID")});
+});

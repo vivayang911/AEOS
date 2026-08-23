@@ -45,7 +45,7 @@ export function citationCoverage(claims:DecisionClaim[]){
   return {totalClaims:claims.length,materialClaims:material.length,citedMaterialClaims:cited.length,coverage:material.length?cited.length/material.length:1};
 }
 
-const rolePosition=(role:DecisionRole,recommendation:"HOLD"|"INSUFFICIENT_EVIDENCE",citations:string[],knowledgeCitations:string[]=[])=>{
+const rolePosition=(role:DecisionRole,recommendation:"HOLD"|"INSUFFICIENT_EVIDENCE",citations:string[],retrievalManifest?:{manifestHash:string;status:string;items:ReadonlyArray<{citation:string}>})=>{
   const positions:Record<DecisionRole,string>={
     Governor:recommendation==="HOLD"?"Committee evidence, challenges, and handoffs are complete; route HOLD to human review.":"Committee guardrails require refusal; unresolved challenges remain visible.",
     Research:recommendation==="HOLD"?"Verified Evidence was reviewed and no supported asset-changing opportunity was established.":"Available Evidence cannot support a reliable research conclusion.",
@@ -56,7 +56,8 @@ const rolePosition=(role:DecisionRole,recommendation:"HOLD"|"INSUFFICIENT_EVIDEN
     Portfolio:recommendation==="HOLD"?"Portfolio retains the current allocation and proposes no executable action.":"Portfolio refuses to form an allocation recommendation.",
     Treasury:recommendation==="HOLD"?"Treasury checklist contains no transaction draft and awaits human governance review.":"Treasury produces no action draft while committee blockers remain."
   };
-  return {role,responsibility:role,position:positions[role],confidence:recommendation==="HOLD"?0.8:0,citations,...(knowledgeCitations.length?{knowledgeCitations:[...knowledgeCitations]}:{}),toolPermissions:[...roleToolPermissions[role]],runState:"SUCCEEDED",attempts:1,assetExecutionAuthorized:false};
+  const knowledgeCitations=retrievalManifest?.items.map(item=>item.citation)??[];
+  return {role,responsibility:role,position:positions[role],confidence:recommendation==="HOLD"?0.8:0,citations,...(retrievalManifest?{retrievalManifestHash:retrievalManifest.manifestHash,retrievalStatus:retrievalManifest.status}:{}),...(knowledgeCitations.length?{knowledgeCitations:[...knowledgeCitations]}:{}),toolPermissions:[...roleToolPermissions[role]],runState:"SUCCEEDED",attempts:1,assetExecutionAuthorized:false};
 };
 
 function buildAgentMessages(citations:string[],challenges:DecisionChallenge[],recommendation:"HOLD"|"INSUFFICIENT_EVIDENCE"){
@@ -78,7 +79,7 @@ function buildAgentMessages(citations:string[],challenges:DecisionChallenge[],re
   return messages;
 }
 
-export function buildDecisionOutput(input:{objective:string;evidence:DecisionEvidence[];policy:DecisionPolicy;budget?:DecisionBudget;retrievalManifests?:ReadonlyArray<{role:DecisionRole;items:ReadonlyArray<{citation:string}>}>}){
+export function buildDecisionOutput(input:{objective:string;evidence:DecisionEvidence[];policy:DecisionPolicy;budget?:DecisionBudget;retrievalManifests?:ReadonlyArray<{role:DecisionRole;manifestHash:string;status:string;items:ReadonlyArray<{citation:string}>}>}){
   const budget={...minimumEightAgentBudget,...input.budget};
   if(!Number.isInteger(budget.maxAgentRuns)||budget.maxAgentRuns<decisionRoles.length)throw new DecisionOutputValidationError("Eight-Agent run budget is insufficient");
   const minimumToolCalls=Object.values(roleToolCallUsage).reduce((sum,value)=>sum+value,0);
@@ -102,16 +103,16 @@ export function buildDecisionOutput(input:{objective:string;evidence:DecisionEvi
       {round:2,raisedBy:"Risk",targetRole:"Strategy",code:"RISK_NO_ACTION_CONFIRMED",challenge:"Does the candidate create an unsupported risk exposure?",response:"No asset-changing candidate is proposed; HOLD remains advisory.",status:"RESOLVED"},
       {round:2,raisedBy:"Compliance",targetRole:"Strategy",code:"COMPLIANCE_NO_ACTION_CONFIRMED",challenge:"Does the candidate violate policy or governance constraints?",response:"No transaction or policy change is proposed; human review remains required.",status:"RESOLVED"}
     ];
-  const knowledgeByRole=new Map((input.retrievalManifests??[]).map(manifest=>[manifest.role,manifest.items.map(item=>item.citation)]));
-  const positions=decisionRoles.map(role=>rolePosition(role,recommendation,citations,knowledgeByRole.get(role)??[]));
+  const retrievalByRole=new Map((input.retrievalManifests??[]).map(manifest=>[manifest.role,manifest]));
+  const positions=decisionRoles.map(role=>rolePosition(role,recommendation,citations,retrievalByRole.get(role)));
   const agentMessages=buildAgentMessages(citations,challenges,recommendation);
   const orchestration={state:"COMPLETED",roundsCompleted:3,retriesUsed:0,timeouts:0,budget:{...budget,agentRunsUsed:decisionRoles.length,toolCallsUsed:minimumToolCalls}};
   const output={schemaVersion:"decision.recommendation.v3",recommendation,claims,actions:[],risks:blockers.map(code=>({severity:"HIGH",code,description:"Deterministic evidence guardrail blocked the recommendation."})),dissent:challenges.filter(item=>item.status==="UNRESOLVED").map(item=>item.challenge),challenges,agentMessages,unresolvedDisagreements:challenges.filter(item=>item.status==="UNRESOLVED").length,citationCoverage:citationCoverage(claims),assumptions:["Mock provider is deterministic and advisory only.","Opportunity Discovery is a Research/Strategy capability; Monitoring is a deterministic service outside the committee."],agentPositions:positions,orchestration,humanApprovalRequired:true,assetExecutionAuthorized:false};
-  validateDecisionOutput(output,citations);
+  validateDecisionOutput(output,citations,Object.fromEntries((input.retrievalManifests??[]).map(manifest=>[manifest.role,manifest.items.map(item=>item.citation)])),Object.fromEntries((input.retrievalManifests??[]).map(manifest=>[manifest.role,{manifestHash:manifest.manifestHash,status:manifest.status}])));
   return {output,claims,challenges,agentMessages,positions,blockers,citations,orchestration};
 }
 
-export function validateDecisionOutput(output:any,allowedEvidenceIds:string[],allowedKnowledgeByRole:Partial<Record<DecisionRole,string[]>>={}){
+export function validateDecisionOutput(output:any,allowedEvidenceIds:string[],allowedKnowledgeByRole:Partial<Record<DecisionRole,string[]>>={},allowedRetrievalByRole:Partial<Record<DecisionRole,{manifestHash:string;status:string}>>={}){
   if(!output||typeof output!=="object"||output.schemaVersion!=="decision.recommendation.v3")throw new DecisionOutputValidationError("Decision output schema version is invalid");
   const allowedTopLevel=new Set(["schemaVersion","recommendation","claims","actions","risks","dissent","challenges","agentMessages","unresolvedDisagreements","citationCoverage","assumptions","agentPositions","orchestration","humanApprovalRequired","assetExecutionAuthorized"]);
   const unknownTopLevel=Object.keys(output).filter(key=>!allowedTopLevel.has(key));
@@ -134,6 +135,7 @@ export function validateDecisionOutput(output:any,allowedEvidenceIds:string[],al
     if(!expected||canonical(position.toolPermissions)!==canonical(expected))throw new DecisionOutputValidationError(`Agent tool policy forbids permissions for ${String(role)}`);
     if(position.assetExecutionAuthorized!==false)throw new DecisionOutputValidationError("Agent authority boundary is invalid");
     for(const citation of position.citations??[])if(!allowedEvidenceIds.includes(citation))throw new DecisionOutputValidationError(`Unknown Evidence ID: ${citation}`);
+    const allowedRetrieval=allowedRetrievalByRole[role];if(allowedRetrieval&&(position.retrievalManifestHash!==allowedRetrieval.manifestHash||position.retrievalStatus!==allowedRetrieval.status))throw new DecisionOutputValidationError(`Unknown or role-forbidden RAG Manifest: ${role}`);
     const allowedKnowledge=allowedKnowledgeByRole[role]??[];for(const citation of position.knowledgeCitations??[])if(!allowedKnowledge.includes(citation))throw new DecisionOutputValidationError(`Unknown or role-forbidden RAG citation: ${citation}`);
   }
   for(const [index,message] of output.agentMessages.entries()){
