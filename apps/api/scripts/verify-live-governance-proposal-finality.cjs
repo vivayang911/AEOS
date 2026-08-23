@@ -1,7 +1,7 @@
 const { readFileSync, writeFileSync } = require("node:fs");
 const { resolve } = require("node:path");
 const { Contract, Interface, JsonRpcProvider } = require("ethers");
-const { verifyLiveGovernanceProposalFinality } = require("../dist/live-governance-proposal-finality");
+const { normalizeProposalCreatedEventArgs, verifyLiveGovernanceProposalFinality } = require("../dist/live-governance-proposal-finality");
 
 const ROOT = resolve(__dirname, "../../..");
 const FROZEN_PATH = resolve(ROOT, "reports/live-demo/p0-1-governance-hold-proposal.json");
@@ -32,6 +32,7 @@ async function main() {
     governor.state(proposalId), governor.proposalSnapshot(proposalId), governor.proposalDeadline(proposalId), governor.proposalVotes(proposalId),
   ]);
   const event = parsed.event;
+  const decodedEvent = normalizeProposalCreatedEventArgs(event.args);
   const report = verifyLiveGovernanceProposalFinality(frozen, {
     transactionHash: transaction.hash,
     chainId: Number(network.chainId),
@@ -48,15 +49,7 @@ async function main() {
     event: {
       address: parsed.log.address,
       name: event.name,
-      proposalId: event.args.proposalId.toString(),
-      proposer: event.args.proposer,
-      targets: [...event.args.targets],
-      values: [...event.args.values].map(String),
-      signatures: [...event.args.signatures],
-      calldatas: [...event.args.calldatas],
-      voteStart: event.args.voteStart.toString(),
-      voteEnd: event.args.voteEnd.toString(),
-      description: event.args.description,
+      ...decodedEvent,
     },
     state: Number(state),
     proposalSnapshot: snapshot.toString(),

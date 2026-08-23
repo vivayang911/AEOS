@@ -1,4 +1,4 @@
-import { verifyLiveGovernanceProposalFinality, FrozenGovernanceProposal, GovernanceProposalChainObservation } from "./live-governance-proposal-finality";
+import { normalizeProposalCreatedEventArgs, verifyLiveGovernanceProposalFinality, FrozenGovernanceProposal, GovernanceProposalChainObservation } from "./live-governance-proposal-finality";
 
 const h = (c: string) => `0x${c.repeat(64)}`;
 const frozen: FrozenGovernanceProposal = {
@@ -15,6 +15,11 @@ const observation = (): GovernanceProposalChainObservation => ({
 });
 
 describe("live governance proposal finality", () => {
+  it("decodes ProposalCreated positionally so the values field cannot collide with Result.values", () => {
+    const args = [123n, frozen.unsignedTransaction.from, frozen.proposal.targets, [0n], [""], frozen.proposal.calldatas, 101n, 109n, "HOLD"];
+    Object.defineProperty(args, "values", { value: () => { throw new Error("named values collision"); } });
+    expect(normalizeProposalCreatedEventArgs(args)).toEqual({ proposalId: "123", proposer: frozen.unsignedTransaction.from, targets: frozen.proposal.targets, values: ["0"], signatures: [""], calldatas: frozen.proposal.calldatas, voteStart: "101", voteEnd: "109", description: "HOLD" });
+  });
   it("separates successful ProposalCreated finality from a defeated lifecycle", () => {
     expect(verifyLiveGovernanceProposalFinality(frozen, observation())).toMatchObject({
       status: "PROPOSAL_DEFEATED", proposalCreationVerified: true, lifecyclePassed: false, failureReason: "NO_VOTES_BEFORE_DEADLINE",
@@ -28,5 +33,8 @@ describe("live governance proposal finality", () => {
   it("rejects mismatched calldata and non-canonical inclusion", () => {
     expect(() => verifyLiveGovernanceProposalFinality(frozen, { ...observation(), data: "0xabcd" })).toThrow("GOVERNANCE_PROPOSAL_CALLDATA_MISMATCH");
     expect(() => verifyLiveGovernanceProposalFinality(frozen, { ...observation(), canonicalTransactionHashes: [] })).toThrow("GOVERNANCE_PROPOSAL_NOT_IN_CANONICAL_BLOCK");
+  });
+  it("rejects truncated positional event arguments", () => {
+    expect(() => normalizeProposalCreatedEventArgs([123n])).toThrow("GOVERNANCE_PROPOSAL_EVENT_ARGUMENTS_INVALID");
   });
 });

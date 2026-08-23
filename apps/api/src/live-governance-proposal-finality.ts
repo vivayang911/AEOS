@@ -49,6 +49,29 @@ export type GovernanceProposalChainObservation = {
   votes: { against: string; for: string; abstain: string };
 };
 
+export function normalizeProposalCreatedEventArgs(args: readonly unknown[]) {
+  if (args.length < 9) fail("GOVERNANCE_PROPOSAL_EVENT_ARGUMENTS_INVALID");
+  const list = (value: unknown, code: string): readonly unknown[] => {
+    if (value === null || value === undefined || typeof (value as { [Symbol.iterator]?: unknown })[Symbol.iterator] !== "function") fail(code);
+    return Array.from(value as Iterable<unknown>);
+  };
+  const text = (value: unknown, code: string) => {
+    if (typeof value !== "string") fail(code);
+    return value;
+  };
+  return {
+    proposalId: String(args[0]),
+    proposer: text(args[1], "GOVERNANCE_PROPOSAL_EVENT_PROPOSER_INVALID"),
+    targets: list(args[2], "GOVERNANCE_PROPOSAL_EVENT_TARGETS_INVALID").map((value) => text(value, "GOVERNANCE_PROPOSAL_EVENT_TARGET_INVALID")),
+    values: list(args[3], "GOVERNANCE_PROPOSAL_EVENT_VALUES_INVALID").map(String),
+    signatures: list(args[4], "GOVERNANCE_PROPOSAL_EVENT_SIGNATURES_INVALID").map((value) => text(value, "GOVERNANCE_PROPOSAL_EVENT_SIGNATURE_INVALID")),
+    calldatas: list(args[5], "GOVERNANCE_PROPOSAL_EVENT_CALLDATAS_INVALID").map((value) => text(value, "GOVERNANCE_PROPOSAL_EVENT_CALLDATA_INVALID")),
+    voteStart: String(args[6]),
+    voteEnd: String(args[7]),
+    description: text(args[8], "GOVERNANCE_PROPOSAL_EVENT_DESCRIPTION_INVALID"),
+  };
+}
+
 const stateNames = ["Pending", "Active", "Canceled", "Defeated", "Succeeded", "Queued", "Expired", "Executed"] as const;
 
 export function verifyLiveGovernanceProposalFinality(
