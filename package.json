@@ -3,7 +3,10 @@
   "private": true,
   "version": "0.1.0",
   "packageManager": "npm@11.6.2",
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "dev": "concurrently -n web,api -c cyan,green \"npm run dev -w @aeos/web\" \"npm run start:dev -w @aeos/api\"",
     "build": "npm run build --workspaces --if-present",
@@ -44,6 +47,7 @@
     "start:evidence-anchor-wallet-handoff": "node scripts/evidence-anchor-wallet-handoff-server.cjs",
     "test:evidence-anchor-wallet-handoff-ui": "node --test scripts/evidence-anchor-wallet-handoff-server.test.cjs",
     "verify:evidence-anchor-deployment": "npm run verify:evidence-anchor-deployment -w @aeos/api",
+    "prepare:governance-stack": "npm run prepare:governance-stack -w @aeos/api",
     "prepare:policy-registry": "npm run prepare:policy-registry -w @aeos/api",
     "verify:policy-registry-deployment": "npm run verify:policy-registry-deployment -w @aeos/api",
     "prepare:treasury-guard-manifest": "npm run prepare:treasury-guard-manifest -w @aeos/api",
@@ -89,16 +93,22 @@
     "verify:evidence-classification-db": "npm run verify:evidence-classification-db -w @aeos/api",
     "verify:evidence-request-db": "npm run verify:evidence-request-db -w @aeos/api",
     "verify:committee-gap-lineage-db": "npm run verify:committee-gap-lineage-db -w @aeos/api",
-    "verify:organization-configuration-db": "npm run verify:organization-configuration-db -w @aeos/api"
-    ,"verify:command-security-db": "npm run verify:command-security-db -w @aeos/api"
-    ,"verify:alerts-db": "npm run verify:alerts-db -w @aeos/api"
-    ,"verify:audit-exports-db": "npm run verify:audit-exports-db -w @aeos/api"
-    ,"verify:explorer-links-db": "npm run verify:explorer-links-db -w @aeos/api"
-    ,"verify:policy-backtests-db": "npm run verify:policy-backtests-db -w @aeos/api"
-    ,"verify:anomaly-scanner-db": "npm run verify:anomaly-scanner-db -w @aeos/api"
-    ,"verify:attestcoin-reliability-db": "npm run verify:attestcoin-reliability-db -w @aeos/api"
-    ,"verify:evidence-anchor-handoff-db": "npm run verify:evidence-anchor-handoff-db -w @aeos/api"
-    ,"verify:evidence-anchor-confirmation-db": "npm run verify:evidence-anchor-confirmation-db -w @aeos/api"
+    "verify:organization-configuration-db": "npm run verify:organization-configuration-db -w @aeos/api",
+    "verify:command-security-db": "npm run verify:command-security-db -w @aeos/api",
+    "verify:alerts-db": "npm run verify:alerts-db -w @aeos/api",
+    "verify:audit-exports-db": "npm run verify:audit-exports-db -w @aeos/api",
+    "verify:explorer-links-db": "npm run verify:explorer-links-db -w @aeos/api",
+    "verify:policy-backtests-db": "npm run verify:policy-backtests-db -w @aeos/api",
+    "verify:anomaly-scanner-db": "npm run verify:anomaly-scanner-db -w @aeos/api",
+    "verify:attestcoin-reliability-db": "npm run verify:attestcoin-reliability-db -w @aeos/api",
+    "verify:evidence-anchor-handoff-db": "npm run verify:evidence-anchor-handoff-db -w @aeos/api",
+    "verify:evidence-anchor-confirmation-db": "npm run verify:evidence-anchor-confirmation-db -w @aeos/api"
   },
-  "devDependencies": { "concurrently": "^9.2.1" }
+  "devDependencies": {
+    "@openzeppelin/contracts": "5.4.0",
+    "concurrently": "^9.2.1"
+  },
+  "overrides": {
+    "nanoid": "3.3.18"
+  }
 }

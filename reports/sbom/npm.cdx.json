@@ -2,10 +2,10 @@
   "$schema": "http://cyclonedx.org/schema/bom-1.5.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.5",
-  "serialNumber": "urn:uuid:2ff0f211-6771-43b9-90d9-309060fd2deb",
+  "serialNumber": "urn:uuid:cd67a013-8e6a-465c-afb6-48264b550813",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-08-22T03:12:37.155Z",
+    "timestamp": "2026-08-23T10:01:06.685Z",
     "lifecycles": [
       {
         "phase": "build"
@@ -4966,6 +4966,53 @@
         {
           "alg": "SHA-512",
           "content": "3150bc100429eccbc4726df429610d163811f8c9267fe0f5f3d5c94e4148970a2153985c05b9f56642aaeca5538b61e67b73cc185dfdd0368be766de56b22285"
+        }
+      ],
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ]
+    },
+    {
+      "bom-ref": "@openzeppelin/contracts@5.4.0",
+      "type": "library",
+      "name": "@openzeppelin/contracts",
+      "version": "5.4.0",
+      "scope": "required",
+      "author": "OpenZeppelin Community <maintainers@openzeppelin.org>",
+      "description": "Secure Smart Contract library for Solidity",
+      "purl": "pkg:npm/%40openzeppelin/contracts@5.4.0",
+      "properties": [
+        {
+          "name": "cdx:npm:package:development",
+          "value": "true"
+        }
+      ],
+      "externalReferences": [
+        {
+          "type": "distribution",
+          "url": "https://registry.npmjs.org/@openzeppelin/contracts/-/contracts-5.4.0.tgz"
+        },
+        {
+          "type": "vcs",
+          "url": "https://github.com/OpenZeppelin/openzeppelin-contracts.git"
+        },
+        {
+          "type": "website",
+          "url": "https://openzeppelin.com/contracts/"
+        },
+        {
+          "type": "issue-tracker",
+          "url": "https://github.com/OpenZeppelin/openzeppelin-contracts/issues"
+        }
+      ],
+      "hashes": [
+        {
+          "alg": "SHA-512",
+          "content": "7826205a72e0e963be5f9d88d7a4d9b7cb848dbb5d9202c2d12517ff19c092c8e3ad02385df9f88814682398f9e5d9a53a10efd58ec1a11ddc53b7b7596842e8"
         }
       ],
       "licenses": [
@@ -16672,25 +16719,25 @@
       ]
     },
     {
-      "bom-ref": "nanoid@3.3.17",
+      "bom-ref": "nanoid@3.3.18",
       "type": "library",
       "name": "nanoid",
-      "version": "3.3.17",
+      "version": "3.3.18",
       "scope": "required",
       "author": "Andrey Sitnik <andrey@sitnik.ru>",
       "description": "A tiny (116 bytes), secure URL-friendly unique string ID generator",
-      "purl": "pkg:npm/nanoid@3.3.17",
+      "purl": "pkg:npm/nanoid@3.3.18",
       "properties": [],
       "externalReferences": [
         {
           "type": "distribution",
-          "url": "https://registry.npmjs.org/nanoid/-/nanoid-3.3.17.tgz"
+          "url": "https://registry.npmjs.org/nanoid/-/nanoid-3.3.18.tgz"
         }
       ],
       "hashes": [
         {
           "alg": "SHA-512",
-          "content": "c502dfd00dc738c9601ead27db8eff2d1b80398981edd5c9fc3bc0c46bec4818a3e395ed052990c9cbbe17c3836c7c27b3f5f21596a0c8bd7e27439f7f0d44d2"
+          "content": "0d38383096c631691f8ba55915d36ddbf71a31b432e0ebbe3a9fe1250bc611672755fa00d5003ec7344a033c3d8c3ebe19538e798aff98872e0d276e83a17afb"
         }
       ],
       "licenses": [
@@ -23088,6 +23135,7 @@
         "@aeos/api@0.1.0",
         "@aeos/web@0.1.0",
         "@aeos/domain@0.1.0",
+        "@openzeppelin/contracts@5.4.0",
         "concurrently@9.2.4"
       ]
     },
@@ -24142,6 +24190,10 @@
     },
     {
       "ref": "@noble/hashes@1.3.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "@openzeppelin/contracts@5.4.0",
       "dependsOn": []
     },
     {
@@ -26037,7 +26089,7 @@
       "dependsOn": []
     },
     {
-      "ref": "nanoid@3.3.17",
+      "ref": "nanoid@3.3.18",
       "dependsOn": []
     },
     {
@@ -26285,7 +26337,7 @@
     {
       "ref": "postcss@8.5.23",
       "dependsOn": [
-        "nanoid@3.3.17",
+        "nanoid@3.3.18",
         "picocolors@1.1.1",
         "source-map-js@1.2.1"
       ]

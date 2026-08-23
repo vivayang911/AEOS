@@ -1,3 +1,6 @@
+AEOSGovernorTest:testDecisionBoundProposalVotesQueuesAndExecutesThroughTimelock() (gas: 643834)
+AEOSGovernorTest:testDeploymentRolesAreSeparatedAndAdminIsRemoved() (gas: 42714)
+AEOSGovernorTest:testUnauthorizedDirectConfigurationFailsClosed() (gas: 11666)
 AEOSTreasuryEvidenceSourceTest:testFutureObservationFailsClosed() (gas: 227231)
 AEOSTreasuryEvidenceSourceTest:testFuzzCommitmentBindsPayload(bytes32) (runs: 256, μ: 254195, ~: 256195)
 AEOSTreasuryEvidenceSourceTest:testInvalidConfigurationAndMalformedObservationsFailClosed() (gas: 576244)
