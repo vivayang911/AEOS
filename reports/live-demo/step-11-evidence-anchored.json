@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "aeos.live-attestcoin-step.v1",
+  "step": 11,
+  "status": "EVIDENCE_ANCHORED",
+  "recordedAt": "2026-08-23T08:03:36.482Z",
+  "tenantBinding": "SERVER_RESOLVED_ACTIVE_SESSION",
+  "rawTenantIdentifiersDisclosed": false,
+  "lineage": {
+    "attestcoinProofJobId": "uscjob_cb566443190b41bebeb4e200ca1b7034",
+    "decisionId": "decision_a9a37c5bd3ff43c68f5b0af32a13b8ed",
+    "decisionOutputHash": "0xa31891476cbc99b21899f079035b53b0caff2addd4df0178b10460d38242f132",
+    "evidenceSnapshotId": "snap_5f3081a8dffc4e0b9f281e0095dc231f",
+    "evidenceSnapshotHash": "0x9629ec777f328a57ba6553a78763b13963cb8529b119bffac7a6a1441b36ec9d",
+    "handoffId": "anchorhandoff_e14c31f5b4a149c9b33d8757b332d2e9",
+    "handoffManifestHash": "0x8db45136814aa9c7cf6c336e63a3d23847dc72cc9f64404a036953f222ff611d",
+    "commitmentId": "0x320d9ae238dcda35cbd74e7fa6bac4f1d416afb285a953989898b767586a439e",
+    "confirmationId": "anchorconfirm_88c757b7f962402d84fae0c91161dd9a",
+    "confirmationSnapshotHash": "0x38b631dcd031d040a290bacb53b9b398397ec847e6a87b645f6a0a89a8f56173"
+  },
+  "chainReceipt": {
+    "chainId": 102031,
+    "transactionHash": "0x181ab1d51085f845b76cdc5c4971622f550dafd33ed2e501dcc6c284c8bb9731",
+    "blockNumber": 5358917,
+    "blockHash": "0xac7ba0d950d64ed790643259d9193116226a4ed7d1f3bf7e6c23b38afee63b79",
+    "confirmations": 35,
+    "minimumConfirmations": 2,
+    "from": "0x444d510728fb8072351cb5d0e88432e6a8501dfa",
+    "to": "0x5de85313c5622e3707c3fed8932f51e5991e62c2",
+    "value": "0x0",
+    "observedAt": "2026-08-23T07:55:00.000Z",
+    "event": "EvidenceAnchored",
+    "eventVerified": true,
+    "calldataVerified": true,
+    "zeroValueVerified": true
+  },
+  "controls": {
+    "userWalletSubmitted": true,
+    "canonicalReceiptVerified": true,
+    "signerCustody": false,
+    "broadcastCapability": false,
+    "assetExecutionAuthorized": false
+  },
+  "truthBoundary": {
+    "verifiedClaim": "SOURCE_TRANSACTION_INCLUSION_AND_ANCHOR_COMMITMENT",
+    "decisionOutputHashRecordedOffChain": true,
+    "decisionOutputHashDirectlyAnchoredOnChain": false,
+    "payloadEconomicTruthVerified": false,
+    "investmentPerformanceVerified": false
+  },
+  "artifactHash": "0xb9e3fdb98470e1810015c1df6308b5bb8cc38231dfb26cf90a1f9a7ea343d9cf"
+}

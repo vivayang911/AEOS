@@ -1,6 +1,8 @@
 # BUIDL CTC submission priority execution plan
 
-Status: `ASC DEPLOYMENT VERIFIED / LIVE PROOF ROUND-TRIP PENDING`.
+Status: `ONE LIVE 11-STEP SAMPLE VERIFIED / WHOLE PRD PARTIAL`.
+
+Development disclosure: AEOS is AI-assisted. AI coding agents support requirements analysis, implementation, testing, failure investigation and documentation; the human owner controls product/risk decisions and every wallet or DAO confirmation. AI has no signer, broadcaster, private-key custody or treasury authority.
 
 ## P0 — eligibility evidence
 
@@ -9,10 +11,10 @@ Status: `ASC DEPLOYMENT VERIFIED / LIVE PROOF ROUND-TRIP PENDING`.
 3. **Complete:** readback observed five confirmations, exceeding the two-confirmation floor.
 4. **Complete:** `verify:evidence-anchor-deployment` passed all 11 checks against transaction `0xf8ef...4dd2` and address `0x5DE8...62C2`.
 5. **Complete:** Blockscout links, transaction hash, constructor readback and verification report are preserved in README and `reports/deployment/`.
-6. Run one real Sepolia transaction through ChainInfo coverage, Proof Builder, BlockProver, immutable Evidence, eight-Agent Decision and unsigned Evidence Anchor handoff.
-7. Human wallet confirms `verifyAndAnchor`; AEOS validates exact calldata, sender, zero value, receipt, canonical block and `EvidenceAnchored` event.
+6. **Complete for one sample:** a real Sepolia transaction passed ChainInfo coverage, Proof Builder, BlockProver, immutable Evidence, eight-Agent Decision and the Evidence Anchor handoff.
+7. **Complete for one sample:** the human wallet confirmed `verifyAndAnchor`; AEOS validated exact calldata, sender, zero value, receipt, canonical block and `EvidenceAnchored` event.
 
-P0 is not complete until steps 6–7 have non-Mock testnet evidence.
+The competition proof-to-anchor sample is complete. The product P0 is not complete: next is the smallest real DAO Proposal → vote/quorum → queue → Timelock → Guard/Policy outcome, followed by immutable Outcome Evidence. An Evidence anchor is not a treasury asset action.
 
 ## P1 — award evidence
 

@@ -36,6 +36,7 @@
     "prepare:live-evidence-anchor-request": "npm run prepare:live-evidence-anchor-request -w @aeos/api",
     "start:live-evidence-anchor-wallet-handoff": "node scripts/live-evidence-anchor-wallet-handoff-server.cjs",
     "test:live-evidence-anchor-wallet-handoff": "node --test scripts/live-evidence-anchor-wallet-handoff-server.test.cjs",
+    "verify:live-evidence-anchor-confirmation": "npm run verify:live-evidence-anchor-confirmation -w @aeos/api",
     "start:usc-verification-wallet-handoff": "node scripts/usc-verification-wallet-handoff-server.cjs",
     "test:usc-verification-wallet-handoff": "node --test scripts/usc-verification-wallet-handoff-server.test.cjs",
     "verify:aeos-evidence-source-deployment": "npm run verify:aeos-evidence-source-deployment -w @aeos/api",

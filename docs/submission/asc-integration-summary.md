@@ -1,6 +1,8 @@
 # ASC integration summary — evidence-first draft
 
-Status: `TESTNET ASC DEPLOYMENT VERIFIED / LIVE PROOF ROUND-TRIP PENDING`.
+Status: `ONE TESTNET 11-STEP LIVE PROOF-TO-ANCHOR SAMPLE VERIFIED / WHOLE PRD PARTIAL`.
+
+Development disclosure: AEOS is AI-assisted. AI coding agents helped analyze requirements, implement and test code, investigate failures, and draft documentation. The human project owner retains responsibility for product and risk decisions and personally controls every wallet or DAO confirmation. Neither AEOS nor an AI agent holds keys, signs transactions, broadcasts arbitrary transactions, or controls treasury assets.
 
 The system integrates Creditcoin Universal Smart Contracts as a decentralized evidence-verification boundary rather than as an AI data feed. Creditcoin ChainInfo is read to discover currently supported source chains and the latest attested height. The Proof Builder constructs a transaction-inclusion proof only after the selected source block is covered by the attestation network. Creditcoin's native BlockProver verifies that proof.
 
@@ -19,11 +21,12 @@ Verified local artifacts:
 
 Pending before submission claims may be upgraded:
 
-- real Sepolia transaction and USC proof;
-- wallet-confirmed `verifyAndAnchor` transaction and `EvidenceAnchored` Explorer event;
-- end-to-end Agent Decision generated from that exact immutable Evidence lineage.
+- approved, contentful role-partitioned RAG sources;
+- a second live source chain and proof-backed economic metric derivations;
+- a real DAO proposal/vote/queue/Timelock/Guard outcome rather than an Evidence anchor;
+- broader live error, reorg, coverage, load, fork and independent-audit acceptance.
 ## Project-owned Sepolia source binding
 
 AEOS no longer plans to demonstrate the USC path with an arbitrary public Sepolia transaction. The locally verified `AEOSTreasuryEvidenceSource` produces the project-owned source event. Its commitment domain includes Sepolia chain ID, contract, immutable reporter, observation ID, hash-only organization/Treasury identity, immutable Evidence payload hash and observation time. It has one nonpayable write method, no external-call opcode, no upgrade path and no asset authority.
 
-The backend deterministically prepares both deployment init code and `commitObservation` calldata but cannot sign or submit either. After a user-wallet submission, readback must verify the exact deployment/call and event before the source transaction may enter Proof Builder. This strengthens semantic binding; it does not change the fact that the current live proof round trip remains pending because the reporter wallet has no Sepolia ETH.
+The backend deterministically prepares both deployment init code and `commitObservation` calldata but cannot sign or submit either. The user-controlled Sepolia observation, standard USC verification, immutable Evidence import, frozen eight-Agent Decision and user-controlled Creditcoin Testnet `verifyAndAnchor` have now completed one verified 11-step sample. Readback verified the exact transactions, canonical receipts and events before immutable lineage was accepted. This strengthens semantic binding but proves source-transaction inclusion and anchor commitment only; it does not prove payload economic truth, investment performance, AI/PID causality, or a treasury asset action.

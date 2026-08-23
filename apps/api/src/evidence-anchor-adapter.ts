@@ -1,5 +1,5 @@
 import { JsonRpcProvider } from "ethers";
-import { CREDITCOIN_TESTNET_CHAIN_ID } from "./attestcoin-adapter";
+import { CREDITCOIN_RPC_URL, CREDITCOIN_TESTNET_CHAIN_ID } from "./attestcoin-adapter";
 import { EvidenceAnchorManifest, parseAndValidateEvidenceAnchoredLog } from "./evidence-anchor-engine";
 
 export const EVIDENCE_ANCHOR_RECEIPT_ADAPTER=Symbol("EVIDENCE_ANCHOR_RECEIPT_ADAPTER");
@@ -38,4 +38,4 @@ export class RpcEvidenceAnchorReceiptAdapter implements EvidenceAnchorReceiptAda
     return{schemaVersion:"evidence.anchor.confirmation.v1",chainId:CREDITCOIN_TESTNET_CHAIN_ID,transactionHash:txHash,blockNumber:receipt.blockNumber,blockHash:receipt.blockHash.toLowerCase(),from:transaction.from.toLowerCase(),to:manifest.ascAddress,status:1,confirmations,minimumConfirmations:this.minimumConfirmations,observedAt:new Date(block.timestamp*1000).toISOString(),commitmentId:manifest.commitmentId,decisionKey:manifest.decisionKey,snapshotHash:manifest.evidenceSnapshotHash,eventVerified:true,calldataVerified:true,zeroValueVerified:true,signerCustody:false,broadcastCapability:false,assetExecutionAuthorized:false};
   }
 }
-export function createEvidenceAnchorReceiptAdapterFromEnvironment():EvidenceAnchorReceiptAdapter{const mode=(process.env.EVIDENCE_ANCHOR_RECEIPT_ADAPTER??"mock").toLowerCase();if(mode==="mock")return new MockEvidenceAnchorReceiptAdapter();if(mode==="rpc-readonly")return new RpcEvidenceAnchorReceiptAdapter(process.env.CREDITCOIN_RPC_URL??"",Number(process.env.EVIDENCE_ANCHOR_MIN_CONFIRMATIONS??2));throw new Error(`Unsupported EVIDENCE_ANCHOR_RECEIPT_ADAPTER: ${mode}`)}
+export function createEvidenceAnchorReceiptAdapterFromEnvironment():EvidenceAnchorReceiptAdapter{const mode=(process.env.EVIDENCE_ANCHOR_RECEIPT_ADAPTER??"mock").toLowerCase();if(mode==="mock")return new MockEvidenceAnchorReceiptAdapter();if(mode==="rpc-readonly")return new RpcEvidenceAnchorReceiptAdapter(process.env.CREDITCOIN_RPC_URL??CREDITCOIN_RPC_URL,Number(process.env.EVIDENCE_ANCHOR_MIN_CONFIRMATIONS??2));throw new Error(`Unsupported EVIDENCE_ANCHOR_RECEIPT_ADAPTER: ${mode}`)}
