@@ -48,6 +48,8 @@
     "test:evidence-anchor-wallet-handoff-ui": "node --test scripts/evidence-anchor-wallet-handoff-server.test.cjs",
     "verify:evidence-anchor-deployment": "npm run verify:evidence-anchor-deployment -w @aeos/api",
     "prepare:governance-stack": "npm run prepare:governance-stack -w @aeos/api",
+    "start:governance-stack-wallet-handoff": "node scripts/governance-stack-wallet-handoff-server.cjs",
+    "test:governance-stack-wallet-handoff": "node --test scripts/governance-stack-wallet-handoff-server.test.cjs",
     "prepare:policy-registry": "npm run prepare:policy-registry -w @aeos/api",
     "verify:policy-registry-deployment": "npm run verify:policy-registry-deployment -w @aeos/api",
     "prepare:treasury-guard-manifest": "npm run prepare:treasury-guard-manifest -w @aeos/api",

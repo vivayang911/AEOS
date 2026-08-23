@@ -1,0 +1,52 @@
+"use strict";
+
+let plan; let allTransactions = []; let progress = { submissions: [], receipts: [] }; let validatedAccount; let current;
+const statusNode = document.querySelector("#status");
+const submitButton = document.querySelector("#submit");
+const status = (message) => { statusNode.textContent = message; };
+const check = (name, ok, text) => { const node = document.querySelector(`[data-check="${name}"]`); node.classList.toggle("ok", ok); node.textContent = `${ok ? "PASS" : "FAIL"} — ${text}`; };
+const canonical = (value) => Array.isArray(value) ? `[${value.map(canonical).join(",")}]` : value && typeof value === "object" ? `{${Object.entries(value).sort(([a],[b]) => a.localeCompare(b)).map(([key,item]) => `${JSON.stringify(key)}:${canonical(item)}`).join(",")}}` : JSON.stringify(value);
+async function sha256(value) { const bytes = new TextEncoder().encode(canonical(value)); const digest = await crypto.subtle.digest("SHA-256", bytes); return `0x${[...new Uint8Array(digest)].map((byte) => byte.toString(16).padStart(2,"0")).join("")}`; }
+function fact(label, value) { const item=document.createElement("div");item.className="fact";const small=document.createElement("small");small.textContent=label;const code=document.createElement("code");code.textContent=value;item.append(small,code);return item; }
+function requestIdentity(tx) { return { sequence: tx.sequence, nonce: tx.nonce, to: tx.to, value: tx.value, data: tx.data }; }
+function render() {
+  current = allTransactions[progress.receipts.length];
+  const currentSubmission = progress.submissions.find((record) => record.sequence === current?.sequence);
+  const ledger = document.querySelector("#transactions"); ledger.replaceChildren();
+  allTransactions.forEach((tx,index) => { const done=index<progress.receipts.length; const submitted=progress.submissions.some((record)=>record.sequence===tx.sequence); const item=document.createElement("article"); item.className=`tx${done?" done":index===progress.receipts.length?" current":""}`; const title=document.createElement("h3"); title.textContent=`${tx.sequence}. ${tx.contract||tx.operation}`; const tag=document.createElement("span");tag.className="tag";tag.textContent=done?"RECEIPT OBSERVED":submitted?"SUBMITTED / RECEIPT PENDING":index===progress.receipts.length?"NEXT / USER CONFIRMATION":"LOCKED";title.append(tag); const detail=document.createElement("code");detail.textContent=`nonce ${tx.nonce} · to ${tx.to||"CONTRACT CREATION"} · request ${tx.requestHash}`;item.append(title,detail);ledger.append(item); });
+  submitButton.disabled = true;
+  submitButton.textContent = currentSubmission ? "Resume receipt check" : "Request this MetaMask transaction";
+  if (currentSubmission) submitButton.disabled = false;
+  if (!current) status("All eight wallet-RPC receipts are recorded. Stop here and run independent chain readback/finality verification before making any deployment claim.");
+}
+async function load() {
+  [plan,progress]=await Promise.all([fetch("/plan",{cache:"no-store"}).then((r)=>r.json()),fetch("/progress",{cache:"no-store"}).then((r)=>r.json())]);
+  allTransactions=[...plan.deploymentTransactions,...plan.roleTransactions];
+  [["Network",`Creditcoin Testnet (${plan.chainId})`],["Deployer",plan.deployer],["Guardian",plan.guardian],["Observed pending nonce",String(plan.observedPendingNonce)],["Plan hash",plan.planHash],["Requests",String(allTransactions.length)],["Safe",plan.safe.status],["Authority","UNSIGNED / UNBROADCAST / ZERO ASSET AUTHORITY"]].forEach(([label,value])=>document.querySelector("#facts").append(fact(label,value)));
+  render(); if(current) status(`Step ${current.sequence} is next. Connect the designated wallet and validate every guardrail.`);
+}
+async function validateCurrent() {
+  submitButton.disabled=true;if(!current)throw new Error("No pending deployment request");if(!window.ethereum)throw new Error("MetaMask-compatible provider not found");
+  const accounts=await window.ethereum.request({method:"eth_requestAccounts"});const chain=await window.ethereum.request({method:"eth_chainId"});const expectedChain=`0x${plan.chainId.toString(16)}`;const account=accounts[0]||"";
+  const walletOk=accounts.length>0;const chainOk=chain.toLowerCase()===expectedChain;const accountOk=account.toLowerCase()===plan.deployer.toLowerCase();check("wallet",walletOk,"Wallet connected");check("chain",chainOk,`Observed ${chain}; expected ${expectedChain}`);check("account",accountOk,`Observed ${account||"none"}`);
+  const nonceHex=await window.ethereum.request({method:"eth_getTransactionCount",params:[account,"pending"]});const nonce=Number.parseInt(nonceHex,16);const nonceOk=nonce===current.nonce;check("nonce",nonceOk,`Observed ${nonce}; expected ${current.nonce}`);
+  const dataHash=await window.ethereum.request({method:"web3_sha3",params:[current.data]});const dataOk=dataHash.toLowerCase()===current.dataHash.toLowerCase();check("data",dataOk,`Observed ${dataHash}`);
+  const requestHash=await sha256(requestIdentity(current));const requestOk=requestHash===current.requestHash;check("request",requestOk,`Observed ${requestHash}`);
+  if(!walletOk||!chainOk||!accountOk||!nonceOk||!dataOk||!requestOk)throw new Error("Deterministic guardrail validation failed; submission remains disabled");validatedAccount=account;submitButton.disabled=false;status(`Step ${current.sequence} passed. Review its target, nonce, zero value and operation, then explicitly request MetaMask confirmation.`);
+}
+async function submitCurrent() {
+  submitButton.disabled=true;const tx=current;if(!tx)throw new Error("No pending deployment request");const existing=progress.submissions.find((record)=>record.sequence===tx.sequence);if(existing)return observeReceipt(tx,existing.transactionHash);if(!validatedAccount)throw new Error("Validate the current step first");
+  const chain=await window.ethereum.request({method:"eth_chainId"});const accounts=await window.ethereum.request({method:"eth_accounts"});const nonceHex=await window.ethereum.request({method:"eth_getTransactionCount",params:[validatedAccount,"pending"]});const dataHash=await window.ethereum.request({method:"web3_sha3",params:[tx.data]});const requestHash=await sha256(requestIdentity(tx));
+  if(chain.toLowerCase()!==`0x${plan.chainId.toString(16)}`||accounts[0]?.toLowerCase()!==validatedAccount.toLowerCase()||Number.parseInt(nonceHex,16)!==tx.nonce||dataHash.toLowerCase()!==tx.dataHash.toLowerCase()||requestHash!==tx.requestHash)throw new Error("Wallet or frozen request changed after validation; validate again");
+  const request={from:validatedAccount,data:tx.data,value:"0x0",nonce:`0x${tx.nonce.toString(16)}`};if(tx.to)request.to=tx.to;status(`MetaMask confirmation requested for step ${tx.sequence}. No later transaction will be requested automatically.`);const transactionHash=await window.ethereum.request({method:"eth_sendTransaction",params:[request]});const submitted=await fetch("/submission",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({sequence:tx.sequence,from:validatedAccount,requestHash:tx.requestHash,transactionHash})});if(!submitted.ok)throw new Error((await submitted.json()).error||"Immutable wallet submission record failed");progress=await fetch("/progress",{cache:"no-store"}).then((r)=>r.json());render();return observeReceipt(tx,transactionHash);
+}
+async function observeReceipt(tx,transactionHash){if(!window.ethereum)throw new Error("MetaMask-compatible provider is required for receipt readback");status(`Step ${tx.sequence} was submitted as ${transactionHash}. Checking its receipt only; no new transaction will be requested.`);let receipt;for(let attempt=0;attempt<120;attempt+=1){receipt=await window.ethereum.request({method:"eth_getTransactionReceipt",params:[transactionHash]});if(receipt)break;await new Promise((resolve)=>setTimeout(resolve,2500));}if(!receipt)throw new Error("Receipt not observed within five minutes. Reload and click Resume receipt check; no next step was unlocked.");if(receipt.status!=="0x1")throw new Error("Transaction reverted; stop and regenerate/review the plan");if(tx.to===null&&receipt.contractAddress?.toLowerCase()!==tx.predictedAddress.toLowerCase())throw new Error("Receipt contract address differs from the frozen prediction");const response=await fetch("/receipt",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({sequence:tx.sequence,transactionHash,receiptStatus:receipt.status,blockNumber:receipt.blockNumber,blockHash:receipt.blockHash,contractAddress:receipt.contractAddress||null})});if(!response.ok)throw new Error((await response.json()).error||"Immutable receipt record failed");progress=await fetch("/progress",{cache:"no-store"}).then((r)=>r.json());validatedAccount=undefined;render();if(current)status(`Step ${tx.sequence} receipt recorded. Step ${current.sequence} is locked until you explicitly validate it; no automatic transaction was requested.`);}
+async function switchNetwork(){if(!window.ethereum)throw new Error("MetaMask-compatible provider not found");submitButton.disabled=true;await window.ethereum.request({method:"wallet_switchEthereumChain",params:[{chainId:`0x${plan.chainId.toString(16)}`} ]});status("Creditcoin Testnet selected. Revalidate the current step.");}
+async function reconnect(){if(!window.ethereum)throw new Error("MetaMask-compatible provider not found");submitButton.disabled=true;await window.ethereum.request({method:"wallet_requestPermissions",params:[{eth_accounts:{}}]});status(`Select only ${plan.deployer}, then validate the current step.`);}
+document.querySelector("#switch-network").addEventListener("click", () => switchNetwork().catch((error) => status(error.message)));
+document.querySelector("#reconnect-account").addEventListener("click", () => reconnect().catch((error) => status(error.message)));
+document.querySelector("#validate").addEventListener("click", () => validateCurrent().catch((error) => status(error.message)));
+submitButton.addEventListener("click", () => submitCurrent().catch((error) => { status(error.message); submitButton.disabled = true; }));
+window.ethereum?.on?.("accountsChanged", () => { submitButton.disabled = true; status("Wallet account changed. Validate the current step again."); });
+window.ethereum?.on?.("chainChanged", () => { submitButton.disabled = true; status("Wallet network changed. Validate the current step again."); });
+load().catch((error) => status(error.message));

@@ -48,6 +48,9 @@ describe("governance stack deployment plan", () => {
     );
     expect(plan.deploymentTransactions.every((tx) => tx.to === null && tx.value === "0x0")).toBe(true);
     expect(plan.roleTransactions.every((tx) => tx.to === plan.addresses.timelock && tx.value === "0x0")).toBe(true);
+    expect([...plan.deploymentTransactions, ...plan.roleTransactions].every((tx) =>
+      tx.dataHash === keccak256(tx.data) && /^0x[0-9a-f]{64}$/.test(tx.requestHash),
+    )).toBe(true);
     expect(plan.safe.status).toBe("EXTERNAL_PENDING");
     expect(plan.signed).toBe(false);
     expect(plan.submitted).toBe(false);

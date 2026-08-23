@@ -155,7 +155,18 @@ export function buildGovernanceStackDeploymentPlan(input: GovernanceStackPlanInp
   const deploymentInputs = [tokenInit, timelockInit, governorInit, registryInit, guardInit];
   const deploymentNames = ["AEOSGovernanceToken", "TimelockController", "AEOSGovernor", "PolicyRegistry", "TreasuryGuard"];
   const deploymentAddresses = Object.values(addresses);
-  const deploymentTransactions = deploymentInputs.map((transaction, index) => ({
+  const freezeTransaction = <T extends { sequence: number; nonce: number; to: string | null; value: string; data: string }>(transaction: T) => ({
+    ...transaction,
+    dataHash: keccak256(transaction.data),
+    requestHash: sha256({
+      sequence: transaction.sequence,
+      nonce: transaction.nonce,
+      to: transaction.to,
+      value: transaction.value,
+      data: transaction.data,
+    }),
+  });
+  const deploymentTransactions = deploymentInputs.map((transaction, index) => freezeTransaction({
     sequence: index + 1,
     nonce: input.pendingNonce + index,
     contract: deploymentNames[index],
@@ -177,7 +188,7 @@ export function buildGovernanceStackDeploymentPlan(input: GovernanceStackPlanInp
     { operation: "GRANT_GOVERNOR_PROPOSER", data: access.encodeFunctionData("grantRole", [PROPOSER_ROLE, addresses.governor]) },
     { operation: "GRANT_GOVERNOR_CANCELLER", data: access.encodeFunctionData("grantRole", [CANCELLER_ROLE, addresses.governor]) },
     { operation: "RENOUNCE_TEMPORARY_ADMIN", data: access.encodeFunctionData("renounceRole", [DEFAULT_ADMIN_ROLE, deployer]) },
-  ].map((transaction, index) => ({
+  ].map((transaction, index) => freezeTransaction({
     sequence: deploymentTransactions.length + index + 1,
     nonce: input.pendingNonce + deploymentTransactions.length + index,
     ...transaction,

@@ -1,5 +1,5 @@
-const { readFileSync } = require("node:fs");
-const { resolve } = require("node:path");
+const { existsSync, mkdirSync, readFileSync, writeFileSync } = require("node:fs");
+const { dirname, resolve } = require("node:path");
 const { buildGovernanceStackDeploymentPlan, GOVERNANCE_STACK_CHAIN_ID } = require("../dist/governance-stack-engine");
 
 function required(name) {
@@ -46,6 +46,19 @@ const plan = buildGovernanceStackDeploymentPlan({
   },
 });
 
+const outputPath = process.env.GOVERNANCE_STACK_PLAN_OUTPUT_PATH
+  ? resolve(process.env.GOVERNANCE_STACK_PLAN_OUTPUT_PATH)
+  : null;
+if (outputPath) {
+  mkdirSync(dirname(outputPath), { recursive: true });
+  if (existsSync(outputPath)) {
+    const existing = JSON.parse(readFileSync(outputPath, "utf8"));
+    if (existing.planHash !== plan.planHash) throw new Error("GOVERNANCE_STACK_PLAN_OUTPUT_ALREADY_EXISTS_WITH_DIFFERENT_HASH");
+  } else {
+    writeFileSync(outputPath, `${JSON.stringify(plan, null, 2)}\n`, { encoding: "utf8", flag: "wx", mode: 0o600 });
+  }
+}
+
 if (process.env.GOVERNANCE_STACK_PLAN_SUMMARY_ONLY === "1") {
   console.log(JSON.stringify({
     schemaVersion: plan.schemaVersion,
@@ -56,6 +69,7 @@ if (process.env.GOVERNANCE_STACK_PLAN_SUMMARY_ONLY === "1") {
     planHash: plan.planHash,
     addresses: plan.addresses,
     transactionCount: plan.deploymentTransactions.length + plan.roleTransactions.length,
+    outputPath,
     exactNonceSequenceRequired: plan.exactNonceSequenceRequired,
     safe: plan.safe,
     signed: plan.signed,

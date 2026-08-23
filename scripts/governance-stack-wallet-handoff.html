@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>AEOS Governance Stack Wallet Handoff</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main>
+      <header><span class="eyebrow">AEOS / DAO CONTROLLED / EXACT NONCE SEQUENCE</span><h1>Governance Stack Deployment</h1><p>Eight separate zero-value wallet requests. No batch, automatic continuation, signer custody or asset execution.</p></header>
+      <section class="guard"><strong>REVIEW EACH TRANSACTION — METAMASK CONFIRMATION REQUIRED</strong></section>
+      <section id="facts" class="grid" aria-label="Frozen plan facts"></section>
+      <section class="checks"><h2>Current transaction guardrails</h2><ol><li data-check="wallet">Wallet not connected</li><li data-check="chain">Chain not verified</li><li data-check="account">Deployer not verified</li><li data-check="nonce">Pending nonce not verified</li><li data-check="data">Calldata hash not verified</li><li data-check="request">Frozen request hash not verified</li></ol></section>
+      <section><h2>Eight-step deployment ledger</h2><div id="transactions" class="ledger"></div></section>
+      <section class="actions"><button id="switch-network">Request Creditcoin Testnet</button><button id="reconnect-account">Reconnect target account</button><button id="validate">Validate current step</button><button id="submit" disabled>Request this MetaMask transaction</button></section>
+      <section class="status" aria-live="polite"><h2>Status</h2><pre id="status">Loading frozen governance plan…</pre></section>
+      <footer>Wallet-RPC receipts recorded here are not independent canonical-finality verification. Deployment remains incomplete until separate readback passes.</footer>
+    </main>
+    <script src="/app.js"></script>
+  </body>
+</html>
