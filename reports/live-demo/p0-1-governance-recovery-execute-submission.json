@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "aeos.live-governance-recovery-execute-submission.v1",
+  "status": "RECOVERY_EXECUTE_WALLET_SUBMITTED",
+  "recordedAt": "2026-08-23T15:48:31.621Z",
+  "chainId": 102031,
+  "from": "0x444d510728fb8072351cb5d0e88432e6a8501dfa",
+  "to": "0xfe90b087fae789e043514b6ac3dbd7fd2d970268",
+  "value": "0x0",
+  "transactionHash": "0x8bba257f5bf5ad51e88921501526e3e9cef31bb26703bdb94461d20ca0cbfe91",
+  "calldataHash": "0xaa8762f58c0e1d7504fde2c3ae524f84676f26e78bf74581f76d91e23852e5ce",
+  "executeArtifactHash": "0x7d4a79eac2b928e4c2b747ee409fc189504f2ec2a56acbe165105de2a4e4eafb",
+  "proposalId": "53157830901067299467529326670610865264746812708370915092221485481106446599323",
+  "timelockOperationId": "0x976129140800af6782a3c4ca7c82eca0e3b8e84f11cbb55cbea363c6554e9849",
+  "walletConfirmed": true,
+  "receiptVerified": false,
+  "proposalExecutedEventVerified": false,
+  "votingPeriodReadbackVerified": false,
+  "privateKeyReceived": false,
+  "signerCustody": false,
+  "broadcastCapability": false,
+  "assetExecutionAuthorized": false
+}
