@@ -36,6 +36,19 @@ export type LiveGovernanceHoldProposalInput = {
     governorTimelock: string;
     proposalThreshold: string;
     deployerVotes: string;
+    currentVotingPeriodBlocks?: string;
+  };
+  attempt?: {
+    attemptNumber: number;
+    previousProposalArtifactHash: string;
+    previousProposalId: string;
+    previousTransactionHash: string;
+    previousStatus: "PROPOSAL_DEFEATED";
+    previousFailureReason: "NO_VOTES_BEFORE_DEADLINE";
+    recoveryExecuteArtifactHash: string;
+    recoveryTransactionHash: string;
+    recoveryStatus: "RECOVERY_EXECUTED";
+    recoveredVotingPeriodBlocks: number;
   };
   simulation: {
     from: string;
@@ -86,6 +99,21 @@ export function buildLiveGovernanceHoldProposal(input: LiveGovernanceHoldProposa
     || !/^[1-9][0-9]*$/.test(input.readback.deployerVotes)
   ) fail("GOVERNANCE_HOLD_CONTROL_READBACK_INVALID");
 
+  const attempt = input.attempt;
+  if (attempt && (
+    attempt.attemptNumber !== 2
+    || !/^0x[0-9a-f]{64}$/i.test(attempt.previousProposalArtifactHash)
+    || !/^[1-9][0-9]*$/.test(attempt.previousProposalId)
+    || !/^0x[0-9a-f]{64}$/i.test(attempt.previousTransactionHash)
+    || attempt.previousStatus !== "PROPOSAL_DEFEATED"
+    || attempt.previousFailureReason !== "NO_VOTES_BEFORE_DEADLINE"
+    || !/^0x[0-9a-f]{64}$/i.test(attempt.recoveryExecuteArtifactHash)
+    || !/^0x[0-9a-f]{64}$/i.test(attempt.recoveryTransactionHash)
+    || attempt.recoveryStatus !== "RECOVERY_EXECUTED"
+    || attempt.recoveredVotingPeriodBlocks !== 240
+    || input.readback.currentVotingPeriodBlocks !== "240"
+  )) fail("GOVERNANCE_HOLD_RETRY_LINEAGE_INVALID");
+
   const actionCalldata = guardInterface.encodeFunctionData("setPaused", [true]);
   if (
     getAddress(input.simulation.from).toLowerCase() !== contracts.timelock
@@ -96,6 +124,7 @@ export function buildLiveGovernanceHoldProposal(input: LiveGovernanceHoldProposa
     || !/^[1-9][0-9]*$/.test(input.simulation.gasEstimate)
   ) fail("GOVERNANCE_HOLD_SIMULATION_INVALID");
 
+  const attemptIdentity = attempt ? hashValue(attempt) : null;
   const title = "Ratify evidence-bound HOLD and maintain TreasuryGuard pause";
   const description = [
     title,
@@ -104,6 +133,13 @@ export function buildLiveGovernanceHoldProposal(input: LiveGovernanceHoldProposa
     `Decision output hash: ${decision.outputHash}`,
     `Evidence snapshot: ${snapshot.id}`,
     `Evidence manifest hash: ${snapshot.manifestHash}`,
+    ...(attempt ? [
+      `Attempt: ${attempt.attemptNumber}`,
+      `Attempt identity: ${attemptIdentity}`,
+      `Previous defeated proposal: ${attempt.previousProposalId}`,
+      `Voting-period recovery transaction: ${attempt.recoveryTransactionHash}`,
+      `Recovered voting period: ${attempt.recoveredVotingPeriodBlocks} blocks`,
+    ] : []),
     "Action: keep TreasuryGuard paused (setPaused(true))",
     "Native value: 0",
     "This proposal records a deterministic withholding outcome; it does not move treasury assets.",
@@ -115,7 +151,7 @@ export function buildLiveGovernanceHoldProposal(input: LiveGovernanceHoldProposa
   const proposeCalldata = governorInterface.encodeFunctionData("propose", [targets, values.map(BigInt), calldatas, description]);
 
   const core = {
-    schemaVersion: "aeos.live-governance-hold-proposal.v1",
+    schemaVersion: attempt ? "aeos.live-governance-hold-proposal.v2" : "aeos.live-governance-hold-proposal.v1",
     status: "PROPOSAL_REQUEST_PREPARED",
     recordedAt: new Date(input.recordedAt).toISOString(),
     tenantBinding: { mode: "SERVER_RESOLVED", commitment: input.tenantCommitment, rawOrganizationIdDisclosed: false },
@@ -127,6 +163,7 @@ export function buildLiveGovernanceHoldProposal(input: LiveGovernanceHoldProposa
       evidenceSnapshotId: snapshot.id,
       evidenceManifestHash: snapshot.manifestHash,
       evidenceIds: [...snapshot.evidenceIds].sort(),
+      ...(attempt ? { attempt: { ...attempt, attemptIdentity } } : {}),
     },
     chain: input.chain,
     contracts,
@@ -186,4 +223,3 @@ export function buildLiveGovernanceHoldProposal(input: LiveGovernanceHoldProposa
   };
   return { ...core, artifactHash: hashValue(core) };
 }
-

@@ -4,8 +4,8 @@ const { dirname, resolve } = require("node:path");
 
 const HOST = "127.0.0.1";
 const PORT = Number(process.env.AEOS_GOVERNANCE_PROPOSAL_HANDOFF_PORT || 4185);
-const HANDOFF_PATH = resolve(process.env.AEOS_GOVERNANCE_PROPOSAL_HANDOFF_PATH || resolve(__dirname, "../reports/live-demo/p0-1-governance-hold-proposal.json"));
-const SUBMISSION_PATH = resolve(process.env.AEOS_GOVERNANCE_PROPOSAL_SUBMISSION_PATH || resolve(__dirname, "../reports/live-demo/p0-1-governance-proposal-wallet-submission.json"));
+const HANDOFF_PATH = resolve(process.env.AEOS_GOVERNANCE_PROPOSAL_HANDOFF_PATH || resolve(__dirname, "../reports/live-demo/p0-1-governance-hold-proposal-attempt-2.json"));
+const SUBMISSION_PATH = resolve(process.env.AEOS_GOVERNANCE_PROPOSAL_SUBMISSION_PATH || resolve(__dirname, "../reports/live-demo/p0-1-governance-proposal-attempt-2-wallet-submission.json"));
 const EXPECTED_CHAIN_ID = 102031;
 const EXPECTED_FROM = "0x444d510728fb8072351cb5d0e88432e6a8501dfa";
 const EXPECTED_GOVERNOR = "0xfe90b087fae789e043514b6ac3dbd7fd2d970268";
@@ -14,13 +14,17 @@ const EXPECTED_GUARD = "0x3c0cb960f32e6a222149a664a552ffc23e92c628";
 function readHandoff() {
   const value = JSON.parse(readFileSync(HANDOFF_PATH, "utf8"));
   const tx = value.unsignedTransaction;
-  if (value.schemaVersion !== "aeos.live-governance-hold-proposal.v1" || value.status !== "PROPOSAL_REQUEST_PREPARED") throw new Error("Unsupported live governance Proposal handoff");
+  if (!["aeos.live-governance-hold-proposal.v1", "aeos.live-governance-hold-proposal.v2"].includes(value.schemaVersion) || value.status !== "PROPOSAL_REQUEST_PREPARED") throw new Error("Unsupported live governance Proposal handoff");
   if (value.lineage?.decisionReviewOutcome !== "APPROVED" || value.proposal?.proposalType !== "SECURITY_HOLD" || value.proposal?.semanticConsistencyVerified !== true) throw new Error("Governance Proposal lineage or semantics invalid");
   if (value.truthBoundary?.decisionRecommendation !== "HOLD" || value.truthBoundary?.guardAlreadyPaused !== true || value.truthBoundary?.proposedEffect !== "MAINTAIN_PAUSE" || value.truthBoundary?.treasuryAssetMovement !== false || value.truthBoundary?.onchainProposalCreated !== false) throw new Error("Governance Proposal truth boundary invalid");
   if (value.simulation?.callSucceeded !== true || value.simulation?.assetDelta !== "NONE" || value.simulation?.assetExecutionAuthorized !== false) throw new Error("Governance Proposal simulation invalid");
   if (value.contracts?.treasuryGuard?.toLowerCase() !== EXPECTED_GUARD || value.proposal?.action?.target?.toLowerCase() !== EXPECTED_GUARD || value.proposal?.action?.paused !== true || value.proposal?.action?.value !== "0") throw new Error("Governance HOLD action invalid");
   if (value.controls?.signed || value.controls?.submitted || value.controls?.signerCustody || value.controls?.broadcastCapability || value.controls?.assetExecutionAuthorized !== false) throw new Error("Governance Proposal authority boundary invalid");
   if (tx?.chainId !== EXPECTED_CHAIN_ID || tx?.from?.toLowerCase() !== EXPECTED_FROM || tx?.to?.toLowerCase() !== EXPECTED_GOVERNOR || tx?.value !== "0x0" || !/^0x[0-9a-f]+$/i.test(tx?.data || "") || !/^0x[0-9a-f]{64}$/i.test(tx?.dataHash || "")) throw new Error("Governance Proposal transaction invalid");
+  if (value.schemaVersion === "aeos.live-governance-hold-proposal.v2") {
+    const attempt = value.lineage?.attempt;
+    if (attempt?.attemptNumber !== 2 || attempt?.previousStatus !== "PROPOSAL_DEFEATED" || attempt?.previousFailureReason !== "NO_VOTES_BEFORE_DEADLINE" || attempt?.recoveryStatus !== "RECOVERY_EXECUTED" || attempt?.recoveredVotingPeriodBlocks !== 240 || value.safetyReadback?.currentVotingPeriodBlocks !== "240" || !/^0x[0-9a-f]{64}$/i.test(attempt?.attemptIdentity || "")) throw new Error("Governance Proposal retry lineage invalid");
+  }
   return value;
 }
 
@@ -29,7 +33,7 @@ function recordSubmission(payload, handoff) {
   if (!/^0x[0-9a-fA-F]{64}$/.test(payload.transactionHash || "")) throw new Error("Invalid transaction hash");
   if ((payload.from || "").toLowerCase() !== tx.from.toLowerCase()) throw new Error("Submission wallet mismatch");
   const record = {
-    schemaVersion: "aeos.live-governance-proposal-submission.v1",
+    schemaVersion: handoff.schemaVersion === "aeos.live-governance-hold-proposal.v2" ? "aeos.live-governance-proposal-submission.v2" : "aeos.live-governance-proposal-submission.v1",
     status: "PROPOSAL_WALLET_SUBMITTED",
     recordedAt: new Date().toISOString(),
     chainId: tx.chainId,
@@ -43,6 +47,12 @@ function recordSubmission(payload, handoff) {
     decisionId: handoff.lineage.decisionId,
     decisionOutputHash: handoff.lineage.decisionOutputHash,
     calldataHash: tx.dataHash,
+    ...(handoff.lineage.attempt ? {
+      attemptNumber: handoff.lineage.attempt.attemptNumber,
+      attemptIdentity: handoff.lineage.attempt.attemptIdentity,
+      previousProposalId: handoff.lineage.attempt.previousProposalId,
+      recoveryTransactionHash: handoff.lineage.attempt.recoveryTransactionHash,
+    } : {}),
     walletConfirmed: true,
     receiptVerified: false,
     proposalCreatedEventObserved: false,

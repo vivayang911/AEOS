@@ -46,5 +46,30 @@ describe("live governance HOLD proposal", () => {
     expect(() => buildLiveGovernanceHoldProposal({ ...fixture(), readback: { ...fixture().readback, guardPaused: false } })).toThrow("GOVERNANCE_HOLD_CONTROL_READBACK_INVALID");
     expect(() => buildLiveGovernanceHoldProposal({ ...fixture(), simulation: { ...fixture().simulation, callSucceeded: false } })).toThrow("GOVERNANCE_HOLD_SIMULATION_INVALID");
   });
+  it("creates a new proposal identity only from verified recovery lineage", () => {
+    const first = buildLiveGovernanceHoldProposal(fixture());
+    const retryInput = fixture();
+    retryInput.readback.currentVotingPeriodBlocks = "240";
+    retryInput.attempt = {
+      attemptNumber: 2,
+      previousProposalArtifactHash: h("e"),
+      previousProposalId: first.proposal.proposalId,
+      previousTransactionHash: h("f"),
+      previousStatus: "PROPOSAL_DEFEATED",
+      previousFailureReason: "NO_VOTES_BEFORE_DEADLINE",
+      recoveryExecuteArtifactHash: h("1"),
+      recoveryTransactionHash: h("2"),
+      recoveryStatus: "RECOVERY_EXECUTED",
+      recoveredVotingPeriodBlocks: 240,
+    };
+    const retry = buildLiveGovernanceHoldProposal(retryInput);
+    expect(retry).toMatchObject({
+      schemaVersion: "aeos.live-governance-hold-proposal.v2",
+      lineage: { attempt: { attemptNumber: 2, recoveredVotingPeriodBlocks: 240 } },
+      safetyReadback: { currentVotingPeriodBlocks: "240" },
+    });
+    expect(retry.proposal.proposalId).not.toBe(first.proposal.proposalId);
+    expect(retry.proposal.description).toContain("Attempt identity:");
+    expect(() => buildLiveGovernanceHoldProposal({ ...retryInput, readback: { ...retryInput.readback, currentVotingPeriodBlocks: "8" } })).toThrow("GOVERNANCE_HOLD_RETRY_LINEAGE_INVALID");
+  });
 });
-

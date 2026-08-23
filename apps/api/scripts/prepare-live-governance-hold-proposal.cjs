@@ -9,8 +9,11 @@ const { buildLiveGovernanceHoldProposal } = require("../dist/live-governance-hol
 
 const rpcUrl = process.env.CREDITCOIN_TESTNET_RPC_URL || "https://rpc.cc3-testnet.creditcoin.network";
 const decisionId = process.env.LIVE_GOVERNANCE_DECISION_ID || "decision_a9a37c5bd3ff43c68f5b0af32a13b8ed";
-const outputPath = resolve(process.env.LIVE_GOVERNANCE_HOLD_PROPOSAL_OUTPUT || resolve(__dirname, "../../../reports/live-demo/p0-1-governance-hold-proposal.json"));
+const outputPath = resolve(process.env.LIVE_GOVERNANCE_HOLD_PROPOSAL_OUTPUT || resolve(__dirname, "../../../reports/live-demo/p0-1-governance-hold-proposal-attempt-2.json"));
 const finalityReport = require(resolve(__dirname, "../../../reports/deployment/governance-stack-finality-verification.json"));
+const previousProposal = require(resolve(__dirname, "../../../reports/live-demo/p0-1-governance-hold-proposal.json"));
+const previousFinality = require(resolve(__dirname, "../../../reports/live-demo/p0-1-governance-proposal-finality.json"));
+const recoveryFinality = require(resolve(__dirname, "../../../reports/live-demo/p0-1-governance-recovery-execute-finality.json"));
 const deployer = getAddress(process.env.LIVE_GOVERNANCE_DEPLOYER || "0x444D510728FB8072351cB5d0E88432e6a8501DFA").toLowerCase();
 const guardInterface = new Interface(["function setPaused(bool value)"]);
 const canonical = (value) => Array.isArray(value) ? `[${value.map(canonical).join(",")}]` : value && typeof value === "object" ? `{${Object.entries(value).sort(([a], [b]) => a.localeCompare(b)).map(([key, item]) => `${JSON.stringify(key)}:${canonical(item)}`).join(",")}}` : JSON.stringify(value);
@@ -56,13 +59,14 @@ async function main() {
     const block = await provider.getBlock(safeBlockNumber);
     if (!block?.hash) throw new Error("GOVERNANCE_HOLD_SAFE_BLOCK_UNAVAILABLE");
     const { addresses } = finalityReport;
-    const [codes, guardPaused, guardGovernance, governorTimelock, proposalThreshold, deployerVotes] = await Promise.all([
+    const [codes, guardPaused, guardGovernance, governorTimelock, proposalThreshold, deployerVotes, currentVotingPeriodBlocks] = await Promise.all([
       Promise.all(Object.values(addresses).map((address) => provider.getCode(address, safeBlockNumber))),
       new Contract(addresses.treasuryGuard, ["function paused() view returns(bool)"], provider).paused({ blockTag: safeBlockNumber }),
       new Contract(addresses.treasuryGuard, ["function governance() view returns(address)"], provider).governance({ blockTag: safeBlockNumber }),
       new Contract(addresses.governor, ["function timelock() view returns(address)"], provider).timelock({ blockTag: safeBlockNumber }),
       new Contract(addresses.governor, ["function proposalThreshold() view returns(uint256)"], provider).proposalThreshold({ blockTag: safeBlockNumber }),
       new Contract(addresses.token, ["function getVotes(address) view returns(uint256)"], provider).getVotes(deployer, { blockTag: safeBlockNumber }),
+      new Contract(addresses.governor, ["function votingPeriod() view returns(uint256)"], provider).votingPeriod({ blockTag: safeBlockNumber }),
     ]);
     const actionData = guardInterface.encodeFunctionData("setPaused", [true]);
     const simulationRequest = { from: addresses.timelock, to: addresses.treasuryGuard, value: "0x0", data: actionData };
@@ -78,7 +82,19 @@ async function main() {
       tenantCommitment: commitment({ organizationId: decision.organization_id }),
       chain: { chainId: 102031, blockNumber: safeBlockNumber, blockHash: block.hash.toLowerCase(), confirmations: 2 },
       contracts: { deployer, token: addresses.token, timelock: addresses.timelock, governor: addresses.governor, treasuryGuard: addresses.treasuryGuard },
-      readback: { allContractsHaveCode: codes.every((code) => code !== "0x"), guardPaused, guardGovernance, governorTimelock, proposalThreshold: proposalThreshold.toString(), deployerVotes: deployerVotes.toString() },
+      readback: { allContractsHaveCode: codes.every((code) => code !== "0x"), guardPaused, guardGovernance, governorTimelock, proposalThreshold: proposalThreshold.toString(), deployerVotes: deployerVotes.toString(), currentVotingPeriodBlocks: currentVotingPeriodBlocks.toString() },
+      attempt: {
+        attemptNumber: 2,
+        previousProposalArtifactHash: previousProposal.artifactHash,
+        previousProposalId: previousFinality.proposalId,
+        previousTransactionHash: previousFinality.transactionHash,
+        previousStatus: previousFinality.status,
+        previousFailureReason: previousFinality.failureReason,
+        recoveryExecuteArtifactHash: recoveryFinality.executeArtifactHash,
+        recoveryTransactionHash: recoveryFinality.transaction.hash,
+        recoveryStatus: recoveryFinality.status,
+        recoveredVotingPeriodBlocks: recoveryFinality.governance.votingPeriodBlocks,
+      },
       simulation: { from: addresses.timelock, to: addresses.treasuryGuard, value: "0x0", data: actionData, callSucceeded: true, gasEstimate: gasEstimate.toString() },
     });
     writeFileSync(outputPath, `${JSON.stringify(artifact, null, 2)}\n`, { flag: "wx" });
