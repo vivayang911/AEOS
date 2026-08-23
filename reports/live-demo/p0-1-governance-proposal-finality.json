@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "aeos.live-governance-proposal-finality.v1",
+  "status": "PROPOSAL_DEFEATED",
+  "proposalCreationVerified": true,
+  "lifecyclePassed": false,
+  "failureReason": "NO_VOTES_BEFORE_DEADLINE",
+  "transactionHash": "0x37b0fe084a0b662ffcff81aabdb6924f600a58311d78de1f5299f544e3742d02",
+  "proposalArtifactHash": "0x07a7849ce233f9b0049cb8425435bdfe3089a09b293317a90365d5bb517220f0",
+  "proposalId": "97258603134256291446745381096164968763024928735538870153082508137619042349397",
+  "chainId": 102031,
+  "blockNumber": 5360406,
+  "blockHash": "0xe95499ee46bf9078bc13f06c30f305ac34556baccc40da303864199eef2a891a",
+  "confirmations": 127,
+  "governance": {
+    "state": "Defeated",
+    "stateCode": 3,
+    "snapshotBlock": "5360407",
+    "deadlineBlock": "5360415",
+    "votes": {
+      "against": "0",
+      "for": "0",
+      "abstain": "0"
+    },
+    "totalVotes": "0"
+  },
+  "checks": {
+    "canonicalInclusion": true,
+    "exactSender": true,
+    "exactGovernor": true,
+    "zeroValue": true,
+    "exactCalldata": true,
+    "exactProposalCreatedEvent": true
+  },
+  "controls": {
+    "privateKeyReceived": false,
+    "signerCustody": false,
+    "broadcastCapability": false,
+    "assetExecutionAuthorized": false
+  },
+  "verifiedAt": "2026-08-23T14:39:08.853Z",
+  "truthBoundary": {
+    "proposalTransactionSucceeded": true,
+    "proposalCreatedEventObserved": true,
+    "voteOrQuorumPassed": false,
+    "queued": false,
+    "executed": false,
+    "fullGovernanceLifecycleComplete": false
+  }
+}
