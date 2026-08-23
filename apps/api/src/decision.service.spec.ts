@@ -61,6 +61,22 @@ describe("DecisionService",()=>{
     client.query.mockResolvedValueOnce({rowCount:0,rows:[]});
     await expect(new DecisionService(db,evidenceService()).review("decision_other",{organizationId:"org_a",actorId:"human",rationale:"Review decision",outcome:"REJECTED"})).rejects.toBeInstanceOf(NotFoundException);
   });
+
+  it("lists only the server-resolved organization with a stable cursor and zero authority",async()=>{
+    const rows=[
+      {id:"decision_2",status:"REVIEW_REQUIRED",objective:"Review two",output_hash:"0x2",evidence_snapshot_id:"snap_2",manifest_hash:"0xm2",recommendation:"HOLD",action_count:"0",created_at:"2026-08-23T02:00:00.000Z",reviewed_at:null},
+      {id:"decision_1",status:"APPROVED",objective:"Review one",output_hash:"0x1",evidence_snapshot_id:"snap_1",manifest_hash:"0xm1",recommendation:"HOLD",action_count:"0",created_at:"2026-08-23T01:00:00.000Z",reviewed_at:"2026-08-23T01:30:00.000Z"},
+    ];
+    const listDb={query:jest.fn().mockResolvedValue({rowCount:2,rows})} as any;
+    const result=await new DecisionService(listDb,evidenceService()).list("org_session",{status:"REVIEW_REQUIRED",limit:1});
+    expect(listDb.query).toHaveBeenCalledWith(expect.stringContaining("d.organization_id=$1"),["org_session","REVIEW_REQUIRED",null,null,2]);
+    expect(result.items).toEqual([expect.objectContaining({id:"decision_2",status:"REVIEW_REQUIRED",actionCount:0,assetExecutionAuthorized:false})]);
+    expect(result.nextCursor).toEqual(expect.any(String));
+  });
+
+  it("rejects a malformed historical Decision cursor",async()=>{
+    await expect(new DecisionService({} as any,evidenceService()).list("org_session",{limit:20,cursor:"not-a-cursor"})).rejects.toThrow("Invalid decision cursor");
+  });
 });
 
 describe("DecisionService async jobs",()=>{

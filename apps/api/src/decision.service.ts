@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import { PoolClient } from "pg";
 import { DatabaseService } from "./database.service";
 import { EvidenceService } from "./evidence.service";
-import { CreateDecisionDto, ReviewDecisionDto } from "./decision.dto";
+import { CreateDecisionDto, DecisionQueryDto, ReviewDecisionDto } from "./decision.dto";
 import { advisoryTools, DecisionOutputValidationError, decisionRoles, hashValue, minimumEightAgentBudget, roleToolCallUsage, validateDecisionOutput } from "./decision-engine";
 import { ADVISORY_PROVIDER, AdvisoryProvider, AdvisoryProviderTimeoutError, DeterministicMockAdvisoryProvider, FrozenAdvisoryInput, immutableProviderInput } from "./advisory-provider";
 import { KnowledgeService } from "./knowledge.service";
@@ -95,6 +95,22 @@ export class DecisionService implements OnModuleInit {
     const response:any=this.mapJob(result.rows[0]);
     if(result.rows[0].decision_id)response.decision=await this.get(org,result.rows[0].decision_id);
     return response;
+  }
+
+  async list(org:string,query:DecisionQueryDto){
+    const cursor=query.cursor?this.decodeCursor(query.cursor):null;
+    const result=await this.db.query<any>(`SELECT d.id,d.status,d.objective,d.output_hash,d.evidence_snapshot_id,d.created_at,d.reviewed_at,
+      d.recommendation->>'recommendation' AS recommendation,
+      COALESCE(jsonb_array_length(d.recommendation->'actions'),0) AS action_count,
+      s.manifest_hash
+      FROM decisions d JOIN evidence_snapshots s
+        ON s.organization_id=d.organization_id AND s.id=d.evidence_snapshot_id
+      WHERE d.organization_id=$1
+        AND ($2::text IS NULL OR d.status=$2)
+        AND ($3::timestamptz IS NULL OR (d.created_at,d.id)<($3::timestamptz,$4::text))
+      ORDER BY d.created_at DESC,d.id DESC LIMIT $5`,[org,query.status??null,cursor?.createdAt??null,cursor?.id??null,query.limit+1]);
+    const hasMore=result.rows.length>query.limit,rows=hasMore?result.rows.slice(0,query.limit):result.rows,last=rows.at(-1);
+    return {items:rows.map(row=>({id:row.id,status:row.status,objective:row.objective,recommendation:row.recommendation,actionCount:Number(row.action_count),evidenceSnapshotId:row.evidence_snapshot_id,evidenceManifestHash:row.manifest_hash,outputHash:row.output_hash,createdAt:new Date(row.created_at).toISOString(),reviewedAt:row.reviewed_at?new Date(row.reviewed_at).toISOString():null,assetExecutionAuthorized:false})),nextCursor:hasMore&&last?Buffer.from(JSON.stringify({createdAt:new Date(last.created_at).toISOString(),id:last.id})).toString("base64url"):null};
   }
 
   async retryJob(jobId:string,org:string,actorId:string){
@@ -209,6 +225,7 @@ export class DecisionService implements OnModuleInit {
   }
 
   private mapJob(row:any){return {jobId:row.id,organizationId:row.organization_id,status:row.status,currentStage:row.current_stage,progress:row.progress,attempts:row.attempts,maxAttempts:row.max_attempts,decisionId:row.decision_id??null,lastErrorCode:row.last_error_code??null,inputHash:row.input_hash,createdAt:row.created_at?new Date(row.created_at).toISOString():undefined,startedAt:row.started_at?new Date(row.started_at).toISOString():null,completedAt:row.completed_at?new Date(row.completed_at).toISOString():null}}
+  private decodeCursor(cursor:string):{createdAt:string;id:string}{try{const value=JSON.parse(Buffer.from(cursor,"base64url").toString("utf8"));if(typeof value.id!=="string"||typeof value.createdAt!=="string"||Number.isNaN(Date.parse(value.createdAt)))throw new Error();return value}catch{throw new BadRequestException("Invalid decision cursor")}}
   private mapExistingDecision(row:any){return {id:row.id,organizationId:row.organization_id,status:row.status,provider:row.provider,policyVersionId:row.policy_version_id,evidenceSnapshotId:row.evidence_snapshot_id,evidenceManifestHash:row.manifest_hash,retrievalBundleHash:row.retrieval_bundle_hash,recommendation:row.recommendation,inputHash:row.input_hash,outputHash:row.output_hash}}
 
   private async freezeRetrieval(org:string,objective:string,requesterRole="TREASURY_COMMITTEE"){

@@ -1,5 +1,5 @@
-import { Body,Controller,Get,Headers,HttpCode,Param,Post,UseGuards } from "@nestjs/common";
-import { CreateDecisionDto, RetryDecisionJobDto, ReviewDecisionDto } from "./decision.dto";
+import { Body,Controller,Get,Headers,HttpCode,Param,Post,Query,UseGuards } from "@nestjs/common";
+import { CreateDecisionDto, DecisionQueryDto, RetryDecisionJobDto, ReviewDecisionDto } from "./decision.dto";
 import { DecisionService } from "./decision.service";
 import { AuthContext } from "./auth.service";
 import { activeOrganizationId, CurrentAuth, ORGANIZATION_ROLES, RequireRoles, SessionGuard } from "./session.guard";
@@ -10,6 +10,7 @@ import { IdempotentCommand } from "./idempotency.interceptor";
 export class DecisionController {
   constructor(private readonly decisions:DecisionService) {}
   @Post() @HttpCode(202) @RequireRoles("ADMIN","TREASURY_COMMITTEE","REVIEWER") create(@CurrentAuth()auth:AuthContext,@Body() body:CreateDecisionDto,@Headers("idempotency-key") idempotencyKey?:string){return this.decisions.enqueue({...body,organizationId:activeOrganizationId(auth)},idempotencyKey,auth.role!)}
+  @Get() list(@CurrentAuth()auth:AuthContext,@Query()query:DecisionQueryDto){return this.decisions.list(activeOrganizationId(auth),query)}
   @Get(":id") get(@Param("id") id:string,@CurrentAuth()auth:AuthContext){return this.decisions.get(activeOrganizationId(auth),id)}
   @Post(":id/review") @RequireRoles("ADMIN","TREASURY_COMMITTEE","REVIEWER") @IdempotentCommand() review(@Param("id") id:string,@CurrentAuth()auth:AuthContext,@Body() body:ReviewDecisionDto){return this.decisions.review(id,{...body,organizationId:activeOrganizationId(auth),actorId:auth.userId})}
 }

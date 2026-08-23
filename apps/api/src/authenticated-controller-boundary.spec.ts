@@ -8,11 +8,13 @@ const auth = { activeOrganizationId: "org_session", userId: "user_session", wall
 
 describe("authenticated controller authority boundary", () => {
   it("overrides caller-controlled organization and actor fields", async () => {
-    const decisions = { enqueue: jest.fn(), review: jest.fn() } as any;
+    const decisions = { enqueue: jest.fn(), list:jest.fn(), review: jest.fn() } as any;
     const decisionController = new DecisionController(decisions);
     await decisionController.create(auth, { organizationId: "org_attacker", objective: "Review treasury evidence", evidenceIds: ["ev_1"] }, "key_1");
+    await decisionController.list(auth,{status:"REVIEW_REQUIRED",limit:20});
     await decisionController.review("decision_1", auth, { organizationId: "org_attacker", actorId: "attacker", rationale: "Reviewed evidence", outcome: "APPROVED" });
     expect(decisions.enqueue).toHaveBeenCalledWith(expect.objectContaining({ organizationId: "org_session" }), "key_1","ADMIN");
+    expect(decisions.list).toHaveBeenCalledWith("org_session",{status:"REVIEW_REQUIRED",limit:20});
     expect(decisions.review).toHaveBeenCalledWith("decision_1", expect.objectContaining({ organizationId: "org_session", actorId: "user_session" }));
 
     const policies = { activate: jest.fn() } as any;
