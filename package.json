@@ -53,6 +53,8 @@
     "prepare:live-governance-voting-period-recovery": "npm run prepare:live-governance-voting-period-recovery -w @aeos/api",
     "start:live-governance-proposal-wallet-handoff": "node scripts/live-governance-proposal-wallet-handoff-server.cjs",
     "test:live-governance-proposal-wallet-handoff": "node --test scripts/live-governance-proposal-wallet-handoff-server.test.cjs",
+    "start:live-governance-recovery-wallet-handoff": "node scripts/live-governance-recovery-wallet-handoff-server.cjs",
+    "test:live-governance-recovery-wallet-handoff": "node --test scripts/live-governance-recovery-wallet-handoff-server.test.cjs",
     "start:governance-stack-wallet-handoff": "node scripts/governance-stack-wallet-handoff-server.cjs",
     "test:governance-stack-wallet-handoff": "node --test scripts/governance-stack-wallet-handoff-server.test.cjs",
     "verify:governance-stack-finality": "node scripts/verify-governance-stack-finality.cjs",
