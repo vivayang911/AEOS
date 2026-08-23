@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "aeos.live-attestcoin-step.v1",
+  "step": 7,
+  "status": "TRANSACTION_VERIFIED",
+  "provider": "attestcoin-usc-sdk-0.18.0",
+  "recordedAt": "2026-08-23T03:08:45.637Z",
+  "verificationRequestHash": "0xcdab5df7712134eb0248d8aaf2b34cf48e58189cd3533877fe410848f88b3b3d",
+  "transactionHash": "0x1011f237c21733a59472b82c7a14c01e79d99e23ffb3fba1ce4905655a4fb860",
+  "receipt": {
+    "chainId": 102031,
+    "transactionHash": "0x1011f237c21733a59472b82c7a14c01e79d99e23ffb3fba1ce4905655a4fb860",
+    "blockNumber": 5357740,
+    "blockHash": "0xcc999f177e3313589870b6ecb82729c9f0a501cbb861b33113f2fa8fa3401aa4",
+    "from": "0x444d510728fb8072351cb5d0e88432e6a8501dfa",
+    "to": "0x0000000000000000000000000000000000000fd2",
+    "status": 1,
+    "confirmations": 34,
+    "canonicalBlockVerified": true,
+    "calldataVerified": true,
+    "zeroValueVerified": true,
+    "transactionVerifiedEvent": true,
+    "transactionVerified": {
+      "chainKey": 1,
+      "height": 11543014,
+      "transactionIndex": 6
+    }
+  },
+  "controls": {
+    "walletConfirmed": true,
+    "receiptVerified": true,
+    "canonicalBlockVerified": true,
+    "exactCalldataVerified": true,
+    "zeroValueVerified": true,
+    "transactionVerifiedEventObserved": true,
+    "immutableEvidenceCreated": false,
+    "signerCustody": false,
+    "broadcastCapability": false,
+    "assetExecutionAuthorized": false
+  },
+  "truthBoundary": {
+    "verifiedClaim": "SOURCE_TRANSACTION_INCLUSION",
+    "payloadEconomicTruthVerified": false,
+    "organizationEvidenceImportStatus": "PENDING_SERVER_RESOLVED_ORGANIZATION_CONTEXT"
+  }
+}

@@ -40,6 +40,54 @@ describe("Attestcoin adapter guardrails", () => {
     expect(adapter.configuration()).toEqual(expect.objectContaining({ proofBuilder: PROOF_BUILDER_URL, sourceSupportAuthority: "CHAIN_INFO_PRECOMPILE_READ" }));
   });
 
+  it("accepts only a canonical, confirmed verifyAndEmit receipt with the matching event", async () => {
+    const adapter = new UscAttestcoinAdapter("https://sepolia.invalid") as any;
+    const request = buildUscVerificationRequest(proof, "0x444D510728FB8072351cB5d0E88432e6a8501DFA");
+    const txHash = `0x${"55".repeat(32)}`;
+    const blockHash = `0x${"66".repeat(32)}`;
+    const eventInterface = new Interface(["event TransactionVerified(uint64 indexed chainKey,uint64 indexed height,uint64 transactionIndex)"]);
+    const event = eventInterface.encodeEventLog(eventInterface.getEvent("TransactionVerified")!, [1, 123, 0]);
+    const receipt = {
+      hash: txHash,
+      blockNumber: 100,
+      blockHash,
+      from: request.from,
+      to: request.to,
+      status: 1,
+      logs: [{ address: request.to, topics: event.topics, data: event.data }],
+    };
+    adapter.creditcoin = {
+      getNetwork: jest.fn().mockResolvedValue({ chainId: BigInt(CREDITCOIN_TESTNET_CHAIN_ID) }),
+      getTransactionReceipt: jest.fn().mockResolvedValue(receipt),
+      getTransaction: jest.fn().mockResolvedValue({ from: request.from, to: request.to, data: request.data, value: 0n }),
+      getBlockNumber: jest.fn().mockResolvedValue(102),
+      getBlock: jest.fn().mockResolvedValue({ hash: blockHash }),
+    };
+
+    await expect(adapter.inspectVerificationTransaction(txHash, request)).resolves.toEqual(expect.objectContaining({
+      transactionHash: txHash,
+      confirmations: 3,
+      canonicalBlockVerified: true,
+      calldataVerified: true,
+      zeroValueVerified: true,
+      transactionVerifiedEvent: true,
+      transactionVerified: { chainKey: 1, height: 123, transactionIndex: 0 },
+    }));
+
+    adapter.creditcoin.getTransaction.mockResolvedValueOnce({ from: request.from, to: request.to, data: `${request.data.slice(0, -2)}${request.data.endsWith("00") ? "01" : "00"}`, value: 0n });
+    await expect(adapter.inspectVerificationTransaction(txHash, request)).rejects.toThrow("VERIFICATION_TRANSACTION_MISMATCH");
+
+    adapter.creditcoin.getBlockNumber.mockResolvedValueOnce(100);
+    await expect(adapter.inspectVerificationTransaction(txHash, request)).rejects.toThrow("VERIFICATION_TRANSACTION_NOT_FINALIZED");
+
+    adapter.creditcoin.getBlock.mockResolvedValueOnce({ hash: `0x${"77".repeat(32)}` });
+    await expect(adapter.inspectVerificationTransaction(txHash, request)).rejects.toThrow("VERIFICATION_CANONICAL_BLOCK_MISMATCH");
+
+    const wrongEvent = eventInterface.encodeEventLog(eventInterface.getEvent("TransactionVerified")!, [1, 124, 0]);
+    adapter.creditcoin.getTransactionReceipt.mockResolvedValueOnce({ ...receipt, logs: [{ address: request.to, topics: wrongEvent.topics, data: wrongEvent.data }] });
+    await expect(adapter.inspectVerificationTransaction(txHash, request)).rejects.toThrow("VERIFICATION_EVENT_MISSING_OR_MISMATCH");
+  });
+
   it("rejects unknown adapter modes instead of silently enabling network access", () => {
     const previous = process.env.ATTESTCOIN_ADAPTER;
     process.env.ATTESTCOIN_ADAPTER = "unsafe";

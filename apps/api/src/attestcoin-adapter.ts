@@ -23,7 +23,7 @@ export type UscProofSnapshot = {
   cached: boolean; generatedAt: string;
 };
 export type WalletTransactionRequest = { chainId: number; from: string; to: string; data: string; value: "0x0" };
-export type VerificationReceiptSnapshot = { chainId: number; transactionHash: string; blockNumber: number; blockHash: string; from: string; to: string; status: number; transactionVerifiedEvent: boolean };
+export type VerificationReceiptSnapshot = { chainId: number; transactionHash: string; blockNumber: number; blockHash: string; from: string; to: string; status: number; confirmations: number; canonicalBlockVerified: true; calldataVerified: true; zeroValueVerified: true; transactionVerifiedEvent: true; transactionVerified: { chainKey: number; height: number; transactionIndex: number } };
 export type SourceChainStatus = {
   schemaVersion: "attestcoin.source-chain-status.v1"; observedOnChain: boolean; targetChainId: number;
   chainInfoPrecompile: string; expectedSourceChainId: number; expectedSourceChainKey: number;
@@ -111,14 +111,22 @@ export class UscAttestcoinAdapter implements AttestcoinAdapter {
     return buildUscVerificationRequest(proof, requesterWallet);
   }
   async inspectVerificationTransaction(transactionHash: string, expected: WalletTransactionRequest): Promise<VerificationReceiptSnapshot> {
-    const [network, receipt, transaction] = await Promise.all([this.creditcoin.getNetwork(), this.creditcoin.getTransactionReceipt(transactionHash), this.creditcoin.getTransaction(transactionHash)]);
+    const [network, receipt, transaction, latestBlockNumber] = await Promise.all([this.creditcoin.getNetwork(), this.creditcoin.getTransactionReceipt(transactionHash), this.creditcoin.getTransaction(transactionHash), this.creditcoin.getBlockNumber()]);
     if (Number(network.chainId) !== CREDITCOIN_TESTNET_CHAIN_ID || !receipt || !transaction || receipt.status !== 1) throw new Error("VERIFICATION_TRANSACTION_NOT_FINALIZED");
     if (transaction.from.toLowerCase() !== expected.from || transaction.to?.toLowerCase() !== expected.to || transaction.data.toLowerCase() !== expected.data.toLowerCase() || transaction.value !== 0n) throw new Error("VERIFICATION_TRANSACTION_MISMATCH");
-    const transactionVerifiedEvent = receipt.logs.some((log) => { try { return log.address.toLowerCase() === expected.to && iface.parseLog({ topics: [...log.topics], data: log.data })?.name === "TransactionVerified"; } catch { return false; } });
-    if (!transactionVerifiedEvent) throw new Error("VERIFICATION_EVENT_MISSING");
-    return this.mapReceipt(receipt, transactionVerifiedEvent);
+    const confirmations = latestBlockNumber - receipt.blockNumber + 1;
+    if (confirmations < 2) throw new Error("VERIFICATION_TRANSACTION_NOT_FINALIZED");
+    const canonicalBlock = await this.creditcoin.getBlock(receipt.blockNumber);
+    if (!canonicalBlock || canonicalBlock.hash?.toLowerCase() !== receipt.blockHash.toLowerCase()) throw new Error("VERIFICATION_CANONICAL_BLOCK_MISMATCH");
+    const call = iface.parseTransaction({ data: expected.data, value: 0n });
+    if (!call || call.name !== "verifyAndEmit") throw new Error("VERIFICATION_REQUEST_CALLDATA_INVALID");
+    const expectedEvent = { chainKey: Number(call.args[0]), height: Number(call.args[1]) };
+    let observed: { chainKey: number; height: number; transactionIndex: number } | null = null;
+    for (const log of receipt.logs) { try { const parsed = log.address.toLowerCase() === expected.to ? iface.parseLog({ topics: [...log.topics], data: log.data }) : null; if (parsed?.name === "TransactionVerified") observed = { chainKey: Number(parsed.args[0]), height: Number(parsed.args[1]), transactionIndex: Number(parsed.args[2]) }; } catch { /* fail closed below */ } }
+    if (!observed || observed.chainKey !== expectedEvent.chainKey || observed.height !== expectedEvent.height) throw new Error("VERIFICATION_EVENT_MISSING_OR_MISMATCH");
+    return this.mapReceipt(receipt, confirmations, observed);
   }
-  private mapReceipt(receipt: TransactionReceipt, transactionVerifiedEvent: boolean): VerificationReceiptSnapshot { return { chainId: CREDITCOIN_TESTNET_CHAIN_ID, transactionHash: receipt.hash.toLowerCase(), blockNumber: receipt.blockNumber, blockHash: receipt.blockHash.toLowerCase(), from: receipt.from.toLowerCase(), to: (receipt.to ?? BLOCK_PROVER_ADDRESS).toLowerCase(), status: receipt.status ?? 0, transactionVerifiedEvent }; }
+  private mapReceipt(receipt: TransactionReceipt, confirmations: number, transactionVerified: { chainKey: number; height: number; transactionIndex: number }): VerificationReceiptSnapshot { return { chainId: CREDITCOIN_TESTNET_CHAIN_ID, transactionHash: receipt.hash.toLowerCase(), blockNumber: receipt.blockNumber, blockHash: receipt.blockHash.toLowerCase(), from: receipt.from.toLowerCase(), to: (receipt.to ?? BLOCK_PROVER_ADDRESS).toLowerCase(), status: receipt.status ?? 0, confirmations, canonicalBlockVerified: true, calldataVerified: true, zeroValueVerified: true, transactionVerifiedEvent: true, transactionVerified }; }
 }
 
 export class MockOnlyAttestcoinAdapter implements AttestcoinAdapter {
