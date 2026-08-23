@@ -1,6 +1,6 @@
 import { ServiceUnavailableException } from "@nestjs/common";
 import { blockProver, chainInfo, proofProvider } from "@gluwa/usc-sdk";
-import { Interface, JsonRpcProvider, TransactionReceipt, toUtf8String } from "ethers";
+import { getAddress, Interface, JsonRpcProvider, TransactionReceipt, toUtf8String } from "ethers";
 
 export const ATTESTCOIN_ADAPTER = Symbol("ATTESTCOIN_ADAPTER");
 export const SEPOLIA_CHAIN_ID = 11155111;
@@ -49,6 +49,14 @@ const VERIFY_AND_EMIT_ABI = [
   "event TransactionVerified(uint64 indexed chainKey,uint64 indexed height,uint64 transactionIndex)",
 ];
 const iface = new Interface(VERIFY_AND_EMIT_ABI);
+
+export function buildUscVerificationRequest(proof: UscProofSnapshot, requesterWallet: string): WalletTransactionRequest {
+  if (proof.chainKey !== ETHEREUM_SEPOLIA_CHAIN_KEY) throw new Error("PROOF_SOURCE_CHAIN_KEY_MISMATCH");
+  if (!Number.isSafeInteger(proof.headerNumber) || proof.headerNumber <= 0) throw new Error("PROOF_HEADER_NUMBER_INVALID");
+  const from = getAddress(requesterWallet).toLowerCase();
+  const data = iface.encodeFunctionData("verifyAndEmit(uint64,uint64,bytes,(bytes32,(bytes32,bool)[]),(bytes32,bytes32[]))", [proof.chainKey, proof.headerNumber, proof.txBytes, proof.merkleProof, proof.continuityProof]);
+  return { chainId: CREDITCOIN_TESTNET_CHAIN_ID, from, to: BLOCK_PROVER_ADDRESS.toLowerCase(), data, value: "0x0" };
+}
 
 export class UscAttestcoinAdapter implements AttestcoinAdapter {
   readonly mode = "usc" as const;
@@ -100,8 +108,7 @@ export class UscAttestcoinAdapter implements AttestcoinAdapter {
     return { ...data, txHash: data.txHash.toLowerCase(), generatedAt: new Date(data.generatedAt).toISOString() };
   }
   buildVerificationRequest(proof: UscProofSnapshot, requesterWallet: string): WalletTransactionRequest {
-    const data = iface.encodeFunctionData("verifyAndEmit(uint64,uint64,bytes,(bytes32,(bytes32,bool)[]),(bytes32,bytes32[]))", [proof.chainKey, proof.headerNumber, proof.txBytes, proof.merkleProof, proof.continuityProof]);
-    return { chainId: CREDITCOIN_TESTNET_CHAIN_ID, from: requesterWallet.toLowerCase(), to: BLOCK_PROVER_ADDRESS.toLowerCase(), data, value: "0x0" };
+    return buildUscVerificationRequest(proof, requesterWallet);
   }
   async inspectVerificationTransaction(transactionHash: string, expected: WalletTransactionRequest): Promise<VerificationReceiptSnapshot> {
     const [network, receipt, transaction] = await Promise.all([this.creditcoin.getNetwork(), this.creditcoin.getTransactionReceipt(transactionHash), this.creditcoin.getTransaction(transactionHash)]);
