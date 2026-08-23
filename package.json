@@ -30,6 +30,8 @@
     "test:live-usc-verification-request": "npm run test:live-usc-verification-request -w @aeos/api",
     "verify:live-usc-submission": "npm run verify:live-usc-submission -w @aeos/api",
     "test:live-usc-submission": "npm run test:live-usc-submission -w @aeos/api",
+    "reconcile:live-attestcoin-evidence": "npm run reconcile:live-attestcoin-evidence -w @aeos/api",
+    "verify:live-attestcoin-reconciliation-db": "npm run verify:live-attestcoin-reconciliation-db -w @aeos/api",
     "start:usc-verification-wallet-handoff": "node scripts/usc-verification-wallet-handoff-server.cjs",
     "test:usc-verification-wallet-handoff": "node --test scripts/usc-verification-wallet-handoff-server.test.cjs",
     "verify:aeos-evidence-source-deployment": "npm run verify:aeos-evidence-source-deployment -w @aeos/api",

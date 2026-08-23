@@ -45,6 +45,8 @@
     "test:live-usc-verification-request": "npm run build && node --test scripts/prepare-live-usc-verification-request.test.cjs",
     "verify:live-usc-submission": "npm run build && node scripts/verify-live-usc-submission.cjs",
     "test:live-usc-submission": "npm run build && node --test scripts/verify-live-usc-submission.test.cjs",
+    "reconcile:live-attestcoin-evidence": "npm run build && node scripts/reconcile-live-attestcoin-evidence.cjs",
+    "verify:live-attestcoin-reconciliation-db": "npm run build && node scripts/verify-live-attestcoin-reconciliation-db.cjs",
     "verify:aeos-evidence-source-deployment": "npm run build && node scripts/verify-aeos-evidence-source-deployment.cjs",
     "prepare:evidence-anchor-wallet-handoff": "npm run build && node scripts/prepare-evidence-anchor-wallet-handoff.cjs",
     "verify:evidence-anchor-deployment": "npm run build && node scripts/verify-evidence-anchor-deployment.cjs",

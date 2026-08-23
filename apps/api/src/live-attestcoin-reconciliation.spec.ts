@@ -1,0 +1,13 @@
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
+import { assertLiveReceiptMatchesFrozen, organizationCommitmentFor, validateLiveAttestcoinReconciliation } from "./live-attestcoin-reconciliation";
+
+const load=(name:string)=>JSON.parse(readFileSync(resolve(__dirname,"../../../reports/live-demo",name),"utf8"));
+const organizationId="org_f1f3e4aa87e94d37af8ef2b91889d37b";
+const bundle=()=>({step1:load("step-1-commit-observation-request.json"),step4:load("step-4-usc-proof-retry-1.json"),step5:load("step-5-usc-verification-request-retry-1.json"),step6:load("step-6-wallet-submission-retry-1.json"),step7:load("step-7-transaction-verified-retry-1.json")});
+
+describe("live Attestcoin reconciliation guardrails",()=>{
+  it("binds the complete frozen lineage to the server-selected organization commitment",()=>{const result=validateLiveAttestcoinReconciliation(organizationId,bundle());expect(result.organizationCommitment).toBe("0x54749dcf1164b0cf5c9efb6cf96e6163004cfb24bddd3b7a5104bdae0266817e");expect(result.verificationTransactionHash).toBe("0x1011f237c21733a59472b82c7a14c01e79d99e23ffb3fba1ce4905655a4fb860");expect(result.receipt.transactionVerified).toEqual({chainKey:1,height:11543014,transactionIndex:6});expect(organizationCommitmentFor(organizationId)).toBe(result.organizationCommitment)});
+  it("rejects a different tenant, mutated proof request, false authority and event drift",()=>{expect(()=>validateLiveAttestcoinReconciliation("org_attacker",bundle())).toThrow("ORGANIZATION_COMMITMENT_MISMATCH");const proof=bundle();proof.step4.proof.txHash=`0x${"99".repeat(32)}`;expect(()=>validateLiveAttestcoinReconciliation(organizationId,proof)).toThrow("PROOF_SOURCE_MISMATCH");const authority=bundle();authority.step7.controls.assetExecutionAuthorized=true;expect(()=>validateLiveAttestcoinReconciliation(organizationId,authority)).toThrow("TRUTH_BOUNDARY_INVALID");const event=bundle();event.step7.receipt.transactionVerified.transactionIndex=7;expect(()=>validateLiveAttestcoinReconciliation(organizationId,event)).toThrow("EVENT_MISMATCH")});
+  it("accepts increased confirmations but rejects canonical receipt identity drift",()=>{const validated=validateLiveAttestcoinReconciliation(organizationId,bundle());expect(()=>assertLiveReceiptMatchesFrozen(validated.receipt,{...validated.receipt,confirmations:validated.receipt.confirmations+10})).not.toThrow();expect(()=>assertLiveReceiptMatchesFrozen(validated.receipt,{...validated.receipt,confirmations:validated.receipt.confirmations+10,blockHash:`0x${"88".repeat(32)}`})).toThrow("CANONICAL_RECEIPT_MISMATCH")});
+});
