@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "aeos.live-governance-proposal-submission.v1",
+  "status": "PROPOSAL_WALLET_SUBMITTED",
+  "recordedAt": "2026-08-23T14:07:15.068Z",
+  "chainId": 102031,
+  "from": "0x444d510728fb8072351cb5d0e88432e6a8501dfa",
+  "to": "0xfe90b087fae789e043514b6ac3dbd7fd2d970268",
+  "value": "0x0",
+  "transactionHash": "0x37b0fe084a0b662ffcff81aabdb6924f600a58311d78de1f5299f544e3742d02",
+  "proposalId": "97258603134256291446745381096164968763024928735538870153082508137619042349397",
+  "proposalIdHex": "0xd7066b29874c02530b7e96f4124cbadb1cc1b6c82b65efdce14805a509b03155",
+  "proposalArtifactHash": "0x07a7849ce233f9b0049cb8425435bdfe3089a09b293317a90365d5bb517220f0",
+  "decisionId": "decision_a9a37c5bd3ff43c68f5b0af32a13b8ed",
+  "decisionOutputHash": "0xa31891476cbc99b21899f079035b53b0caff2addd4df0178b10460d38242f132",
+  "calldataHash": "0x868ecfb773f71b05c72581f9a7e9b1ad1e30718e18265fb1af4095f93eca4708",
+  "walletConfirmed": true,
+  "receiptVerified": false,
+  "proposalCreatedEventObserved": false,
+  "privateKeyReceived": false,
+  "signerCustody": false,
+  "broadcastCapability": false,
+  "assetExecutionAuthorized": false
+}

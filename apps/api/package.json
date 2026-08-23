@@ -55,6 +55,7 @@
     "verify:evidence-anchor-deployment": "npm run build && node scripts/verify-evidence-anchor-deployment.cjs",
     "prepare:governance-stack": "npm run build && node scripts/prepare-governance-stack-deployment.cjs",
     "prepare:live-governance-hold-proposal": "npm run build && node scripts/prepare-live-governance-hold-proposal.cjs",
+    "verify:live-governance-proposal-finality": "npm run build && node scripts/verify-live-governance-proposal-finality.cjs",
     "prepare:policy-registry": "npm run build && node scripts/prepare-policy-registry-deployment.cjs",
     "verify:policy-registry-deployment": "npm run build && node scripts/verify-policy-registry-deployment.cjs",
     "prepare:treasury-guard": "npm run build && node scripts/prepare-treasury-guard-deployment.cjs",

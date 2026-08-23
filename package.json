@@ -49,6 +49,7 @@
     "verify:evidence-anchor-deployment": "npm run verify:evidence-anchor-deployment -w @aeos/api",
     "prepare:governance-stack": "npm run prepare:governance-stack -w @aeos/api",
     "prepare:live-governance-hold-proposal": "npm run prepare:live-governance-hold-proposal -w @aeos/api",
+    "verify:live-governance-proposal-finality": "npm run verify:live-governance-proposal-finality -w @aeos/api",
     "start:live-governance-proposal-wallet-handoff": "node scripts/live-governance-proposal-wallet-handoff-server.cjs",
     "test:live-governance-proposal-wallet-handoff": "node --test scripts/live-governance-proposal-wallet-handoff-server.test.cjs",
     "start:governance-stack-wallet-handoff": "node scripts/governance-stack-wallet-handoff-server.cjs",
