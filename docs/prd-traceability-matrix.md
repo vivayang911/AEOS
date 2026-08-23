@@ -75,7 +75,7 @@ This table is an **internal engineering acceptance floor**, not a statement of l
 | US-03 Retrieve verified Evidence | PARTIAL / EXTERNAL_PENDING | Live confirmed Attestcoin path, original proof display and complete Evidence relation/storage behavior |
 | US-04 Generate committee recommendation | PARTIAL / EIGHT-ROLE + FROZEN-RAG SLICE LOCAL_VERIFIED | Eight roles, A2A, deterministic refusal and role-scoped frozen RAG input pass; Evidence Demand Loop and complete P0 browser E2E remain |
 | US-05 Simulation and risk checks | PARTIAL | Backend simulation exists; complete confirmed gas/balance source, UI and P0 E2E remain |
-| US-06 Create and review proposal | PARTIAL / EXTERNAL_PENDING | Live proposal submission, voting period/quorum and full chain-synchronized UI remain |
+| US-06 Create and review proposal | PARTIAL / SECURITY-HOLD PREPARATION LOCAL_VERIFIED / EXTERNAL_PENDING | Exact human-review-bound, same-block simulated unsigned HOLD proposal preparation exists; live proposal submission, voting period/quorum and full chain-synchronized UI remain |
 | US-07 Execute and retrospect | PARTIAL / DESCRIPTIVE + COST + MODEL ESTIMATE LOCAL_VERIFIED / EXTERNAL_PENDING | Immutable descriptive outcomes, complete-block Safe correlation, observed costs, prospective methodology and an Evidence-complete fixed-unit model estimate are local; user-controlled testnet execution, statistical control, net-benefit/causal retrospective and production validation remain |
 | US-08 Emergency pause | PARTIAL / EXTERNAL_PENDING | Contract/local fail-closed behavior exists; deployed role recovery, immediate UI visibility and E2E remain |
 
@@ -89,7 +89,7 @@ This table is an **internal engineering acceptance floor**, not a statement of l
 | FR-04 Evidence normalization, scoring, search and citations | PARTIAL |
 | FR-05 Agent workflow, structured output and human approval | PARTIAL / EIGHT-ROLE SLICE LOCAL_VERIFIED |
 | FR-06 Strategy versions, PID parameters and deterministic limits | PARTIAL / GOVERNED ADAPTIVE PID + SKILL OVERLAY LOCAL_VERIFIED |
-| FR-07 Proposal building, simulation, voting state and execution | PARTIAL / EXTERNAL_PENDING |
+| FR-07 Proposal building, simulation, voting state and execution | PARTIAL / SECURITY-HOLD PREPARATION LOCAL_VERIFIED / EXTERNAL_PENDING |
 | FR-08 Audit and traceability | PARTIAL |
 | FR-09 Monitoring and alerts | PARTIAL |
 | FR-10 Calibration and optimization | PARTIAL / SYNTHETIC BACKTEST + DESCRIPTIVE OUTCOME + NON-CAUSAL COUNTERFACTUAL MODEL LOCAL_VERIFIED; no causal, realized-performance or automatic-learning claim |
@@ -97,7 +97,7 @@ This table is an **internal engineering acceptance floor**, not a statement of l
 
 ## Competition hard gates
 
-The BUIDL CTC 2026 Fall submission is **not ready**. A distinct working `EvidenceAnchorASC` is deployed and read-back verified on Creditcoin Testnet, and the deterministic unsigned handoff plus receipt/finality/event/reorg confirmation path passes safety/tenant tests. Meaningful end-to-end ASC integration still requires a real source transaction, USC proof, wallet-confirmed `verifyAndAnchor`, Explorer event and resulting immutable Evidence/Decision. A public GitHub README, deck/whitepaper URL and demo video URL are also absent. Existing `TreasuryGuard.sol` remains separate and must not be relabeled as an ASC.
+The BUIDL CTC 2026 Fall submission is **not ready**. A distinct working `EvidenceAnchorASC` is deployed and independently read-back verified on Creditcoin Testnet. One real Sepolia source transaction completed the USC proof, wallet-confirmed `verifyAndEmit`, immutable Evidence, frozen eight-Agent Decision and wallet-confirmed `verifyAndAnchor` path with canonical events and finality. That single accepted sample does not complete the product: the first live DAO Proposal is still blocked on explicit human Decision approval, and vote/quorum, queue, elapsed Timelock, Guard outcome, immutable Outcome Evidence, complete browser P0 E2E, public GitHub README/repository, deck and demo video remain pending. `TreasuryGuard.sol` remains separate and must not be relabeled as an ASC.
 
 ## Mandatory per-batch protocol
 
