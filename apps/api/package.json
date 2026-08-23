@@ -58,6 +58,7 @@
     "verify:live-governance-proposal-finality": "npm run build && node scripts/verify-live-governance-proposal-finality.cjs",
     "prepare:live-governance-voting-period-recovery": "npm run build && node scripts/prepare-live-governance-voting-period-recovery.cjs",
     "verify:live-governance-recovery-finality": "npm run build && node scripts/verify-live-governance-recovery-finality.cjs",
+    "verify:live-governance-queue-finality": "npm run build && node scripts/verify-live-governance-queue-finality.cjs",
     "prepare:policy-registry": "npm run build && node scripts/prepare-policy-registry-deployment.cjs",
     "verify:policy-registry-deployment": "npm run build && node scripts/verify-policy-registry-deployment.cjs",
     "prepare:treasury-guard": "npm run build && node scripts/prepare-treasury-guard-deployment.cjs",

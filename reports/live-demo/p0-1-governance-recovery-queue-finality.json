@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "aeos.live-governance-queue-finality.v1",
+  "status": "RECOVERY_TIMELOCK_READY",
+  "queueArtifactHash": "0x35432922af84b5d5ed5318b5a4fda5508197bdb898e86f4fd0c1cc429f860dce",
+  "proposalId": "53157830901067299467529326670610865264746812708370915092221485481106446599323",
+  "chainId": 102031,
+  "transaction": {
+    "hash": "0x1f884985080301c2041dfbf27dbb3872a5f38012dfc39997163afd068f4c7a1d",
+    "blockNumber": 5360724,
+    "blockHash": "0x6775903d448b9352d1c5c242ab02c40e956425e67d4eed12623f0aeed6ed2ed2",
+    "confirmations": 24
+  },
+  "governance": {
+    "state": "Queued",
+    "proposalEta": "1787498880"
+  },
+  "timelock": {
+    "address": "0x110780c95c487b93037016ea8cfae5552ce44092",
+    "operationId": "0x976129140800af6782a3c4ca7c82eca0e3b8e84f11cbb55cbea363c6554e9849",
+    "minimumDelaySeconds": 60,
+    "timestamp": "1787498880",
+    "ready": true,
+    "pending": true,
+    "done": false,
+    "observedTimestamp": 1787499165
+  },
+  "checks": {
+    "exactQueueTransaction": true,
+    "canonicalInclusion": true,
+    "exactProposalQueuedEvent": true,
+    "exactCallScheduledEvent": true,
+    "minimumDelay": true
+  },
+  "controls": {
+    "privateKeyReceived": false,
+    "signerCustody": false,
+    "broadcastCapability": false,
+    "assetExecutionAuthorized": false
+  },
+  "verifiedAt": "2026-08-23T15:32:51.451Z"
+}

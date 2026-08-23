@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "aeos.live-governance-recovery-queue-submission.v1",
+  "status": "RECOVERY_QUEUE_WALLET_SUBMITTED",
+  "recordedAt": "2026-08-23T15:26:42.505Z",
+  "chainId": 102031,
+  "from": "0x444d510728fb8072351cb5d0e88432e6a8501dfa",
+  "to": "0xfe90b087fae789e043514b6ac3dbd7fd2d970268",
+  "value": "0x0",
+  "transactionHash": "0x1f884985080301c2041dfbf27dbb3872a5f38012dfc39997163afd068f4c7a1d",
+  "calldataHash": "0x024139bea2b6931b7bb0c4e17dfd788488fe5bb277c900af254d19a20aad57b0",
+  "queueArtifactHash": "0x35432922af84b5d5ed5318b5a4fda5508197bdb898e86f4fd0c1cc429f860dce",
+  "proposalId": "53157830901067299467529326670610865264746812708370915092221485481106446599323",
+  "walletConfirmed": true,
+  "receiptVerified": false,
+  "proposalQueuedEventVerified": false,
+  "privateKeyReceived": false,
+  "signerCustody": false,
+  "broadcastCapability": false,
+  "assetExecutionAuthorized": false
+}
