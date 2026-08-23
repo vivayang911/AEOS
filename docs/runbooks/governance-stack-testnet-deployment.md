@@ -56,3 +56,11 @@ Stop immediately if the account, chain, nonce, calldata, request hash, predicted
 ## Post-deployment acceptance
 
 Eight wallet-RPC receipts are necessary but not sufficient. A separate read-only verifier must confirm canonical blocks/finality, exact sender/nonce/value/calldata, deployed runtime hashes, constructor getters, Governor/Timelock relationships, final roles, initial paused Guard state and PolicyRegistry governance. Until that verification and a live Proposal → vote/quorum → queue → Timelock execution sample pass, P0-1 remains `PARTIAL / EXTERNAL_PENDING`.
+
+For the accepted deployment instance, run the immutable-output verifier once:
+
+```powershell
+npm run verify:governance-stack-finality -- https://rpc.cc3-testnet.creditcoin.network
+```
+
+The verifier accepts only an HTTPS RPC URL, performs read-only calls, consumes the frozen plan plus sequence-eight submission/receipt records, and creates `reports/deployment/governance-stack-finality-verification.json` with exclusive-create semantics. It checks the final `RoleRevoked` event and all final roles/wiring; it has no private-key, signing or broadcast input. The current deployment passed every check. That result accepts deployment/role configuration only; the live governance lifecycle remains pending.
