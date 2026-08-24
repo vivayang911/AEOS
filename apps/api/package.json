@@ -60,6 +60,7 @@
     "verify:live-governance-hold-attempt-2-defeat": "npm run build && node scripts/verify-live-governance-hold-attempt-2-defeat.cjs",
     "verify:live-governance-hold-attempt-3-proposal": "npm run build && node scripts/verify-live-governance-hold-attempt-3-proposal.cjs",
     "verify:live-governance-hold-attempt-3-vote": "npm run build && node scripts/verify-live-governance-hold-attempt-3-vote.cjs",
+    "verify:live-governance-hold-attempt-3-queue": "npm run build && node scripts/verify-live-governance-hold-attempt-3-queue.cjs",
     "prepare:live-governance-voting-period-recovery": "npm run build && node scripts/prepare-live-governance-voting-period-recovery.cjs",
     "verify:live-governance-recovery-finality": "npm run build && node scripts/verify-live-governance-recovery-finality.cjs",
     "verify:live-governance-queue-finality": "npm run build && node scripts/verify-live-governance-queue-finality.cjs",
