@@ -9,10 +9,14 @@ const { buildLiveGovernanceHoldProposal } = require("../dist/live-governance-hol
 
 const rpcUrl = process.env.CREDITCOIN_TESTNET_RPC_URL || "https://rpc.cc3-testnet.creditcoin.network";
 const decisionId = process.env.LIVE_GOVERNANCE_DECISION_ID || "decision_a9a37c5bd3ff43c68f5b0af32a13b8ed";
-const outputPath = resolve(process.env.LIVE_GOVERNANCE_HOLD_PROPOSAL_OUTPUT || resolve(__dirname, "../../../reports/live-demo/p0-1-governance-hold-proposal-attempt-2.json"));
+const attemptNumber = Number(process.env.LIVE_GOVERNANCE_HOLD_ATTEMPT_NUMBER || 2);
+if (!Number.isInteger(attemptNumber) || attemptNumber < 2) throw new Error("LIVE_GOVERNANCE_HOLD_ATTEMPT_NUMBER_INVALID");
+const outputPath = resolve(process.env.LIVE_GOVERNANCE_HOLD_PROPOSAL_OUTPUT || resolve(__dirname, `../../../reports/live-demo/p0-1-governance-hold-proposal-attempt-${attemptNumber}.json`));
 const finalityReport = require(resolve(__dirname, "../../../reports/deployment/governance-stack-finality-verification.json"));
-const previousProposal = require(resolve(__dirname, "../../../reports/live-demo/p0-1-governance-hold-proposal.json"));
-const previousFinality = require(resolve(__dirname, "../../../reports/live-demo/p0-1-governance-proposal-finality.json"));
+const previousProposalPath = resolve(process.env.LIVE_GOVERNANCE_PREVIOUS_PROPOSAL_PATH || resolve(__dirname, attemptNumber === 2 ? "../../../reports/live-demo/p0-1-governance-hold-proposal.json" : `../../../reports/live-demo/p0-1-governance-hold-proposal-attempt-${attemptNumber - 1}.json`));
+const previousFinalityPath = resolve(process.env.LIVE_GOVERNANCE_PREVIOUS_FINALITY_PATH || resolve(__dirname, attemptNumber === 2 ? "../../../reports/live-demo/p0-1-governance-proposal-finality.json" : `../../../reports/live-demo/p0-1-governance-hold-attempt-${attemptNumber - 1}-defeat-finality.json`));
+const previousProposal = require(previousProposalPath);
+const previousFinality = require(previousFinalityPath);
 const recoveryFinality = require(resolve(__dirname, "../../../reports/live-demo/p0-1-governance-recovery-execute-finality.json"));
 const deployer = getAddress(process.env.LIVE_GOVERNANCE_DEPLOYER || "0x444D510728FB8072351cB5d0E88432e6a8501DFA").toLowerCase();
 const guardInterface = new Interface(["function setPaused(bool value)"]);
@@ -84,7 +88,7 @@ async function main() {
       contracts: { deployer, token: addresses.token, timelock: addresses.timelock, governor: addresses.governor, treasuryGuard: addresses.treasuryGuard },
       readback: { allContractsHaveCode: codes.every((code) => code !== "0x"), guardPaused, guardGovernance, governorTimelock, proposalThreshold: proposalThreshold.toString(), deployerVotes: deployerVotes.toString(), currentVotingPeriodBlocks: currentVotingPeriodBlocks.toString() },
       attempt: {
-        attemptNumber: 2,
+        attemptNumber,
         previousProposalArtifactHash: previousProposal.artifactHash,
         previousProposalId: previousFinality.proposalId,
         previousTransactionHash: previousFinality.transactionHash,

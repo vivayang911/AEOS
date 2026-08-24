@@ -23,7 +23,7 @@ function readHandoff() {
   if (tx?.chainId !== EXPECTED_CHAIN_ID || tx?.from?.toLowerCase() !== EXPECTED_FROM || tx?.to?.toLowerCase() !== EXPECTED_GOVERNOR || tx?.value !== "0x0" || !/^0x[0-9a-f]+$/i.test(tx?.data || "") || !/^0x[0-9a-f]{64}$/i.test(tx?.dataHash || "")) throw new Error("Governance Proposal transaction invalid");
   if (value.schemaVersion === "aeos.live-governance-hold-proposal.v2") {
     const attempt = value.lineage?.attempt;
-    if (attempt?.attemptNumber !== 2 || attempt?.previousStatus !== "PROPOSAL_DEFEATED" || attempt?.previousFailureReason !== "NO_VOTES_BEFORE_DEADLINE" || attempt?.recoveryStatus !== "RECOVERY_EXECUTED" || attempt?.recoveredVotingPeriodBlocks !== 240 || value.safetyReadback?.currentVotingPeriodBlocks !== "240" || !/^0x[0-9a-f]{64}$/i.test(attempt?.attemptIdentity || "")) throw new Error("Governance Proposal retry lineage invalid");
+    if (!Number.isInteger(attempt?.attemptNumber) || attempt.attemptNumber < 2 || attempt?.previousStatus !== "PROPOSAL_DEFEATED" || attempt?.previousFailureReason !== "NO_VOTES_BEFORE_DEADLINE" || attempt?.recoveryStatus !== "RECOVERY_EXECUTED" || attempt?.recoveredVotingPeriodBlocks !== 240 || value.safetyReadback?.currentVotingPeriodBlocks !== "240" || !/^0x[0-9a-f]{64}$/i.test(attempt?.attemptIdentity || "")) throw new Error("Governance Proposal retry lineage invalid");
   }
   return value;
 }

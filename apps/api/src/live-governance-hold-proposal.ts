@@ -101,7 +101,8 @@ export function buildLiveGovernanceHoldProposal(input: LiveGovernanceHoldProposa
 
   const attempt = input.attempt;
   if (attempt && (
-    attempt.attemptNumber !== 2
+    !Number.isInteger(attempt.attemptNumber)
+    || attempt.attemptNumber < 2
     || !/^0x[0-9a-f]{64}$/i.test(attempt.previousProposalArtifactHash)
     || !/^[1-9][0-9]*$/.test(attempt.previousProposalId)
     || !/^0x[0-9a-f]{64}$/i.test(attempt.previousTransactionHash)

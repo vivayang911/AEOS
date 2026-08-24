@@ -70,6 +70,21 @@ describe("live governance HOLD proposal", () => {
     });
     expect(retry.proposal.proposalId).not.toBe(first.proposal.proposalId);
     expect(retry.proposal.description).toContain("Attempt identity:");
+    const thirdInput = fixture();
+    thirdInput.readback.currentVotingPeriodBlocks = "240";
+    thirdInput.attempt = {
+      ...retryInput.attempt,
+      attemptNumber: 3,
+      previousProposalArtifactHash: retry.artifactHash,
+      previousProposalId: retry.proposal.proposalId,
+      previousTransactionHash: h("3"),
+    };
+    const third = buildLiveGovernanceHoldProposal(thirdInput);
+    expect(third).toMatchObject({
+      schemaVersion: "aeos.live-governance-hold-proposal.v2",
+      lineage: { attempt: { attemptNumber: 3, previousProposalId: retry.proposal.proposalId } },
+    });
+    expect(third.proposal.proposalId).not.toBe(retry.proposal.proposalId);
     expect(() => buildLiveGovernanceHoldProposal({ ...retryInput, readback: { ...retryInput.readback, currentVotingPeriodBlocks: "8" } })).toThrow("GOVERNANCE_HOLD_RETRY_LINEAGE_INVALID");
   });
 });

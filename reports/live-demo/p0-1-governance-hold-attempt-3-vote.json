@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "aeos.live-governance-hold-vote.v1",
+  "status": "VOTE_FOR_REQUEST_PREPARED",
+  "recordedAt": "2026-08-24T00:59:02.609Z",
+  "lineage": {
+    "proposalArtifactHash": "0x96494d64d0ab68577a1a6f9de21d8795b8af1c7d35e66fdf4ab993be7473a48a",
+    "proposalTransactionHash": "0x60ae201fd9deefac70931f6968cc02bb2e6196572c4c24fefaaef592c096211e",
+    "proposalId": "67589262481478030958494364289907755453385518720624913606694051167976585045379",
+    "attemptNumber": 3,
+    "attemptIdentity": "0x64f31b9678ddb7606b3baf5380a2e63c2bc8172956fe68741da0143db8315c63",
+    "decisionId": "decision_a9a37c5bd3ff43c68f5b0af32a13b8ed",
+    "decisionOutputHash": "0xa31891476cbc99b21899f079035b53b0caff2addd4df0178b10460d38242f132",
+    "evidenceSnapshotId": "snap_5f3081a8dffc4e0b9f281e0095dc231f",
+    "evidenceManifestHash": "0x9629ec777f328a57ba6553a78763b13963cb8529b119bffac7a6a1441b36ec9d"
+  },
+  "activeWindow": {
+    "snapshotBlock": "5362996",
+    "deadlineBlock": "5363236",
+    "votingWindowBlocks": 240,
+    "observedBlockNumber": 5363011,
+    "observedBlockHash": "0xc370fbc9d651923f9ddb2e23dfc3f651650c143935586239a004e045773ee2e8",
+    "blocksRemaining": 225
+  },
+  "votingCapacity": {
+    "voter": "0x444d510728fb8072351cb5d0e88432e6a8501dfa",
+    "delegate": "0x444d510728fb8072351cb5d0e88432e6a8501dfa",
+    "voterVotes": "1000000000000000000000000",
+    "quorumVotes": "40000000000000000000000",
+    "singleWalletMeetsQuorum": true
+  },
+  "unsignedTransaction": {
+    "chainId": 102031,
+    "from": "0x444d510728fb8072351cb5d0e88432e6a8501dfa",
+    "to": "0xfe90b087fae789e043514b6ac3dbd7fd2d970268",
+    "value": "0x0",
+    "data": "0x56781388956e2ab92ad0d0e8418535df9d82ad9fc31a0b9abaf3aad0a040cafe651225830000000000000000000000000000000000000000000000000000000000000001",
+    "dataHash": "0x0dad691bf3d3c2d1023f40bb85043e14292c278ceab83060f39f1e002d3b2773",
+    "support": 1,
+    "validOnlyWhenProposalState": "Active"
+  },
+  "controls": {
+    "requiresUserWalletConfirmation": true,
+    "signed": false,
+    "submitted": false,
+    "privateKeyReceived": false,
+    "signerCustody": false,
+    "broadcastCapability": false,
+    "assetExecutionAuthorized": false
+  },
+  "artifactHash": "0x30e13d6009c0291ec4536ec8bed5c523f844972411428c383a7e51a166bb2920"
+}

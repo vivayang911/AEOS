@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "aeos.live-governance-proposal-finality.v1",
+  "status": "PROPOSAL_ACTIVE",
+  "proposalCreationVerified": true,
+  "lifecyclePassed": false,
+  "failureReason": null,
+  "transactionHash": "0x0284474f7730ea3c03c9fc75463d465b296df75f5ec51b2c37c18ead839752ff",
+  "proposalArtifactHash": "0x39c3025e832315944bda792bbb1a37ac6c1c968cdb3d0dd2d6867d03b24a2df4",
+  "proposalId": "58073134529295490671250744239861806662869160785612984350180898880106718093996",
+  "chainId": 102031,
+  "blockNumber": 5360994,
+  "blockHash": "0x5db47af1db7f0862e27acaf25126b4e2aca59339ca9ecef81d34e7aeb8f91886",
+  "confirmations": 19,
+  "governance": {
+    "state": "Active",
+    "stateCode": 1,
+    "snapshotBlock": "5360995",
+    "deadlineBlock": "5361235",
+    "votes": {
+      "against": "0",
+      "for": "0",
+      "abstain": "0"
+    },
+    "totalVotes": "0",
+    "votingWindowBlocks": 240
+  },
+  "checks": {
+    "canonicalInclusion": true,
+    "exactSender": true,
+    "exactGovernor": true,
+    "zeroValue": true,
+    "exactCalldata": true,
+    "exactProposalCreatedEvent": true
+  },
+  "controls": {
+    "privateKeyReceived": false,
+    "signerCustody": false,
+    "broadcastCapability": false,
+    "assetExecutionAuthorized": false
+  },
+  "recoveryLineage": {
+    "previousProposalState": "Defeated",
+    "recoveryProposalState": "Executed",
+    "currentVotingPeriodBlocks": 240
+  },
+  "verifiedAt": "2026-08-23T16:39:19.068Z",
+  "truthBoundary": {
+    "proposalTransactionSucceeded": true,
+    "proposalCreatedEventObserved": true,
+    "voteSubmitted": false,
+    "quorumMet": false,
+    "queued": false,
+    "executed": false,
+    "assetExecutionAuthorized": false
+  }
+}
