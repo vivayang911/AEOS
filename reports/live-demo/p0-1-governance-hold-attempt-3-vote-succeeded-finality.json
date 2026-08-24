@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "aeos.live-governance-hold-vote-finality.v1",
+  "status": "HOLD_VOTE_SUCCEEDED",
+  "proposalArtifactHash": "0x96494d64d0ab68577a1a6f9de21d8795b8af1c7d35e66fdf4ab993be7473a48a",
+  "voteArtifactHash": "0x30e13d6009c0291ec4536ec8bed5c523f844972411428c383a7e51a166bb2920",
+  "proposalId": "67589262481478030958494364289907755453385518720624913606694051167976585045379",
+  "attemptNumber": 3,
+  "chainId": 102031,
+  "voteTransaction": {
+    "hash": "0x82428c71a329ccf18951d4b11d7db0ee2bbf7ad5ba36fe328626d1d2c543a8c9",
+    "blockNumber": 5363039,
+    "blockHash": "0xda0169cbf40dd94bdc9a217bf12844e4416c29d419e08ba5703217486a6b75f8",
+    "confirmations": 199
+  },
+  "governance": {
+    "state": "Succeeded",
+    "snapshot": "5362996",
+    "deadline": "5363236",
+    "quorum": "40000000000000000000000",
+    "votes": {
+      "against": "0",
+      "for": "1000000000000000000000000",
+      "abstain": "0"
+    },
+    "quorumMet": true,
+    "proposalNeedsQueuing": true,
+    "blocksRemaining": 0
+  },
+  "checks": {
+    "exactVoteTransaction": true,
+    "canonicalInclusion": true,
+    "exactVoteCastEvent": true,
+    "quorumMet": true,
+    "hasVoted": true
+  },
+  "controls": {
+    "privateKeyReceived": false,
+    "signerCustody": false,
+    "broadcastCapability": false,
+    "assetExecutionAuthorized": false
+  },
+  "verifiedAt": "2026-08-24T01:55:39.948Z"
+}

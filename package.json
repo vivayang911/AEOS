@@ -66,6 +66,8 @@
     "test:live-governance-recovery-wallet-handoff": "node --test scripts/live-governance-recovery-wallet-handoff-server.test.cjs",
     "start:live-governance-recovery-queue-wallet-handoff": "node scripts/live-governance-recovery-queue-wallet-handoff-server.cjs",
     "test:live-governance-recovery-queue-wallet-handoff": "node --test scripts/live-governance-recovery-queue-wallet-handoff-server.test.cjs",
+    "start:live-governance-hold-queue-wallet-handoff": "node scripts/live-governance-hold-queue-wallet-handoff-server.cjs",
+    "test:live-governance-hold-queue-wallet-handoff": "node --test scripts/live-governance-hold-queue-wallet-handoff-server.test.cjs",
     "start:live-governance-recovery-execute-wallet-handoff": "node scripts/live-governance-recovery-execute-wallet-handoff-server.cjs",
     "test:live-governance-recovery-execute-wallet-handoff": "node --test scripts/live-governance-recovery-execute-wallet-handoff-server.test.cjs",
     "start:governance-stack-wallet-handoff": "node scripts/governance-stack-wallet-handoff-server.cjs",
