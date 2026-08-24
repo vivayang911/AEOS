@@ -1,10 +1,21 @@
 import { createHash } from "node:crypto";
+import { Mnemonic,wordlists } from "ethers";
 
 export const EMBEDDING_DIMENSIONS=16;
 export const MOCK_EMBEDDING_MODEL="deterministic-hash-embedding-v1-mock-only";
 const injection=/ignore\s+(all\s+)?(previous|prior)|system\s+prompt|developer\s+message|bypass\s+(the\s+)?(policy|guardrail)|execute\s+(this\s+)?(instruction|command)|reveal\s+(a\s+)?secret/i;
-const secrets=[/-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/i,/\b(?:bearer|api[_-]?key|access[_-]?token|private[_ -]?key|wallet[_ -]?key)\s*[:=]\s*\S+/i,/\b(?:[a-z]+\s+){11,23}[a-z]+\b/i];
+const secrets=[/-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/i,/\b(?:bearer|api[_-]?key|access[_-]?token|private[_ -]?key|wallet[_ -]?key)\s*[:=]\s*\S+/i];
 const email=/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi;
+const mnemonicLengths=[12,15,18,21,24] as const;
+
+function containsBip39Mnemonic(content:string){
+  const words=content.toLowerCase().match(/[a-z]+/g)??[];
+  for(const length of mnemonicLengths)for(let offset=0;offset+length<=words.length;offset++){
+    const candidate=words.slice(offset,offset+length);
+    if(candidate.every(word=>wordlists.en.getWordIndex(word)>=0)&&Mnemonic.isValidMnemonic(candidate.join(" "),wordlists.en))return true;
+  }
+  return false;
+}
 
 export type KnowledgePartition="VERIFIED_EVIDENCE"|"GOVERNANCE"|"PROTOCOL"|"DECISION_MEMORY";
 export type RetrievalCandidate={id:string;sourceId:string;sourceVersion:number;partition:KnowledgePartition|"ORGANIZATION_MEMORY";heading:string;content:string;contentHash:string;embedding:number[];validUntil:string|null;conflictGroupId:string|null};
@@ -12,7 +23,7 @@ export type RetrievalCandidate={id:string;sourceId:string;sourceVersion:number;p
 export function hashText(value:string){return `0x${createHash("sha256").update(value).digest("hex")}`}
 export function scanKnowledgeContent(content:string){
   const codes:string[]=[];
-  if(secrets.some(pattern=>pattern.test(content)))codes.push("SECRET_MATERIAL_DETECTED");
+  if(secrets.some(pattern=>pattern.test(content))||containsBip39Mnemonic(content))codes.push("SECRET_MATERIAL_DETECTED");
   if(injection.test(content))codes.push("PROMPT_INJECTION_DETECTED");
   return {safe:codes.length===0,codes,contentHash:hashText(content)};
 }
