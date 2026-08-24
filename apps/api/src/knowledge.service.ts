@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import { PoolClient } from "pg";
 import { DatabaseService } from "./database.service";
 import { ApproveKnowledgeSourceDto,CreateKnowledgeSourceDto,CreateMemoryCandidateDto,SearchKnowledgeDto,TransitionKnowledgeSourceDto,TransitionMemoryDto } from "./knowledge.dto";
-import { chunkKnowledgeDocument,deterministicMockEmbedding,hashText,MOCK_EMBEDDING_MODEL,redactSensitiveContent,retrieveKnowledge,RetrievalCandidate,scanKnowledgeContent } from "./knowledge-engine";
+import { chunkKnowledgeDocument,deterministicMockEmbedding,hashText,MOCK_EMBEDDING_MODEL,previewKnowledgeDocument,redactSensitiveContent,retrieveKnowledge,RetrievalCandidate,scanKnowledgeContent } from "./knowledge-engine";
 
 const id=(prefix:string)=>`${prefix}_${randomUUID().replaceAll("-","")}`;
 const vector=(values:number[])=>`[${values.join(",")}]`;
@@ -16,6 +16,7 @@ export class KnowledgeService{
   constructor(private readonly db:DatabaseService){}
   async createSource(org:string,actorId:string,input:CreateKnowledgeSourceDto){
     const scan=scanKnowledgeContent(input.content);if(scan.codes.includes("SECRET_MATERIAL_DETECTED"))throw new BadRequestException("Knowledge content contains prohibited secret material");
+    const draftPreview=previewKnowledgeDocument(input.content);
     const redacted=redactSensitiveContent(input.content);const now=new Date();const validFrom=input.validFrom?new Date(input.validFrom):now;const validUntil=input.validUntil?new Date(input.validUntil):null;
     if(validUntil&&validUntil<=validFrom)throw new BadRequestException("Knowledge validity interval is invalid");
     return this.db.transaction(async client=>{
@@ -26,7 +27,7 @@ export class KnowledgeService{
       await client.query("INSERT INTO knowledge_sources(id,organization_id,source_key,partition,version,title,redacted_content,acl_roles,valid_from,valid_until,supersedes_source_id,conflict_group_id,created_by,scan_result,original_content_hash,content_hash) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)",[sourceId,org,input.sourceKey,input.partition,versionNumber,input.title,storedContent,JSON.stringify([...new Set(input.aclRoles)].sort()),validFrom,validUntil,input.supersedesSourceId??null,input.conflictGroupId??null,actorId,scan,scan.contentHash,contentHash]);
       await this.sourceEvent(client,org,sourceId,0,status,actorId,status==="QUARANTINED"?"Content quarantined before parsing":"Awaiting human approval");
       await this.audit(client,org,status==="QUARANTINED"?"knowledge.source_quarantined":"knowledge.source_created",sourceId,{version:versionNumber,partition:input.partition,contentHash,scanCodes:scan.codes},actorId);
-      return {id:sourceId,organizationId:org,sourceKey:input.sourceKey,version:versionNumber,status,partition:input.partition,contentHash,originalContentHash:scan.contentHash,redactionApplied:redacted!==input.content,embeddingModel:MOCK_EMBEDDING_MODEL,assetExecutionAuthorized:false};
+      return {id:sourceId,organizationId:org,sourceKey:input.sourceKey,version:versionNumber,status,partition:input.partition,contentHash,originalContentHash:scan.contentHash,redactionApplied:redacted!==input.content,embeddingModel:MOCK_EMBEDDING_MODEL,...draftPreview,assetExecutionAuthorized:false};
     });
   }
   async approveSource(org:string,sourceId:string,input:ApproveKnowledgeSourceDto){

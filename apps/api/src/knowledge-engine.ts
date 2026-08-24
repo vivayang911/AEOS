@@ -41,6 +41,19 @@ export function chunkKnowledgeDocument(content:string,maxCharacters=1200){
   for(const line of lines){const match=/^#{1,6}\s+(.+)$/.exec(line);if(match){flush();heading=match[1].trim()}else buffer.push(line)}flush();
   return chunks.map((chunk,index)=>({...chunk,index,contentHash:hashText(`${chunk.heading}\n${chunk.content}`),embedding:deterministicMockEmbedding(`${chunk.heading}\n${chunk.content}`)}));
 }
+export function previewKnowledgeDocument(content:string,maxCharacters=1200){
+  const scan=scanKnowledgeContent(content);
+  const chunks=scan.safe?chunkKnowledgeDocument(redactSensitiveContent(content),maxCharacters):[];
+  return {
+    scanResult:scan,
+    persistedChunkCount:0,
+    prospectiveChunks:chunks.map(({index,heading,contentHash,content})=>({
+      index,heading,contentHash,characterCount:content.length,
+      preview:content.length>240?`${content.slice(0,237)}...`:content,
+    })),
+    previewOnly:true,
+  };
+}
 function cosine(left:number[],right:number[]){return left.reduce((sum,value,index)=>sum+value*(right[index]??0),0)}
 const trust:Record<RetrievalCandidate["partition"],number>={VERIFIED_EVIDENCE:1,GOVERNANCE:.9,PROTOCOL:.8,DECISION_MEMORY:.7,ORGANIZATION_MEMORY:.65};
 export function retrieveKnowledge(query:string,candidates:RetrievalCandidate[],limit=8,now=new Date()){

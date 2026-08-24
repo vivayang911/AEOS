@@ -1,0 +1,290 @@
+{
+  "schemaVersion": "aeos.demo-advisory-rubric-drafts.v1",
+  "rubric": "DEMO_ADVISORY_RUBRIC_V1",
+  "recordedAt": "2026-08-24T16:14:42.147Z",
+  "organizationScoped": true,
+  "organizationName": "AEOS Hackathon Demo DAO",
+  "sourceCount": 5,
+  "allDraft": true,
+  "approvedSourceCount": 0,
+  "persistedChunkCount": 0,
+  "previewOnly": true,
+  "sources": [
+    {
+      "sourceId": "ksource_7adceaf0c26a44759f8aa7ba1c00e671",
+      "sourceKey": "aeos-governance-operating-policy",
+      "partition": "GOVERNANCE",
+      "version": 1,
+      "status": "DRAFT",
+      "contentHash": "0xc82da0b0754245cf24dc17574c0044eef0c56789361f262e4b361b0e153f74ba",
+      "originalContentHash": "0x1063db19647f6a30e10f906bc43c1cee79075877792d1c2f4f1ecf2476876e74",
+      "scanResult": {
+        "safe": true,
+        "codes": []
+      },
+      "persistedChunkCount": 0,
+      "prospectiveChunkCount": 4,
+      "prospectiveChunks": [
+        {
+          "index": 0,
+          "heading": "Verified governance configuration",
+          "contentHash": "0x6bd07e093ef85f532fb46c8a1bb5ea331038fabf2e0e7b093e1ee28760d8e3c4",
+          "characterCount": 430,
+          "preview": "AEOS uses the deployed Creditcoin Testnet Governor and Timelock as the final authorization boundary for the demonstration organization. The verified Governor voting period is 240 blocks. The successful Decision-bound proposal recorded 1,..."
+        },
+        {
+          "index": 1,
+          "heading": "Proposal requirements",
+          "contentHash": "0x32de08cf46732620706ab3d1380aeefba98b871edd592c875b191437f2ce2aaa",
+          "characterCount": 367,
+          "preview": "A Proposal must bind the reviewed Decision ID, immutable Evidence Snapshot hash, unresolved dissent, human-readable intent, exact targets, values and calldatas. A Proposal may advance only after the Governor reports the canonical state r..."
+        },
+        {
+          "index": 2,
+          "heading": "Human and DAO control",
+          "contentHash": "0x2d0c12da0a5726d0ee18ec29fb43cb82f1faa61cfbd526d570171cb2004899b2",
+          "characterCount": 301,
+          "preview": "Agent output is advisory. Human approval accepts a Decision record only; it does not vote, queue, execute or grant asset authority. Proposal, vote, Queue and Execute transactions require the user-controlled wallet or configured DAO infra..."
+        },
+        {
+          "index": 3,
+          "heading": "Fail-closed governance response",
+          "contentHash": "0x517808c17592fcccbe4bc7810c34c3ba7227cf906b58aacb80a6651abf8fa1b8",
+          "characterCount": 265,
+          "preview": "If quorum, voting state, Timelock readiness, exact calldata, policy binding, simulation freshness or canonical finality cannot be established, retain or return HOLD and request the missing Evidence. Narrative confidence cannot override a..."
+        }
+      ],
+      "checks": {
+        "statusDraft": true,
+        "scanSafe": true,
+        "rescanSafe": true,
+        "originalHashMatches": true,
+        "persistedChunksZero": true
+      }
+    },
+    {
+      "sourceId": "ksource_5fc1480adb8349e79770541673fab767",
+      "sourceKey": "aeos-treasury-authorization-boundary",
+      "partition": "GOVERNANCE",
+      "version": 1,
+      "status": "DRAFT",
+      "contentHash": "0x79e1ed93e551562c61b2be6fb027a23eecd3a4bce7adaa7a21cca9a0173b87a1",
+      "originalContentHash": "0x2fd396bdb3186d5c7be53c0ef6c9b860a8ea3d056eeefb927cd05966c2fe2d4e",
+      "scanResult": {
+        "safe": true,
+        "codes": []
+      },
+      "persistedChunkCount": 0,
+      "prospectiveChunkCount": 4,
+      "prospectiveChunks": [
+        {
+          "index": 0,
+          "heading": "Current live boundary",
+          "contentHash": "0x0d96802ab4a16c12c6fd81cafc2fbf2e8e02beaa904b4b53251c9be4c0b98f57",
+          "characterCount": 347,
+          "preview": "The verified TreasuryGuard is paused and its governance authority is the Timelock. The verified PolicyRegistry latest version is zero and no active policy was observed for the accepted HOLD Outcome. Safe is outside the accepted deploymen..."
+        },
+        {
+          "index": 1,
+          "heading": "Permitted preparation",
+          "contentHash": "0x79bcb0814106f512e9ed8d7ce5e5e67db95de7f62c3e442c9616e70ec0108d5a",
+          "characterCount": 271,
+          "preview": "AEOS may prepare a zero-value, unsigned and unsubmitted governance request; run read-only simulation; calculate an advisory PID value; and produce a human-review checklist. Preparation must keep assetExecutionAuthorized=false. Knowledge ..."
+        },
+        {
+          "index": 2,
+          "heading": "Prohibited interpretation",
+          "contentHash": "0x073efc3339e6d414200b9df5f7272faa1360b47e846fa527fe5aba5d0f46e55a",
+          "characterCount": 352,
+          "preview": "This document is not a transfer allowlist and is not a substitute for PolicyRegistry state. Absence of a prohibition is not permission. A future asset action requires a separately versioned policy, on-chain activation and readback, exact..."
+        },
+        {
+          "index": 3,
+          "heading": "Required reverse Evidence requests",
+          "contentHash": "0x8984daa95f23d15618a0ee1e253c7d23535fc507920e7f25837f0b6bd98fde6e",
+          "characterCount": 295,
+          "preview": "Before any non-zero proposal, request fresh Evidence for treasury balances, prices, executable liquidity, slippage, gas balance, target-contract identity, active policy version, Guard pause state and governance or Safe readiness. Missing..."
+        }
+      ],
+      "checks": {
+        "statusDraft": true,
+        "scanSafe": true,
+        "rescanSafe": true,
+        "originalHashMatches": true,
+        "persistedChunksZero": true
+      }
+    },
+    {
+      "sourceId": "ksource_bfae21ce0b704ee5bf8cdac210368ac5",
+      "sourceKey": "aeos-risk-review-rubric",
+      "partition": "PROTOCOL",
+      "version": 1,
+      "status": "DRAFT",
+      "contentHash": "0x46b6becc7ec25c5576b5328477ad39cde032f82ecbb44818dcc6ab4cfb779d1f",
+      "originalContentHash": "0xf7f4cbe7550e7033dba9d909cb52c1837432811fe3332fa1b629bd8d422aaaf2",
+      "scanResult": {
+        "safe": true,
+        "codes": []
+      },
+      "persistedChunkCount": 0,
+      "prospectiveChunkCount": 5,
+      "prospectiveChunks": [
+        {
+          "index": 0,
+          "heading": "Status and authority",
+          "contentHash": "0x4ae731e1f535abefa61a00c18624d0f4b43024cc04c0779284a75eb73453e920",
+          "characterCount": 220,
+          "preview": "DEMO_ADVISORY_RUBRIC_V1 is a human-confirmed analytical rubric for the demonstration committee. It is not an active on-chain policy and cannot authorize execution. It may only tighten a recommendation or cause a refusal."
+        },
+        {
+          "index": 1,
+          "heading": "Evidence sufficiency threshold",
+          "contentHash": "0x92cad33fa2ce1d24f5e8163f3cc9e0913eac5d085538c678c3cb6941c7a2f7bc",
+          "characterCount": 427,
+          "preview": "Material balance, price, liquidity, volatility, peg and contract-risk claims require immutable Evidence references. Required Evidence quality is at least 85 out of 100 and market-state freshness is at most 300 seconds at Decision freeze ..."
+        },
+        {
+          "index": 2,
+          "heading": "Advisory market-risk thresholds",
+          "contentHash": "0x328d6cd22a4d6cc9a02a40e506104ad37f41893798c5ecd7c5cea7663477af02",
+          "characterCount": 574,
+          "preview": "- A proposed order must not exceed 1 percent of verified 24-hour executable volume.\n- Estimated slippage above 50 basis points blocks the candidate.\n- A verified stablecoin deviation greater than 100 basis points triggers a HIGH peg-risk..."
+        },
+        {
+          "index": 3,
+          "heading": "Independent challenge requirement",
+          "contentHash": "0xe27405d7bdfe3c2ec8efbc14645afdca6d981aaa388f615ef29a5209658875a4",
+          "characterCount": 349,
+          "preview": "Risk independently challenges position sizing, liquidity, drawdown and black-swan assumptions. Compliance independently challenges policy status, allowlists, governance authority and restricted-asset assumptions. Strategy must answer bot..."
+        },
+        {
+          "index": 4,
+          "heading": "PID interaction",
+          "contentHash": "0xbe65098c20e049e05f5bee4d99d0087fb58885b28fd851a0d305486aa7d9a8b6",
+          "characterCount": 263,
+          "preview": "PID output is advisory and subordinate to fail-closed checks. Missing or stale input makes PID output zero. Output saturation, execution withholding or prolonged pause must prevent integral windup. An Agent cannot change PID gains or lim..."
+        }
+      ],
+      "checks": {
+        "statusDraft": true,
+        "scanSafe": true,
+        "rescanSafe": true,
+        "originalHashMatches": true,
+        "persistedChunksZero": true
+      }
+    },
+    {
+      "sourceId": "ksource_a8f01de46d6e4c6fbe68024a2a1a914c",
+      "sourceKey": "aeos-contract-control-surface",
+      "partition": "PROTOCOL",
+      "version": 1,
+      "status": "DRAFT",
+      "contentHash": "0xd0db8fb9d02109422d5c7763da9ff90cac62eeba4bb2095da8e312c738cfa731",
+      "originalContentHash": "0xea09030e8670d28d727e9c028913a8e67766e1e304637f2fb2abfa52f78d67ba",
+      "scanResult": {
+        "safe": true,
+        "codes": []
+      },
+      "persistedChunkCount": 0,
+      "prospectiveChunkCount": 5,
+      "prospectiveChunks": [
+        {
+          "index": 0,
+          "heading": "EvidenceAnchorASC",
+          "contentHash": "0x36c3620b6e12bbe8c9733e6c2d3060565ff7164a82f1408eef6bdf3d3d16138e",
+          "characterCount": 291,
+          "preview": "EvidenceAnchorASC verifies the supported USC proof path and anchors exact Evidence, Snapshot and Decision commitments. It has no signer, broadcaster or payable asset-execution surface. An anchor proves the frozen commitment and canonical..."
+        },
+        {
+          "index": 1,
+          "heading": "Governor and Timelock",
+          "contentHash": "0x23283e0608ebffb167c0180f087ed9274dc12250ddcfd7bb24fcaf12bffa406d",
+          "characterCount": 218,
+          "preview": "The Governor controls Proposal lifecycle and voting. The Timelock enforces the verified delay and is the governance authority for PolicyRegistry and TreasuryGuard. Direct calls without configured authority fail closed."
+        },
+        {
+          "index": 2,
+          "heading": "PolicyRegistry",
+          "contentHash": "0x3e7f518c083c4a9620882de1120a42d1174a38be3cb3fd07fa70cf8591ca3d3a",
+          "characterCount": 199,
+          "preview": "PolicyRegistry stores sequential immutable policy versions and validity windows. Knowledge approval is not PolicyRegistry activation. Agents use canonical readback rather than assume a policy exists."
+        },
+        {
+          "index": 3,
+          "heading": "TreasuryGuard",
+          "contentHash": "0xc0b793fd5e0eb16d98cba98feb8c18d3cb4c47abaefc15907079ec4ffe2fd47c",
+          "characterCount": 271,
+          "preview": "TreasuryGuard begins paused and exposes deterministic authorization checks. Guardian authority can pause but cannot unpause or transfer assets. Authorization validation does not itself call the target. Target, selector, value, deadline a..."
+        },
+        {
+          "index": 4,
+          "heading": "Safe boundary",
+          "contentHash": "0x5a3e691371556bfe27de705a3853065ac4a61bdd8b7d410486d9669dcb0d6ef5",
+          "characterCount": 218,
+          "preview": "Safe has not been independently deployed and verified for the accepted batch. Any workflow requiring Safe threshold or execution Evidence remains blocked until canonical configuration and transaction observation exist."
+        }
+      ],
+      "checks": {
+        "statusDraft": true,
+        "scanSafe": true,
+        "rescanSafe": true,
+        "originalHashMatches": true,
+        "persistedChunksZero": true
+      }
+    },
+    {
+      "sourceId": "ksource_da5ee7e9641d4b149acac3b5dc505dca",
+      "sourceKey": "aeos-hold-outcome-memory",
+      "partition": "DECISION_MEMORY",
+      "version": 1,
+      "status": "DRAFT",
+      "contentHash": "0x524fc45607808bd7a38d2e638bad762ae995c68a99240150ba6127b8c12420c0",
+      "originalContentHash": "0xcc394ac19e07e51c911f3af2067db7d499264c3795ce8eb11cddc9c0926ce22a",
+      "scanResult": {
+        "safe": true,
+        "codes": []
+      },
+      "persistedChunkCount": 0,
+      "prospectiveChunkCount": 4,
+      "prospectiveChunks": [
+        {
+          "index": 0,
+          "heading": "Frozen historical result",
+          "contentHash": "0x9763217f79542de0e53ab7a7abc1ec21edb7759791affbcd341fa5f04def5dd5",
+          "characterCount": 427,
+          "preview": "Decision decision_a9a37c5bd3ff43c68f5b0af32a13b8ed was bound to Evidence Snapshot snap_5f3081a8dffc4e0b9f281e0095dc231f. Earlier Proposal attempts that missed their voting window remain immutable failures. Attempt 3 reached quorum, was q..."
+        },
+        {
+          "index": 1,
+          "heading": "Verified Outcome",
+          "contentHash": "0x8436ac3b676cda8f9a7e68abd9cd18a2cacf10c74fa81cdf42d4374d15d327f1",
+          "characterCount": 275,
+          "preview": "The canonical Outcome is DETERMINISTIC_WITHHOLDING_EXECUTED. The Timelock operation completed, TreasuryGuard remained paused, zero native value moved, and no PolicyRegistry mutation occurred. The result is linked to immutable organizatio..."
+        },
+        {
+          "index": 2,
+          "heading": "Allowed lesson",
+          "contentHash": "0x1af1b41cf64a50e1b33a6b6e65fa96fbab65971b1204a06af2116017aced9dc3",
+          "characterCount": 209,
+          "preview": "A sufficiently long voting window and prompt human voting were necessary for this sample to reach execution. Prior zero-vote failures justify explicit deadline monitoring and fail-closed wallet handoff checks."
+        },
+        {
+          "index": 3,
+          "heading": "Forbidden lesson",
+          "contentHash": "0x4dee7b263d5db0291a2b4d429a447a0ab7b6b4dc853f992b4232d00d670286e0",
+          "characterCount": 320,
+          "preview": "This single Outcome does not prove investment performance, avoided loss, economic benefit, market prediction accuracy or causal AI effectiveness. It must not automatically become a Skill, PID gain change or active policy. Promotion requi..."
+        }
+      ],
+      "checks": {
+        "statusDraft": true,
+        "scanSafe": true,
+        "rescanSafe": true,
+        "originalHashMatches": true,
+        "persistedChunksZero": true
+      }
+    }
+  ],
+  "assetExecutionAuthorized": false,
+  "reportHash": "0x0b731926b9f4765125b79e2a45e543c8b934c3dcc448596621f24e7d59bcd071"
+}

@@ -119,6 +119,7 @@
     "verify:tenant-rls-db": "npm run verify:tenant-rls-db -w @aeos/api",
     "verify:eight-agent-db": "npm run verify:eight-agent-db -w @aeos/api",
     "verify:rag-memory-db": "npm run verify:rag-memory-db -w @aeos/api",
+    "verify:demo-advisory-rubric-drafts": "npm run verify:demo-advisory-rubric-drafts -w @aeos/api",
     "verify:decision-retrieval-db": "npm run verify:decision-retrieval-db -w @aeos/api",
     "verify:evidence-classification-db": "npm run verify:evidence-classification-db -w @aeos/api",
     "verify:evidence-request-db": "npm run verify:evidence-request-db -w @aeos/api",
