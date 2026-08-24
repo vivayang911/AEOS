@@ -37,4 +37,4 @@ Frozen plan hash: `0xef8b372f4323b0cedcd946f0e38b30e6824cc61c1c4ef6a87363f4aa8ab
 - Governor binds the deployed voting token and Timelock. PolicyRegistry and TreasuryGuard bind Timelock governance. TreasuryGuard binds the deployed PolicyRegistry and starts paused.
 - All five deployed addresses contain contract code. The final wallet pending nonce was `12` at verification time.
 
-Every finality check passed using `npm run verify:governance-stack-finality`. This proves deployment and authority wiring only. A real Decision-bound Proposal, voting/quorum, queue, elapsed Timelock, governed Policy/Guard action, Outcome Evidence and Safe integration remain incomplete.
+Every deployment finality check passed using `npm run verify:governance-stack-finality`. A later distinct Attempt 3 also completed the real Decision-bound Proposal, voting/quorum, Queue, elapsed Timelock, zero-value Guard pause and immutable Outcome Evidence path. That accepts the bounded deterministic-withholding slice only. Policy activation/action authorization, Safe integration, asset movement and broader production acceptance remain incomplete.

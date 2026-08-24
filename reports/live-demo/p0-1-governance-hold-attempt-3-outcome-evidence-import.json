@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "aeos.live-governance-hold-outcome-evidence-import.v1",
+  "status": "OUTCOME_EVIDENCE_IMPORTED",
+  "recordedAt": "2026-08-24T02:29:18.876Z",
+  "tenantBinding": "SERVER_RESOLVED_FROM_DECISION",
+  "rawTenantIdentifiersDisclosed": false,
+  "governanceOutcomeEvidenceId": "govout_ef291722a8cb069e4fe75fe1abe2936e",
+  "evidenceId": "ev_govout_fd6c5926fdd447485662aa5dba5fb8d6",
+  "decisionId": "decision_a9a37c5bd3ff43c68f5b0af32a13b8ed",
+  "evidenceSnapshotId": "snap_5f3081a8dffc4e0b9f281e0095dc231f",
+  "sourceEvidenceIds": [
+    "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+  ],
+  "executeTransactionHash": "0xeecd79baabd81d23000ef36791384c1919615d8c4a609fc8215819c970c01160",
+  "blockNumber": 5363350,
+  "blockHash": "0x6f5b9caabb3c4a6d428e2ff16eb7766019219691046e7734a02c6f39af78c040",
+  "outcomeCandidateHash": "0xef291722a8cb069e4fe75fe1abe2936e86bcc513893b29acdb37cdab5a41eeb1",
+  "evidenceFactHash": "0xfd6c5926fdd447485662aa5dba5fb8d6e955c41249244c1ac249bf666637aad4",
+  "classificationHash": "0x3216e126f4edc442ed442eb5e4792812f812d137249c27acf55fa2c71555e1b9",
+  "initialImportCreated": true,
+  "checks": {
+    "canonicalFinalityBound": true,
+    "decisionSnapshotLineageBound": true,
+    "organizationScoped": true,
+    "crossTenantHidden": true,
+    "lineageImmutable": true,
+    "evidenceImmutable": true,
+    "rawAttestationImmutable": true,
+    "unlinkedEvidenceUpdatesSupported": true,
+    "databaseEvidenceCreated": true
+  },
+  "truthBoundary": {
+    "verifiedOutcome": "DETERMINISTIC_WITHHOLDING_EXECUTED",
+    "treasuryAssetMovement": false,
+    "economicBenefitClaimed": false,
+    "causalAttributionEstablished": false,
+    "pidFeedbackApplied": false,
+    "ragMemoryPromoted": false,
+    "skillPromoted": false,
+    "assetExecutionAuthorized": false
+  },
+  "controls": {
+    "privateKeyReceived": false,
+    "signerCustody": false,
+    "broadcastCapability": false,
+    "assetExecutionAuthorized": false
+  }
+}

@@ -1,8 +1,16 @@
 # DAO governance P0-1 deployment audit
 
-Status: `BLOCKED BEFORE IMPLEMENTATION / DEPENDENCY AND SAFE DEPLOYMENT DECISION REQUIRED`.
+Status: `BOUNDED DECISION-BOUND WITHHOLDING SLICE ACCEPTED / BROADER PRD PARTIAL`.
 
-This audit records facts checked before the first real DAO-governance implementation batch. It does not convert a Mock observation, an EOA call, or an Evidence anchor into governance finality.
+This file began as the pre-implementation audit. The historical findings below remain useful, but the current checkpoint supersedes its original blocker: OpenZeppelin 5.4.0 was installed, the Governor/Timelock/Guard/Registry stack was deployed and a real Decision-bound withholding lifecycle completed. Nothing here converts a Mock observation, an EOA call, or an Evidence anchor into governance finality.
+
+## Current accepted checkpoint
+
+- User-controlled Attempt 3 transactions completed Proposal `0x60ae...211e`, For vote `0x8242...a8c9`, Queue `0x3ce6...bfc5` and Execute `0xeecd...1160` on Creditcoin Testnet.
+- Public-RPC reports verify canonical calldata and events, 1,000,000 For votes against 40,000 quorum, the 60-second Timelock, Governor `Executed`, operation `0xc504...b85f` Done and TreasuryGuard `paused=true`.
+- Outcome `0xef29...eeb1` is persisted as immutable tenant Evidence and Decision/Snapshot/source-Evidence lineage. Cross-tenant reads return zero and UPDATE probes are rejected.
+- Scope is deterministic withholding only: zero assets moved, PolicyRegistry was not mutated, no economic benefit or causal AI effect is established, and `assetExecutionAuthorized=false`.
+- Safe, Policy activation/action authorization, governed PID/RAG/Skill feedback, real asset calldata/fork testing and broader PRD acceptance remain incomplete.
 
 ## Verified repository state
 

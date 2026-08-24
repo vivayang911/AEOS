@@ -55,7 +55,7 @@ Stop immediately if the account, chain, nonce, calldata, request hash, predicted
 
 ## Post-deployment acceptance
 
-Eight wallet-RPC receipts are necessary but not sufficient. A separate read-only verifier must confirm canonical blocks/finality, exact sender/nonce/value/calldata, deployed runtime hashes, constructor getters, Governor/Timelock relationships, final roles, initial paused Guard state and PolicyRegistry governance. Until that verification and a live Proposal → vote/quorum → queue → Timelock execution sample pass, P0-1 remains `PARTIAL / EXTERNAL_PENDING`.
+Eight wallet-RPC receipts are necessary but not sufficient. A separate read-only verifier must confirm canonical blocks/finality, exact sender/nonce/value/calldata, deployed runtime hashes, constructor getters, Governor/Timelock relationships, final roles, initial paused Guard state and PolicyRegistry governance. That deployment verification and a bounded live Decision-bound Proposal → vote/quorum → queue → Timelock → Guard withholding sample now pass; only this P0-1 slice is accepted. Policy activation/action authorization, Safe, asset execution and production acceptance remain partial.
 
 For the accepted deployment instance, run the immutable-output verifier once:
 
