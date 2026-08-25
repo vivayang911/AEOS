@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "aeos.live-economic-evidence.usdc-transaction-verified.v1",
+  "status": "TRANSACTION_VERIFIED",
+  "recordedAt": "2026-08-25T06:59:34.254Z",
+  "sourceProof": {
+    "artifactSchemaVersion": "aeos.live-economic-evidence.usdc-inflow.v1",
+    "transactionHash": "0x0488e4990ac7c43f7a5f7d8734a10be0af5fd36c8cd3843788501fccbcc9eea9",
+    "sourceBlockNumber": 11561243,
+    "proofPayloadHash": "0x7626d6dcff398b16c8b11515a1e454bb6c7d040b19153615b5715fa51d2fdd33",
+    "economicEventHash": "0x30a5d8302acdccea28f5cc6d2099c59a9715ba4b9ec43b66e332ac4113f87aeb",
+    "bundleHash": "0x3795c4d2260098cac740e5042d06487743a503404d781f9f913ad43f0fefa1bd"
+  },
+  "verificationRequestHash": "0xc5b97f38734ea8465142e9e6b93e82a72b39a9a5fb84cd97821c3917083f7dcd",
+  "canonicalSubmission": {
+    "chainId": 102031,
+    "transactionHash": "0x56923d6bd84599da1ef21b5013e086660dcd8cd0d010e56780b0cbd8fc48d456",
+    "blockNumber": 5370179,
+    "blockHash": "0xca0d53c61871983ededab47b3b78c45bda7f206909dbeaa4bc0c06c9a4d7d14f",
+    "from": "0x444d510728fb8072351cb5d0e88432e6a8501dfa",
+    "to": "0x0000000000000000000000000000000000000fd2",
+    "status": 1,
+    "confirmations": 24,
+    "canonicalBlockVerified": true,
+    "calldataVerified": true,
+    "zeroValueVerified": true,
+    "transactionVerifiedEvent": true,
+    "transactionVerified": {
+      "chainKey": 1,
+      "height": 11561243,
+      "transactionIndex": 9
+    }
+  },
+  "equivalentDuplicateSubmissions": [
+    {
+      "chainId": 102031,
+      "transactionHash": "0xb3be017a8be797819295f06f3e85855274380e47e21842b56751a66befa95480",
+      "blockNumber": 5370165,
+      "blockHash": "0xd8f94f9216b8f8646a0f3e89a9a7f1714f637acbb945a59c1bc45f477dfabdec",
+      "from": "0x444d510728fb8072351cb5d0e88432e6a8501dfa",
+      "to": "0x0000000000000000000000000000000000000fd2",
+      "status": 1,
+      "confirmations": 38,
+      "canonicalBlockVerified": true,
+      "calldataVerified": true,
+      "zeroValueVerified": true,
+      "transactionVerifiedEvent": true,
+      "transactionVerified": {
+        "chainKey": 1,
+        "height": 11561243,
+        "transactionIndex": 9
+      }
+    }
+  ],
+  "duplicateSubmissionCount": 1,
+  "controls": {
+    "walletConfirmed": true,
+    "receiptVerified": true,
+    "canonicalBlockVerified": true,
+    "exactCalldataVerified": true,
+    "zeroValueVerified": true,
+    "transactionVerifiedEventObserved": true,
+    "immutableTenantEvidenceCreated": false,
+    "signerCustody": false,
+    "broadcastCapability": false,
+    "assetExecutionAuthorized": false
+  },
+  "truthBoundary": {
+    "verifiedClaim": "ATTESTCOIN_SOURCE_TRANSACTION_INCLUSION_AND_CALLDATA",
+    "duplicateVerificationChangesEconomicFact": false,
+    "currentBalanceVerifiedByAttestcoin": false,
+    "priceVerified": false,
+    "realFinancialValueClaimed": false,
+    "organizationEvidenceImportStatus": "PENDING_SERVER_RESOLVED_ORGANIZATION_CONTEXT"
+  }
+}

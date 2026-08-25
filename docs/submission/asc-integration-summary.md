@@ -22,7 +22,7 @@ Verified local artifacts:
 Pending before submission claims may be upgraded:
 
 - approved, contentful role-partitioned RAG sources;
-- a second live source chain and proof-backed economic metric derivations;
+- organization-scoped import and child-Decision use of the verified Sepolia test-USDC inflow, plus a genuinely second live source chain and broader proof-backed economic metric derivations;
 - a real DAO proposal/vote/queue/Timelock/Guard outcome rather than an Evidence anchor;
 - broader live error, reorg, coverage, load, fork and independent-audit acceptance.
 ## Project-owned Sepolia source binding
