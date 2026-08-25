@@ -12,22 +12,24 @@ const EXPECTED_PROVER = "0x0000000000000000000000000000000000000fd2";
 function readHandoff() {
   const value = JSON.parse(readFileSync(HANDOFF_PATH, "utf8"));
   const isLiveUsdc = value.schemaVersion === "aeos.live-economic-evidence.usdc-wallet-handoff.v1" && value.status === "READY_FOR_USER_WALLET_CONFIRMATION";
+  const isLiveBalance = value.schemaVersion === "aeos.live-economic-evidence.balance-observer-wallet-handoff.v1" && value.status === "READY_FOR_USER_WALLET_CONFIRMATION";
   const isHistorical = value.schemaVersion === "aeos.live-attestcoin-step.v1" && value.step === 5 && value.status === "VERIFICATION_PREPARED";
-  if (!isLiveUsdc && !isHistorical) throw new Error("Unsupported USC verification handoff");
-  const tx = isLiveUsdc ? value.transaction : value.verificationRequest;
-  if (value.controls?.signed || value.controls?.submitted || value.controls?.assetExecutionAuthorized !== false || (isLiveUsdc && (value.controls?.requiresExplicitButtonClick !== true || value.preflight?.simulationPassed !== true))) throw new Error("USC verification handoff authority boundary invalid");
+  if (!isLiveUsdc && !isLiveBalance && !isHistorical) throw new Error("Unsupported USC verification handoff");
+  const tx = isLiveUsdc || isLiveBalance ? value.transaction : value.verificationRequest;
+  if (value.controls?.signed || value.controls?.submitted || value.controls?.assetExecutionAuthorized !== false || ((isLiveUsdc || isLiveBalance) && (value.controls?.requiresExplicitButtonClick !== true || value.preflight?.simulationPassed !== true))) throw new Error("USC verification handoff authority boundary invalid");
   if (tx?.chainId !== EXPECTED_CHAIN_ID || tx?.to?.toLowerCase() !== EXPECTED_PROVER || tx?.value !== "0x0" || !/^0x[0-9a-f]+$/i.test(tx?.data || "")) throw new Error("USC verification transaction invalid");
   return value;
 }
 
 function recordSubmission(payload, handoff) {
   const liveUsdc = handoff.schemaVersion === "aeos.live-economic-evidence.usdc-wallet-handoff.v1";
-  const tx = liveUsdc ? handoff.transaction : handoff.verificationRequest;
+  const liveBalance = handoff.schemaVersion === "aeos.live-economic-evidence.balance-observer-wallet-handoff.v1";
+  const tx = liveUsdc || liveBalance ? handoff.transaction : handoff.verificationRequest;
   if (!/^0x[0-9a-fA-F]{64}$/.test(payload.transactionHash || "")) throw new Error("Invalid transaction hash");
   if ((payload.from || "").toLowerCase() !== tx.from.toLowerCase()) throw new Error("Submission wallet mismatch");
   const record = {
-    schemaVersion: liveUsdc ? "aeos.live-economic-evidence.usdc-wallet-submission.v1" : "aeos.live-attestcoin-step.v1",
-    ...(liveUsdc ? { sourceProofBundleHash: handoff.sourceProofBundleHash } : { step: 6 }),
+    schemaVersion: liveBalance ? "aeos.live-economic-evidence.balance-observer-wallet-submission.v1" : liveUsdc ? "aeos.live-economic-evidence.usdc-wallet-submission.v1" : "aeos.live-attestcoin-step.v1",
+    ...(liveUsdc || liveBalance ? { sourceProofBundleHash: handoff.sourceProofBundleHash } : { step: 6 }),
     status: "WALLET_SUBMITTED",
     recordedAt: new Date().toISOString(),
     chainId: tx.chainId,

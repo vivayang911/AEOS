@@ -1,0 +1,149 @@
+{
+  "schemaVersion": "aeos.live-balance-observer-finality.v1",
+  "status": "BALANCE_OBSERVATION_CANONICALLY_VERIFIED",
+  "verifiedAt": "2026-08-25T13:06:35.711Z",
+  "planHash": "0xf3d531dc527ee0290b3c8a0450761b32aebb52d983d7cd4d8a7bc09118a2b031",
+  "deployment": {
+    "schemaVersion": "aeos-balance-observer.deployment-verification.v1",
+    "status": "VERIFIED",
+    "address": "0xb8c8b8e5628cc920316ecb11c22b83eb6906da8e",
+    "deploymentTransactionHash": "0x7ba8e52bf1b899b63953c90e7a5aaa9e6a152526f178eb0fdcadd3f133e43a88",
+    "confirmations": 91,
+    "minimumConfirmations": 2,
+    "checks": [
+      {
+        "code": "CHAIN_ID_MATCH",
+        "passed": true
+      },
+      {
+        "code": "RUNTIME_CODE_MATCH",
+        "passed": true
+      },
+      {
+        "code": "REPORTER_MATCH",
+        "passed": true
+      },
+      {
+        "code": "DEPLOYMENT_TRANSACTION_HASH_VALID",
+        "passed": true
+      },
+      {
+        "code": "DEPLOYMENT_INIT_CODE_MATCH",
+        "passed": true
+      },
+      {
+        "code": "CONTRACT_CREATION_ZERO_VALUE",
+        "passed": true
+      },
+      {
+        "code": "RECEIPT_SUCCESS",
+        "passed": true
+      },
+      {
+        "code": "CONTRACT_CREATION_RECEIPT",
+        "passed": true
+      },
+      {
+        "code": "FINALITY",
+        "passed": true
+      }
+    ],
+    "signed": false,
+    "submitted": false,
+    "containsPrivateKey": false,
+    "aeosSigningCapability": false,
+    "aeosBroadcastCapability": false,
+    "assetExecutionAuthorized": false
+  },
+  "observation": {
+    "schemaVersion": "aeos-balance-observer.receipt-verification.v1",
+    "status": "VERIFIED",
+    "verifiedClaim": "ERC20_BALANCE_RETURNED_DURING_INCLUDED_SOURCE_TRANSACTION",
+    "chainId": 11155111,
+    "transactionHash": "0x627a143fea4412d9871567a977e41438bf36d9ca4042a763cbb65a46ff886837",
+    "blockNumber": 11564181,
+    "blockHash": "0x35448067d977c0512e67cf0b053ab75ef280a5f803914b3ca88e30953abd9a87",
+    "blockTimestamp": 1787662584,
+    "confirmations": 50,
+    "minimumConfirmations": 2,
+    "observationId": "0x5c9e0405f866320b715f127903c7c6f85a74c7842868bad8c644e3450901122d",
+    "token": "0x1c7d4b196cb0c7b01d743fbc6116a902379c7238",
+    "account": "0x444d510728fb8072351cb5d0e88432e6a8501dfa",
+    "tokenCodeHash": "0xcd3f29e2ea9c61dadd48bfeaf8b2884b6de9dfee7bf45329452c4c33d0868ceb",
+    "balanceBaseUnits": "20000000",
+    "commitment": "0x1951c9d24d229d975d4cb030614dd0c7ef3eb96e67ef66c8a9fae91f7c61d387",
+    "checks": [
+      {
+        "code": "CHAIN_ID",
+        "passed": true
+      },
+      {
+        "code": "TRANSACTION_HASH",
+        "passed": true
+      },
+      {
+        "code": "TRANSACTION_ROUTE",
+        "passed": true
+      },
+      {
+        "code": "TRANSACTION_CALLDATA",
+        "passed": true
+      },
+      {
+        "code": "ZERO_VALUE",
+        "passed": true
+      },
+      {
+        "code": "NONCE",
+        "passed": true
+      },
+      {
+        "code": "RECEIPT_SUCCESS",
+        "passed": true
+      },
+      {
+        "code": "CANONICAL_BLOCK",
+        "passed": true
+      },
+      {
+        "code": "FINALITY",
+        "passed": true
+      },
+      {
+        "code": "TOKEN_RUNTIME_IDENTITY",
+        "passed": true
+      },
+      {
+        "code": "EVENT_COUNT",
+        "passed": true
+      },
+      {
+        "code": "EVENT_FIELDS",
+        "passed": true
+      },
+      {
+        "code": "STORAGE_READBACK",
+        "passed": true
+      }
+    ],
+    "truthBoundary": {
+      "tokenSemanticIdentityRequiresIndependentAddressAndRuntimeReview": true,
+      "priceVerified": false,
+      "liquidityVerified": false,
+      "economicValueOrPerformanceVerified": false
+    },
+    "privateKeyReceived": false,
+    "aeosSigningCapability": false,
+    "aeosBroadcastCapability": false,
+    "assetExecutionAuthorized": false
+  },
+  "extraChecks": {
+    "deploymentTransactionInCanonicalBlock": true,
+    "observationTransactionInCanonicalBlock": true
+  },
+  "attestcoinProofReady": true,
+  "privateKeyReceived": false,
+  "signerCustody": false,
+  "broadcastCapability": false,
+  "assetExecutionAuthorized": false
+}

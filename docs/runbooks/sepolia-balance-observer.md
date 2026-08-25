@@ -57,3 +57,5 @@ The compiler's deployed-bytecode artifact contains two reporter `immutableRefere
 11. Freeze a new child Snapshot/Decision; never mutate the prior inflow Decision.
 
 Any mismatch, stale observation, unsupported proof, missing event, changed runtime, wrong tenant or failed finality leaves the request rejected and produces no verified Evidence.
+
+Current live checkpoint: deployment `0x7ba8...3a88` and observation `0x627a...6837` pass independent Sepolia finality/event/storage verification. Proof bundle `0x543443...97b94` is statically verified and request `0x11ed2c...d81d99` passes Creditcoin simulation. The separate manual `verifyAndEmit` page is `http://127.0.0.1:4193/`; it must not be treated as submitted until the owner confirms MetaMask and a separate canonical `TransactionVerified` verifier passes.

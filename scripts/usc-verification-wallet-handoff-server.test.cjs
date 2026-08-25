@@ -6,6 +6,7 @@ const test = require("node:test");
 
 const handoff = { schemaVersion: "aeos.live-attestcoin-step.v1", step: 5, status: "VERIFICATION_PREPARED", verificationRequestHash: `0x${"11".repeat(32)}`, verificationRequest: { chainId: 102031, from: "0x444d510728fb8072351cb5d0e88432e6a8501dfa", to: "0x0000000000000000000000000000000000000fd2", data: "0x02f4d16700", value: "0x0" }, controls: { signed: false, submitted: false, assetExecutionAuthorized: false } };
 const liveUsdc = { schemaVersion: "aeos.live-economic-evidence.usdc-wallet-handoff.v1", status: "READY_FOR_USER_WALLET_CONFIRMATION", sourceProofBundleHash: `0x${"44".repeat(32)}`, verificationRequestHash: handoff.verificationRequestHash, transaction: handoff.verificationRequest, dataHash: `0x${"55".repeat(32)}`, preflight: { simulationPassed: true }, controls: { requiresExplicitButtonClick: true, signed: false, submitted: false, assetExecutionAuthorized: false } };
+const liveBalance = { ...liveUsdc, schemaVersion: "aeos.live-economic-evidence.balance-observer-wallet-handoff.v1" };
 
 function loadWithPaths(value = handoff) {
   const directory = mkdtempSync(join(tmpdir(), "aeos-usc-handoff-"));
@@ -26,6 +27,14 @@ test("accepts the live USDC preflight only when simulation and explicit-click ga
   assert.deepEqual(loadWithPaths(liveUsdc).readHandoff(), liveUsdc);
   assert.throws(() => loadWithPaths({ ...liveUsdc, preflight: { simulationPassed: false } }).readHandoff(), /authority boundary/);
   assert.throws(() => loadWithPaths({ ...liveUsdc, controls: { ...liveUsdc.controls, requiresExplicitButtonClick: false } }).readHandoff(), /authority boundary/);
+});
+
+test("accepts a balance-observer preflight without changing the zero-authority boundary", () => {
+  assert.deepEqual(loadWithPaths(liveBalance).readHandoff(), liveBalance);
+  const loaded = loadWithPaths(liveBalance); const record = loaded.recordSubmission({ transactionHash: `0x${"77".repeat(32)}`, from: liveBalance.transaction.from }, liveBalance);
+  assert.equal(record.schemaVersion, "aeos.live-economic-evidence.balance-observer-wallet-submission.v1");
+  assert.equal(record.sourceProofBundleHash, liveBalance.sourceProofBundleHash);
+  assert.equal(record.assetExecutionAuthorized, false);
 });
 
 test("records one immutable public transaction identity without custody claims", () => {
