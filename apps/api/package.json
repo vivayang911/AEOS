@@ -35,6 +35,7 @@
     "verify:evidence-anchor-confirmation-db": "npm run build && node scripts/verify-evidence-anchor-confirmation-db.cjs",
     "prepare:evidence-anchor": "npm run build && node scripts/prepare-evidence-anchor-deployment.cjs",
     "prepare:aeos-evidence-source": "npm run build && node scripts/prepare-aeos-evidence-source-deployment.cjs",
+    "prepare:balance-observer": "npm run build && node scripts/prepare-balance-observer-deployment.cjs",
     "prepare:aeos-evidence-source-wallet-handoff": "npm run build && node scripts/prepare-aeos-evidence-source-wallet-handoff.cjs",
     "prepare:treasury-observation-commit": "npm run build && node scripts/prepare-treasury-observation-commit.cjs",
     "prepare:live-control-observation": "npm run build && node scripts/prepare-live-control-observation.cjs",
@@ -117,6 +118,7 @@
     "security:contract": "npm run build && node scripts/verify-contract-surface.cjs",
     "security:evidence-anchor": "npm run build && node scripts/verify-evidence-anchor-surface.cjs",
     "security:aeos-evidence-source": "npm run build && node scripts/verify-aeos-evidence-source-surface.cjs",
+    "security:balance-observer": "npm run build && node scripts/verify-balance-observer-surface.cjs",
     "security:policy-registry": "npm run build && node scripts/verify-policy-registry-surface.cjs",
     "demo:verify": "npm run build && node dist/demo-fixture.runner.js",
     "release:manifest": "npm run build && node dist/release-manifest.runner.js"

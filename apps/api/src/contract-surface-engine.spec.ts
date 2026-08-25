@@ -1,4 +1,4 @@
-import { verifyAEOSEvidenceSourceArtifact,verifyEvidenceAnchorArtifact,verifyPolicyRegistryArtifact,verifyTreasuryGuardArtifact } from "./contract-surface-engine";
+import { verifyAEOSEvidenceSourceArtifact,verifyBalanceObserverArtifact,verifyEvidenceAnchorArtifact,verifyPolicyRegistryArtifact,verifyTreasuryGuardArtifact } from "./contract-surface-engine";
 
 const writes=["authorizeAction","configurePolicy","setPaused","setSelectorAllowed","setTargetAllowed"];
 const artifact=(runtime="0x60006000",extra:any[]=[]):any=>({abi:[{type:"constructor",stateMutability:"nonpayable",inputs:[{type:"address"},{type:"address"},{type:"address"}]},...writes.map(name=>({type:"function",name,stateMutability:"nonpayable",inputs:[],outputs:[]})),...extra],deployedBytecode:{object:runtime}});
@@ -21,4 +21,9 @@ describe("AEOSTreasuryEvidenceSource compiled surface gate",()=>{
   const source=(runtime="0x60006000",extra:any[]=[]):any=>({abi:[{type:"constructor",stateMutability:"nonpayable",inputs:[{type:"address"}]},{type:"function",name:"commitObservation",stateMutability:"nonpayable",inputs:[],outputs:[]},...extra],deployedBytecode:{object:runtime}});
   it("allows only hash observation commits with no asset or external-call surface",()=>expect(verifyAEOSEvidenceSourceArtifact(source())).toEqual(expect.objectContaining({status:"VERIFIED",writeMethods:["commitObservation"],noPayableSurface:true,noExternalCallOpcodes:true,upgradeable:false,assetExecutionAuthorized:false})));
   it("rejects external calls, payable entrypoints, and unknown writes",()=>{const result=verifyAEOSEvidenceSourceArtifact(source("0x6000f1",[{type:"function",name:"withdraw",stateMutability:"payable",inputs:[],outputs:[]}]));expect(result.status).toBe("REJECTED");expect(result.findings).toEqual(expect.arrayContaining(["FORBIDDEN_OPCODE:CALL@2","PAYABLE_SURFACE:withdraw","UNKNOWN_WRITE_METHOD:withdraw"]))});
+});
+describe("AEOSBalanceObserver compiled surface gate",()=>{
+  const observer=(runtime="0x6000fa",extra:any[]=[]):any=>({abi:[{type:"constructor",stateMutability:"nonpayable",inputs:[{type:"address"}]},{type:"function",name:"observeBalance",stateMutability:"nonpayable",inputs:[],outputs:[]},...extra],deployedBytecode:{object:runtime}});
+  it("allows only the balance observation write and token STATICCALL",()=>expect(verifyBalanceObserverArtifact(observer())).toEqual(expect.objectContaining({status:"VERIFIED",writeMethods:["observeBalance"],onlyTokenStaticcall:true,noPayableSurface:true,assetExecutionAuthorized:false})));
+  it("rejects asset-moving calls, payable entrypoints and unknown writes",()=>{const result=verifyBalanceObserverArtifact(observer("0x6000f1",[{type:"function",name:"withdraw",stateMutability:"payable",inputs:[],outputs:[]}]));expect(result.status).toBe("REJECTED");expect(result.findings).toEqual(expect.arrayContaining(["FORBIDDEN_OPCODE:CALL@2","PAYABLE_SURFACE:withdraw","UNKNOWN_WRITE_METHOD:withdraw"]))});
 });

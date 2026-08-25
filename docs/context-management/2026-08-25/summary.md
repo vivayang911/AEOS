@@ -18,6 +18,15 @@
 
 The transfer-inflow child Decision is complete. The next evidence gap is narrower and must not be conflated with it: obtain an Attestcoin-supported current balance or market-state proof (price/liquidity/volatility as applicable), then run another immutable child revision only if the revision budget and predicate lineage permit it. Agnes remains a final, narrative-only step.
 
+## Current-balance observer preparation
+
+- Premise correction: placing a claimed balance in transaction calldata proves only that the claim was submitted. It does not prove the value equals ERC-20 state.
+- `AEOSBalanceObserver` is locally implemented as a separate non-upgradeable Sepolia source contract. Its only write method verifies the expected token runtime code hash, performs `balanceOf(account)` by `STATICCALL`, and freezes the returned integer, token/account, block/time and tenant/Treasury commitments.
+- The API locally builds deterministic zero-value unsigned deployment and observation artifacts, and independently verifies exact transaction/calldata, canonical block/finality, token runtime, event fields, stored commitment and stored balance.
+- This status is `LOCAL_PREPARED / EXTERNAL_PENDING`, not a live `asset.balance` Evidence claim. Human wallet deployment/observation, Attestcoin verification, tenant import and a new immutable child Decision remain pending. Price, liquidity, redemption and economic value are not verified.
+- The first real Solidity compile exposed `Stack too deep`; the event path was refactored through an in-memory observation structure without enabling `via-ir` or changing commitment fields. The corrected Solidity `0.8.28` compile and targeted Foundry suite pass 4/4. Compiled surface verification is `VERIFIED` with runtime hash `0x7a5a771a251803ace6051d92c0630e3275b6aed2010cbdfa923970b17689be26`.
+- The zero-value unsigned Sepolia deployment summary freezes plan hash `0x3e2ad15fa752400568f25f1d45657c07225de803739d2b2cf438d8882d58354c` and init-code hash `0x2546a90c8a98d2875e3740df5dfcf0d88c765d2f3d2aafd19f6b8d521c1b1d1e`; it is not signed or submitted.
+
 ## Live test-USDC verification continuation
 
 - Sepolia transaction `0x0488...eea9` transferred `20.0` Circle test USDC to the monitored wallet at source block `11,561,243`. Retry 1 Proof bundle `0x3795...a1bd` passed static BlockProver verification and generated frozen Creditcoin request `0xc5b9...7dcd`.

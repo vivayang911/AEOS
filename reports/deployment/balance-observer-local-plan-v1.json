@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "aeos-balance-observer.local-plan-summary.v1",
+  "status": "LOCAL_PREPARED_EXTERNAL_PENDING",
+  "chainId": 11155111,
+  "contract": "AEOSBalanceObserver",
+  "reporter": "0x444d510728fb8072351cb5d0e88432e6a8501dfa",
+  "runtimeBytecodeHash": "0x7a5a771a251803ace6051d92c0630e3275b6aed2010cbdfa923970b17689be26",
+  "planHash": "0x3e2ad15fa752400568f25f1d45657c07225de803739d2b2cf438d8882d58354c",
+  "initCodeHash": "0x2546a90c8a98d2875e3740df5dfcf0d88c765d2f3d2aafd19f6b8d521c1b1d1e",
+  "unsignedTransaction": {
+    "to": null,
+    "value": "0",
+    "signed": false,
+    "submitted": false
+  },
+  "verification": {
+    "solidityCompiler": "0.8.28",
+    "targetedFoundryTestsPassed": 4,
+    "targetedFoundryTestsFailed": 0,
+    "compiledSurfaceStatus": "VERIFIED",
+    "writeMethods": ["observeBalance"],
+    "noPayableSurface": true,
+    "onlyTokenStaticcall": true
+  },
+  "truthBoundary": {
+    "liveDeploymentVerified": false,
+    "liveBalanceEvidenceVerified": false,
+    "priceVerified": false,
+    "liquidityVerified": false,
+    "economicValueVerified": false,
+    "signerCustody": false,
+    "broadcastCapability": false,
+    "assetExecutionAuthorized": false
+  }
+}
