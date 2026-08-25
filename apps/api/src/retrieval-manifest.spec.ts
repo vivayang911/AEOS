@@ -1,5 +1,5 @@
 import { decisionRoles } from "./decision-engine";
-import { buildRetrievalManifestBundle,buildRoleRetrievalManifestBundle,ROLE_RETRIEVAL_FOCUS,unavailableRetrievalManifestBundle,validateRetrievalManifestBundle } from "./retrieval-manifest";
+import { buildRetrievalManifestBundle,buildRoleRetrievalManifestBundle,frozenRetrievalManifestBundleFromRows,ROLE_RETRIEVAL_FOCUS,unavailableRetrievalManifestBundle,validateRetrievalManifestBundle } from "./retrieval-manifest";
 
 const item=(overrides:Record<string,unknown>={})=>({id:"chunk_1",sourceId:"source_1",sourceVersion:1,partition:"GOVERNANCE",heading:"Policy",content:"Stablecoin allocation policy",contentHash:"0xcontent",citation:"rag:source_1:v1:chunk_1:0xcontent",keywordScore:1,vectorScore:.8,score:.9,conflictGroupId:null,...overrides});
 
@@ -17,4 +17,11 @@ describe("Decision retrieval manifests",()=>{
   });
   it("fails validation when a stable citation is forged",()=>{const bundle=buildRetrievalManifestBundle("policy",{status:"SUPPORTED",items:[item()],embeddingModel:"mock"});const changed=structuredClone(bundle);changed.manifests[0].items[0].citation="rag:forged";expect(()=>validateRetrievalManifestBundle(changed)).toThrow("hash mismatch")});
   it("records an explicit fail-closed bundle when retrieval is unavailable",()=>{const bundle=unavailableRetrievalManifestBundle("objective");expect(bundle.manifests.every(value=>value.status==="INSUFFICIENT_CONTEXT"&&value.reasonCode==="RETRIEVAL_SERVICE_UNAVAILABLE")).toBe(true)});
+  it("reconstructs the exact frozen parent bundle for a child Decision",()=>{
+    const parent=buildRoleRetrievalManifestBundle(Object.fromEntries(decisionRoles.map(role=>[role,{query:ROLE_RETRIEVAL_FOCUS[role],result:{status:"SUPPORTED",embeddingModel:"mock",items:[item({id:`chunk_${role}`,partition:role==="Portfolio"?"DECISION_MEMORY":["Quant","Risk"].includes(role)?"PROTOCOL":"GOVERNANCE",citation:`rag:source_1:v1:chunk_${role}:0xcontent`})]}}])) as any);
+    const rows=parent.manifests.map(manifest=>({role:manifest.role,requester_role:"TREASURY_COMMITTEE",query:manifest.query,query_hash:manifest.queryHash,status:manifest.status,reason_code:manifest.reasonCode,has_conflicts:manifest.hasConflicts,embedding_model:manifest.embeddingModel,reranker_version:manifest.rerankerVersion,items:manifest.items,manifest_hash:manifest.manifestHash}));
+    const restored=frozenRetrievalManifestBundleFromRows(rows,parent.bundleHash);
+    expect(restored.bundle).toEqual(parent);expect(restored.requesterRole).toBe("TREASURY_COMMITTEE");
+    expect(()=>frozenRetrievalManifestBundleFromRows(rows.slice(1),parent.bundleHash)).toThrow("exactly eight");
+  });
 });

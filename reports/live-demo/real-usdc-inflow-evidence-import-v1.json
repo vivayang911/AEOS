@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "aeos.live-economic-evidence.usdc-evidence-import.v1",
+  "status": "IMMUTABLE_EVIDENCE_IMPORTED",
+  "recordedAt": "2026-08-25T07:23:42.279Z",
+  "tenantBinding": "SERVER_RESOLVED_ACTIVE_SIWE_SESSION",
+  "rawTenantIdentifiersDisclosed": false,
+  "proofJobId": "uscjob_d9b6f197c9284ecc9ebed0e5550b4add",
+  "evidenceId": "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+  "evidenceContentHash": "0xbb3cfeb245a2d7da4f8b2a45a826eb3e4a43d489f95ead95379292df9123831d",
+  "predicate": "asset.transfer.inflow",
+  "freshnessStatus": "FRESH",
+  "freshnessExpiresAt": "2026-08-26T02:51:48.000Z",
+  "qualityScore": 100,
+  "reverseEvidenceRequest": {
+    "id": "evreq_bf3e479163564867b284bbbe81cc7de8",
+    "requestedPredicate": "asset.balance",
+    "importedPredicate": "asset.transfer.inflow",
+    "requestClaimSatisfied": false,
+    "reasonCode": "PREDICATE_SCOPE_MISMATCH_BALANCE_VS_TRANSFER",
+    "originalLifecycleMutated": false
+  },
+  "sourceTransactionHash": "0x0488e4990ac7c43f7a5f7d8734a10be0af5fd36c8cd3843788501fccbcc9eea9",
+  "verificationTransactionHash": "0x56923d6bd84599da1ef21b5013e086660dcd8cd0d010e56780b0cbd8fc48d456",
+  "idempotentReplay": false,
+  "controls": {
+    "immutableEvidenceCreated": true,
+    "organizationRlsRequired": true,
+    "signerCustody": false,
+    "broadcastCapability": false,
+    "assetExecutionAuthorized": false
+  },
+  "truthBoundary": {
+    "verifiedClaim": "ATTESTCOIN_SOURCE_TRANSACTION_INCLUSION_AND_CALLDATA",
+    "currentBalanceVerified": false,
+    "priceVerified": false,
+    "liquidityVerified": false,
+    "realFinancialValueClaimed": false,
+    "childDecisionCreated": false
+  }
+}

@@ -7,7 +7,7 @@ import { CreateDecisionDto, DecisionQueryDto, ReviewDecisionDto } from "./decisi
 import { advisoryTools, DecisionOutputValidationError, decisionRoles, hashValue, minimumEightAgentBudget, roleToolCallUsage, validateDecisionOutput } from "./decision-engine";
 import { ADVISORY_PROVIDER, AdvisoryProvider, AdvisoryProviderTimeoutError, DeterministicMockAdvisoryProvider, FrozenAdvisoryInput, immutableProviderInput } from "./advisory-provider";
 import { KnowledgeService } from "./knowledge.service";
-import { allowedKnowledgeCitations,buildRoleRetrievalManifestBundle,RetrievalManifestBundle,ROLE_RETRIEVAL_FOCUS,unavailableRetrievalManifestBundle,validateRetrievalManifestBundle } from "./retrieval-manifest";
+import { allowedKnowledgeCitations,buildRoleRetrievalManifestBundle,frozenRetrievalManifestBundleFromRows,RetrievalManifestBundle,ROLE_RETRIEVAL_FOCUS,unavailableRetrievalManifestBundle,validateRetrievalManifestBundle } from "./retrieval-manifest";
 import { deriveCommitteeEvidenceGaps } from "./committee-evidence-gap";
 import { EvidenceRequestService } from "./evidence-request.service";
 import { AdvisoryProviderReliabilityService } from "./advisory-provider-reliability.service";
@@ -152,7 +152,16 @@ export class DecisionService implements OnModuleInit {
     return {id:row.id,organizationId:row.organization_id,parentDecisionId:row.parent_decision_id,revisionNumber:row.revision_number,children:children.rows,status:row.status,provider:row.provider,policyVersionId:row.policy_version_id,evidenceSnapshotId:row.evidence_snapshot_id,evidenceManifestHash:row.manifest_hash,retrievalBundleHash:row.retrieval_bundle_hash,retrievalManifests:retrievalManifests.rows,recommendation:row.recommendation,evidenceGaps:gaps.rows,inputHash:row.input_hash,outputHash:row.output_hash,createdAt:new Date(row.created_at).toISOString(),reviewedAt:row.reviewed_at?new Date(row.reviewed_at).toISOString():null,agentRuns:runs.rows,challenges:challenges.rows,agentMessages:messages.rows,reviews:reviews.rows};
   }
 
-  async createChildRevision(org:string,parentDecisionId:string,newEvidenceId:string){const parent=await this.db.query<any>("SELECT d.*,s.evidence_ids FROM decisions d JOIN evidence_snapshots s ON s.id=d.evidence_snapshot_id WHERE d.organization_id=$1 AND d.id=$2",[org,parentDecisionId]);if(!parent.rowCount)throw new NotFoundException("Parent Decision not found");const row=parent.rows[0];if(row.revision_number>=3)throw new ConflictException("Decision Evidence revision budget is exhausted");const existing=await this.db.query<any>("SELECT id FROM decisions WHERE organization_id=$1 AND parent_decision_id=$2",[org,parentDecisionId]);if(existing.rowCount)return this.get(org,existing.rows[0].id);return this.create({organizationId:org,objective:row.objective,evidenceIds:[...new Set([...(row.evidence_ids as string[]),newEvidenceId])],policyVersionId:row.policy_version_id,parentDecisionId,revisionNumber:row.revision_number+1})}
+  async createChildRevision(org:string,parentDecisionId:string,newEvidenceId:string){
+    const parent=await this.db.query<any>("SELECT d.*,s.evidence_ids FROM decisions d JOIN evidence_snapshots s ON s.id=d.evidence_snapshot_id WHERE d.organization_id=$1 AND d.id=$2",[org,parentDecisionId]);
+    if(!parent.rowCount)throw new NotFoundException("Parent Decision not found");
+    const row=parent.rows[0];if(row.revision_number>=3)throw new ConflictException("Decision Evidence revision budget is exhausted");
+    const existing=await this.db.query<any>("SELECT d.id,s.evidence_ids FROM decisions d JOIN evidence_snapshots s ON s.id=d.evidence_snapshot_id WHERE d.organization_id=$1 AND d.parent_decision_id=$2",[org,parentDecisionId]);
+    if(existing.rowCount){if(!(existing.rows[0].evidence_ids as string[]).includes(newEvidenceId))throw new ConflictException("Parent Decision already has a child for different Evidence");return this.get(org,existing.rows[0].id)}
+    const manifests=await this.db.query<any>("SELECT role,requester_role,query,query_hash,status,reason_code,has_conflicts,embedding_model,reranker_version,items,manifest_hash FROM decision_retrieval_manifests WHERE organization_id=$1 AND decision_id=$2 ORDER BY CASE role WHEN 'Governor' THEN 1 WHEN 'Research' THEN 2 WHEN 'Strategy' THEN 3 WHEN 'Quant' THEN 4 WHEN 'Risk' THEN 5 WHEN 'Compliance' THEN 6 WHEN 'Portfolio' THEN 7 WHEN 'Treasury' THEN 8 END",[org,parentDecisionId]);
+    const inherited=frozenRetrievalManifestBundleFromRows(manifests.rows,row.retrieval_bundle_hash);
+    return this.create({organizationId:org,objective:row.objective,evidenceIds:[...new Set([...(row.evidence_ids as string[]),newEvidenceId])],policyVersionId:row.policy_version_id,parentDecisionId,revisionNumber:row.revision_number+1,retrievalBundle:inherited.bundle,requesterRole:inherited.requesterRole});
+  }
 
   async review(decisionId:string,input:ReviewDecisionDto){
     return this.db.transaction(async client=>{

@@ -66,4 +66,27 @@ export function validateRetrievalManifestBundle(bundle:RetrievalManifestBundle){
   return bundle;
 }
 
+export function frozenRetrievalManifestBundleFromRows(rows:ReadonlyArray<any>,expectedBundleHash:string):{bundle:RetrievalManifestBundle;requesterRole:string}{
+  if(rows.length!==decisionRoles.length)throw new Error("Parent Decision must contain exactly eight frozen Retrieval Manifests");
+  const requesterRoles=[...new Set(rows.map(row=>String(row.requester_role)))];
+  if(requesterRoles.length!==1)throw new Error("Parent Retrieval Manifest requester role is inconsistent");
+  const manifests=rows.map(row=>({
+    schemaVersion:"decision.retrieval-manifest.v1" as const,
+    role:String(row.role) as DecisionRole,
+    query:String(row.query),
+    queryHash:String(row.query_hash),
+    status:String(row.status) as RoleRetrievalManifest["status"],
+    reasonCode:row.reason_code===null?null:String(row.reason_code),
+    hasConflicts:row.has_conflicts===true,
+    embeddingModel:String(row.embedding_model),
+    rerankerVersion:String(row.reranker_version),
+    items:Array.isArray(row.items)?row.items:[],
+    manifestHash:String(row.manifest_hash),
+    assetExecutionAuthorized:false as const,
+  }));
+  const bundle={schemaVersion:"decision.retrieval-bundle.v1" as const,manifests,bundleHash:expectedBundleHash,assetExecutionAuthorized:false as const};
+  validateRetrievalManifestBundle(bundle);
+  return{bundle,requesterRole:requesterRoles[0]};
+}
+
 export function allowedKnowledgeCitations(bundle:RetrievalManifestBundle){return Object.fromEntries(bundle.manifests.map(manifest=>[manifest.role,manifest.items.map(item=>item.citation)])) as Record<DecisionRole,string[]>}
