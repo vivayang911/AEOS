@@ -1,0 +1,742 @@
+{
+  "schemaVersion": "aeos.contentful-eight-agent-decision.v1",
+  "status": "CONTENTFUL_DECISION_FROZEN",
+  "recordedAt": "2026-08-25T00:52:27.254Z",
+  "approvalReceiptHash": "0x2b2a25c627a58173c3c0142fc4724855513cdc087974c9712c3c0db919dfc00b",
+  "approvedSourceCount": 5,
+  "evidence": {
+    "id": "ev_aa0b5dbc6fdf431aa6d9f20789c160bf",
+    "contentHash": "0x4d6b95382a02bf702ab695489567b66491e9c281aba7fe9b1ae7bbf4d6522a2b"
+  },
+  "evidenceSnapshot": {
+    "id": "snap_5f3081a8dffc4e0b9f281e0095dc231f",
+    "manifestHash": "0x9629ec777f328a57ba6553a78763b13963cb8529b119bffac7a6a1441b36ec9d"
+  },
+  "historical": {
+    "decisionId": "decision_a9a37c5bd3ff43c68f5b0af32a13b8ed",
+    "retrievalBundleHash": "0x4191d8ed8856f52d54ea91018cf461b0b1336c0d4db3272a4f7694a5339a11c5",
+    "manifestStatuses": [
+      {
+        "role": "Governor",
+        "status": "INSUFFICIENT_CONTEXT",
+        "itemCount": 0
+      },
+      {
+        "role": "Research",
+        "status": "INSUFFICIENT_CONTEXT",
+        "itemCount": 0
+      },
+      {
+        "role": "Strategy",
+        "status": "INSUFFICIENT_CONTEXT",
+        "itemCount": 0
+      },
+      {
+        "role": "Quant",
+        "status": "INSUFFICIENT_CONTEXT",
+        "itemCount": 0
+      },
+      {
+        "role": "Risk",
+        "status": "INSUFFICIENT_CONTEXT",
+        "itemCount": 0
+      },
+      {
+        "role": "Compliance",
+        "status": "INSUFFICIENT_CONTEXT",
+        "itemCount": 0
+      },
+      {
+        "role": "Portfolio",
+        "status": "INSUFFICIENT_CONTEXT",
+        "itemCount": 0
+      },
+      {
+        "role": "Treasury",
+        "status": "INSUFFICIENT_CONTEXT",
+        "itemCount": 0
+      }
+    ],
+    "immutable": true
+  },
+  "current": {
+    "decisionId": "decision_6967bcf81c7e43e9bba64b3bb5f7101a",
+    "jobId": "job_419af2380403415d927d5ad748fd5e05",
+    "retrievalBundleHash": "0xcfd83bae37d7e52f59ddc472219417e7a9c0172652558474cd903128a6d02a64",
+    "inputHash": "0x68ef7b7abd1f320dc477e9456183dabfa77e9fc182b2f299efd82de8fe547084",
+    "outputHash": "0x8512b30d81483de8aff5f9f6441947d769c8a30208c4d7f134d26bdd7d239028",
+    "recommendation": "INSUFFICIENT_EVIDENCE",
+    "manifests": [
+      {
+        "role": "Governor",
+        "id": "rmanifest_729d50a61dba47fd9d9517e57585191f",
+        "query": "governance policy",
+        "queryHash": "0x309d43f9c70c68b0b140fda40d0e16d9afc17d070e2e13fa77ae197538bb4899",
+        "manifestHash": "0x432a82d7f25572dbe2cf3d7e7e17c6b1f2e880e227f3fa259c4ac56ca5e73bf9",
+        "status": "SUPPORTED",
+        "itemCount": 8,
+        "partitions": [
+          "DECISION_MEMORY",
+          "GOVERNANCE",
+          "PROTOCOL"
+        ],
+        "sources": [
+          "aeos-contract-control-surface",
+          "aeos-governance-operating-policy",
+          "aeos-hold-outcome-memory",
+          "aeos-risk-review-rubric",
+          "aeos-treasury-authorization-boundary"
+        ],
+        "citations": [
+          {
+            "citation": "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_1cb99cf69d9d42219e1fab60f38fba06:0x8984daa95f23d15618a0ee1e253c7d23535fc507920e7f25837f0b6bd98fde6e",
+            "sourceKey": "aeos-treasury-authorization-boundary",
+            "partition": "GOVERNANCE",
+            "heading": "Required reverse Evidence requests",
+            "contentHash": "0x8984daa95f23d15618a0ee1e253c7d23535fc507920e7f25837f0b6bd98fde6e",
+            "score": 0.82087324
+          },
+          {
+            "citation": "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_cccc34d5f373462498f19c9591059a25:0x0d96802ab4a16c12c6fd81cafc2fbf2e8e02beaa904b4b53251c9be4c0b98f57",
+            "sourceKey": "aeos-treasury-authorization-boundary",
+            "partition": "GOVERNANCE",
+            "heading": "Current live boundary",
+            "contentHash": "0x0d96802ab4a16c12c6fd81cafc2fbf2e8e02beaa904b4b53251c9be4c0b98f57",
+            "score": 0.72085686
+          },
+          {
+            "citation": "rag:ksource_7adceaf0c26a44759f8aa7ba1c00e671:v1:kchunk_dee63374bd244181962b8df2796cbcf3:0x517808c17592fcccbe4bc7810c34c3ba7227cf906b58aacb80a6651abf8fa1b8",
+            "sourceKey": "aeos-governance-operating-policy",
+            "partition": "GOVERNANCE",
+            "heading": "Fail-closed governance response",
+            "contentHash": "0x517808c17592fcccbe4bc7810c34c3ba7227cf906b58aacb80a6651abf8fa1b8",
+            "score": 0.71812946
+          },
+          {
+            "citation": "rag:ksource_bfae21ce0b704ee5bf8cdac210368ac5:v1:kchunk_b7d22b7ca3a54223814cf0b4a0beafa2:0xe27405d7bdfe3c2ec8efbc14645afdca6d981aaa388f615ef29a5209658875a4",
+            "sourceKey": "aeos-risk-review-rubric",
+            "partition": "PROTOCOL",
+            "heading": "Independent challenge requirement",
+            "contentHash": "0xe27405d7bdfe3c2ec8efbc14645afdca6d981aaa388f615ef29a5209658875a4",
+            "score": 0.67
+          },
+          {
+            "citation": "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_6bf09bd5ec7f410eb381ccda62effd62:0x79bcb0814106f512e9ed8d7ce5e5e67db95de7f62c3e442c9616e70ec0108d5a",
+            "sourceKey": "aeos-treasury-authorization-boundary",
+            "partition": "GOVERNANCE",
+            "heading": "Permitted preparation",
+            "contentHash": "0x79bcb0814106f512e9ed8d7ce5e5e67db95de7f62c3e442c9616e70ec0108d5a",
+            "score": 0.5088549
+          },
+          {
+            "citation": "rag:ksource_a8f01de46d6e4c6fbe68024a2a1a914c:v1:kchunk_593b48843d1c4c8593e7704f657b4165:0x3e7f518c083c4a9620882de1120a42d1174a38be3cb3fd07fa70cf8591ca3d3a",
+            "sourceKey": "aeos-contract-control-surface",
+            "partition": "PROTOCOL",
+            "heading": "PolicyRegistry",
+            "contentHash": "0x3e7f518c083c4a9620882de1120a42d1174a38be3cb3fd07fa70cf8591ca3d3a",
+            "score": 0.48255432
+          },
+          {
+            "citation": "rag:ksource_da5ee7e9641d4b149acac3b5dc505dca:v1:kchunk_01a65190bf0d46cb96393deb0e357b32:0x4dee7b263d5db0291a2b4d429a447a0ab7b6b4dc853f992b4232d00d670286e0",
+            "sourceKey": "aeos-hold-outcome-memory",
+            "partition": "DECISION_MEMORY",
+            "heading": "Forbidden lesson",
+            "contentHash": "0x4dee7b263d5db0291a2b4d429a447a0ab7b6b4dc853f992b4232d00d670286e0",
+            "score": 0.47046537
+          },
+          {
+            "citation": "rag:ksource_a8f01de46d6e4c6fbe68024a2a1a914c:v1:kchunk_fd1b0c705ec1494ab05b9c2ebf8346f4:0xc0b793fd5e0eb16d98cba98feb8c18d3cb4c47abaefc15907079ec4ffe2fd47c",
+            "sourceKey": "aeos-contract-control-surface",
+            "partition": "PROTOCOL",
+            "heading": "TreasuryGuard",
+            "contentHash": "0xc0b793fd5e0eb16d98cba98feb8c18d3cb4c47abaefc15907079ec4ffe2fd47c",
+            "score": 0.45487429
+          }
+        ],
+        "position": "Approved governance, protocol, and Decision Memory context supports coordination of a HOLD while unresolved economic Evidence gaps remain under human review."
+      },
+      {
+        "role": "Research",
+        "id": "rmanifest_b2f6d8777f854b618af3a459a33f78f1",
+        "query": "governance policy",
+        "queryHash": "0x309d43f9c70c68b0b140fda40d0e16d9afc17d070e2e13fa77ae197538bb4899",
+        "manifestHash": "0x0fc51f829716e1f17343c168c7e0d643bf7a90f0038ab722865e9d534cb6878c",
+        "status": "SUPPORTED",
+        "itemCount": 7,
+        "partitions": [
+          "GOVERNANCE",
+          "PROTOCOL"
+        ],
+        "sources": [
+          "aeos-contract-control-surface",
+          "aeos-governance-operating-policy",
+          "aeos-risk-review-rubric",
+          "aeos-treasury-authorization-boundary"
+        ],
+        "citations": [
+          {
+            "citation": "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_1cb99cf69d9d42219e1fab60f38fba06:0x8984daa95f23d15618a0ee1e253c7d23535fc507920e7f25837f0b6bd98fde6e",
+            "sourceKey": "aeos-treasury-authorization-boundary",
+            "partition": "GOVERNANCE",
+            "heading": "Required reverse Evidence requests",
+            "contentHash": "0x8984daa95f23d15618a0ee1e253c7d23535fc507920e7f25837f0b6bd98fde6e",
+            "score": 0.82087324
+          },
+          {
+            "citation": "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_cccc34d5f373462498f19c9591059a25:0x0d96802ab4a16c12c6fd81cafc2fbf2e8e02beaa904b4b53251c9be4c0b98f57",
+            "sourceKey": "aeos-treasury-authorization-boundary",
+            "partition": "GOVERNANCE",
+            "heading": "Current live boundary",
+            "contentHash": "0x0d96802ab4a16c12c6fd81cafc2fbf2e8e02beaa904b4b53251c9be4c0b98f57",
+            "score": 0.72085686
+          },
+          {
+            "citation": "rag:ksource_7adceaf0c26a44759f8aa7ba1c00e671:v1:kchunk_dee63374bd244181962b8df2796cbcf3:0x517808c17592fcccbe4bc7810c34c3ba7227cf906b58aacb80a6651abf8fa1b8",
+            "sourceKey": "aeos-governance-operating-policy",
+            "partition": "GOVERNANCE",
+            "heading": "Fail-closed governance response",
+            "contentHash": "0x517808c17592fcccbe4bc7810c34c3ba7227cf906b58aacb80a6651abf8fa1b8",
+            "score": 0.71812946
+          },
+          {
+            "citation": "rag:ksource_bfae21ce0b704ee5bf8cdac210368ac5:v1:kchunk_b7d22b7ca3a54223814cf0b4a0beafa2:0xe27405d7bdfe3c2ec8efbc14645afdca6d981aaa388f615ef29a5209658875a4",
+            "sourceKey": "aeos-risk-review-rubric",
+            "partition": "PROTOCOL",
+            "heading": "Independent challenge requirement",
+            "contentHash": "0xe27405d7bdfe3c2ec8efbc14645afdca6d981aaa388f615ef29a5209658875a4",
+            "score": 0.67
+          },
+          {
+            "citation": "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_6bf09bd5ec7f410eb381ccda62effd62:0x79bcb0814106f512e9ed8d7ce5e5e67db95de7f62c3e442c9616e70ec0108d5a",
+            "sourceKey": "aeos-treasury-authorization-boundary",
+            "partition": "GOVERNANCE",
+            "heading": "Permitted preparation",
+            "contentHash": "0x79bcb0814106f512e9ed8d7ce5e5e67db95de7f62c3e442c9616e70ec0108d5a",
+            "score": 0.5088549
+          },
+          {
+            "citation": "rag:ksource_a8f01de46d6e4c6fbe68024a2a1a914c:v1:kchunk_593b48843d1c4c8593e7704f657b4165:0x3e7f518c083c4a9620882de1120a42d1174a38be3cb3fd07fa70cf8591ca3d3a",
+            "sourceKey": "aeos-contract-control-surface",
+            "partition": "PROTOCOL",
+            "heading": "PolicyRegistry",
+            "contentHash": "0x3e7f518c083c4a9620882de1120a42d1174a38be3cb3fd07fa70cf8591ca3d3a",
+            "score": 0.48255432
+          },
+          {
+            "citation": "rag:ksource_a8f01de46d6e4c6fbe68024a2a1a914c:v1:kchunk_fd1b0c705ec1494ab05b9c2ebf8346f4:0xc0b793fd5e0eb16d98cba98feb8c18d3cb4c47abaefc15907079ec4ffe2fd47c",
+            "sourceKey": "aeos-contract-control-surface",
+            "partition": "PROTOCOL",
+            "heading": "TreasuryGuard",
+            "contentHash": "0xc0b793fd5e0eb16d98cba98feb8c18d3cb4c47abaefc15907079ec4ffe2fd47c",
+            "score": 0.45487429
+          }
+        ],
+        "position": "Approved governance and protocol context explains the verified control state but does not establish current price, liquidity, volatility, or economic value."
+      },
+      {
+        "role": "Strategy",
+        "id": "rmanifest_ef6fe4ed20084d7ab786c74cda5b273c",
+        "query": "governance policy",
+        "queryHash": "0x309d43f9c70c68b0b140fda40d0e16d9afc17d070e2e13fa77ae197538bb4899",
+        "manifestHash": "0x6e8ea2708b1b9c48441e90ad2e504483007b0a62a9d0aa736f5e2a97687c7e47",
+        "status": "SUPPORTED",
+        "itemCount": 8,
+        "partitions": [
+          "DECISION_MEMORY",
+          "GOVERNANCE",
+          "PROTOCOL"
+        ],
+        "sources": [
+          "aeos-contract-control-surface",
+          "aeos-governance-operating-policy",
+          "aeos-hold-outcome-memory",
+          "aeos-risk-review-rubric",
+          "aeos-treasury-authorization-boundary"
+        ],
+        "citations": [
+          {
+            "citation": "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_1cb99cf69d9d42219e1fab60f38fba06:0x8984daa95f23d15618a0ee1e253c7d23535fc507920e7f25837f0b6bd98fde6e",
+            "sourceKey": "aeos-treasury-authorization-boundary",
+            "partition": "GOVERNANCE",
+            "heading": "Required reverse Evidence requests",
+            "contentHash": "0x8984daa95f23d15618a0ee1e253c7d23535fc507920e7f25837f0b6bd98fde6e",
+            "score": 0.82087324
+          },
+          {
+            "citation": "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_cccc34d5f373462498f19c9591059a25:0x0d96802ab4a16c12c6fd81cafc2fbf2e8e02beaa904b4b53251c9be4c0b98f57",
+            "sourceKey": "aeos-treasury-authorization-boundary",
+            "partition": "GOVERNANCE",
+            "heading": "Current live boundary",
+            "contentHash": "0x0d96802ab4a16c12c6fd81cafc2fbf2e8e02beaa904b4b53251c9be4c0b98f57",
+            "score": 0.72085686
+          },
+          {
+            "citation": "rag:ksource_7adceaf0c26a44759f8aa7ba1c00e671:v1:kchunk_dee63374bd244181962b8df2796cbcf3:0x517808c17592fcccbe4bc7810c34c3ba7227cf906b58aacb80a6651abf8fa1b8",
+            "sourceKey": "aeos-governance-operating-policy",
+            "partition": "GOVERNANCE",
+            "heading": "Fail-closed governance response",
+            "contentHash": "0x517808c17592fcccbe4bc7810c34c3ba7227cf906b58aacb80a6651abf8fa1b8",
+            "score": 0.71812946
+          },
+          {
+            "citation": "rag:ksource_bfae21ce0b704ee5bf8cdac210368ac5:v1:kchunk_b7d22b7ca3a54223814cf0b4a0beafa2:0xe27405d7bdfe3c2ec8efbc14645afdca6d981aaa388f615ef29a5209658875a4",
+            "sourceKey": "aeos-risk-review-rubric",
+            "partition": "PROTOCOL",
+            "heading": "Independent challenge requirement",
+            "contentHash": "0xe27405d7bdfe3c2ec8efbc14645afdca6d981aaa388f615ef29a5209658875a4",
+            "score": 0.67
+          },
+          {
+            "citation": "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_6bf09bd5ec7f410eb381ccda62effd62:0x79bcb0814106f512e9ed8d7ce5e5e67db95de7f62c3e442c9616e70ec0108d5a",
+            "sourceKey": "aeos-treasury-authorization-boundary",
+            "partition": "GOVERNANCE",
+            "heading": "Permitted preparation",
+            "contentHash": "0x79bcb0814106f512e9ed8d7ce5e5e67db95de7f62c3e442c9616e70ec0108d5a",
+            "score": 0.5088549
+          },
+          {
+            "citation": "rag:ksource_a8f01de46d6e4c6fbe68024a2a1a914c:v1:kchunk_593b48843d1c4c8593e7704f657b4165:0x3e7f518c083c4a9620882de1120a42d1174a38be3cb3fd07fa70cf8591ca3d3a",
+            "sourceKey": "aeos-contract-control-surface",
+            "partition": "PROTOCOL",
+            "heading": "PolicyRegistry",
+            "contentHash": "0x3e7f518c083c4a9620882de1120a42d1174a38be3cb3fd07fa70cf8591ca3d3a",
+            "score": 0.48255432
+          },
+          {
+            "citation": "rag:ksource_da5ee7e9641d4b149acac3b5dc505dca:v1:kchunk_01a65190bf0d46cb96393deb0e357b32:0x4dee7b263d5db0291a2b4d429a447a0ab7b6b4dc853f992b4232d00d670286e0",
+            "sourceKey": "aeos-hold-outcome-memory",
+            "partition": "DECISION_MEMORY",
+            "heading": "Forbidden lesson",
+            "contentHash": "0x4dee7b263d5db0291a2b4d429a447a0ab7b6b4dc853f992b4232d00d670286e0",
+            "score": 0.47046537
+          },
+          {
+            "citation": "rag:ksource_a8f01de46d6e4c6fbe68024a2a1a914c:v1:kchunk_fd1b0c705ec1494ab05b9c2ebf8346f4:0xc0b793fd5e0eb16d98cba98feb8c18d3cb4c47abaefc15907079ec4ffe2fd47c",
+            "sourceKey": "aeos-contract-control-surface",
+            "partition": "PROTOCOL",
+            "heading": "TreasuryGuard",
+            "contentHash": "0xc0b793fd5e0eb16d98cba98feb8c18d3cb4c47abaefc15907079ec4ffe2fd47c",
+            "score": 0.45487429
+          }
+        ],
+        "position": "Approved authorization, risk, and prior HOLD context supports retaining HOLD until the required market Evidence is verified and frozen."
+      },
+      {
+        "role": "Quant",
+        "id": "rmanifest_50cd5e219f3e498c8602e81fe872d6e9",
+        "query": "risk protocol",
+        "queryHash": "0x9905f5ecd235168eb076f3053d940a0f1343d85ccd465116b38d98e098193bfd",
+        "manifestHash": "0xfced90b6056413f02348299fca7f0da3f7e41c3452bc9bb19b82694017ca8909",
+        "status": "SUPPORTED",
+        "itemCount": 4,
+        "partitions": [
+          "PROTOCOL"
+        ],
+        "sources": [
+          "aeos-contract-control-surface",
+          "aeos-risk-review-rubric"
+        ],
+        "citations": [
+          {
+            "citation": "rag:ksource_bfae21ce0b704ee5bf8cdac210368ac5:v1:kchunk_b7d22b7ca3a54223814cf0b4a0beafa2:0xe27405d7bdfe3c2ec8efbc14645afdca6d981aaa388f615ef29a5209658875a4",
+            "sourceKey": "aeos-risk-review-rubric",
+            "partition": "PROTOCOL",
+            "heading": "Independent challenge requirement",
+            "contentHash": "0xe27405d7bdfe3c2ec8efbc14645afdca6d981aaa388f615ef29a5209658875a4",
+            "score": 0.53046896
+          },
+          {
+            "citation": "rag:ksource_bfae21ce0b704ee5bf8cdac210368ac5:v1:kchunk_0d2a99bc417246d1832ef1b50ae3807e:0x92cad33fa2ce1d24f5e8163f3cc9e0913eac5d085538c678c3cb6941c7a2f7bc",
+            "sourceKey": "aeos-risk-review-rubric",
+            "partition": "PROTOCOL",
+            "heading": "Evidence sufficiency threshold",
+            "contentHash": "0x92cad33fa2ce1d24f5e8163f3cc9e0913eac5d085538c678c3cb6941c7a2f7bc",
+            "score": 0.50808304
+          },
+          {
+            "citation": "rag:ksource_bfae21ce0b704ee5bf8cdac210368ac5:v1:kchunk_ff6d98ddcb514fa5a68f2ed2b5c50401:0x328d6cd22a4d6cc9a02a40e506104ad37f41893798c5ecd7c5cea7663477af02",
+            "sourceKey": "aeos-risk-review-rubric",
+            "partition": "PROTOCOL",
+            "heading": "Advisory market-risk thresholds",
+            "contentHash": "0x328d6cd22a4d6cc9a02a40e506104ad37f41893798c5ecd7c5cea7663477af02",
+            "score": 0.43551263
+          },
+          {
+            "citation": "rag:ksource_a8f01de46d6e4c6fbe68024a2a1a914c:v1:kchunk_593b48843d1c4c8593e7704f657b4165:0x3e7f518c083c4a9620882de1120a42d1174a38be3cb3fd07fa70cf8591ca3d3a",
+            "sourceKey": "aeos-contract-control-surface",
+            "partition": "PROTOCOL",
+            "heading": "PolicyRegistry",
+            "contentHash": "0x3e7f518c083c4a9620882de1120a42d1174a38be3cb3fd07fa70cf8591ca3d3a",
+            "score": 0.3263858
+          }
+        ],
+        "position": "Approved protocol context defines required liquidity, slippage, peg, volatility, and drawdown inputs; unsupported numerical calculation is refused."
+      },
+      {
+        "role": "Risk",
+        "id": "rmanifest_47ade6f7cce148779d272b7314a7cc35",
+        "query": "HOLD outcome",
+        "queryHash": "0xa241867911b80f65681dd9e58e597146de7733f1141b87de0131bd3c60822193",
+        "manifestHash": "0x494630dea044d29f5ffc07ed8f69dc47235910f14c11266a0ffb78635a9b711d",
+        "status": "SUPPORTED",
+        "itemCount": 3,
+        "partitions": [
+          "DECISION_MEMORY",
+          "PROTOCOL"
+        ],
+        "sources": [
+          "aeos-hold-outcome-memory",
+          "aeos-risk-review-rubric"
+        ],
+        "citations": [
+          {
+            "citation": "rag:ksource_da5ee7e9641d4b149acac3b5dc505dca:v1:kchunk_a1956a9759754e24bcc7eba58530b3f7:0x8436ac3b676cda8f9a7e68abd9cd18a2cacf10c74fa81cdf42d4374d15d327f1",
+            "sourceKey": "aeos-hold-outcome-memory",
+            "partition": "DECISION_MEMORY",
+            "heading": "Verified Outcome",
+            "contentHash": "0x8436ac3b676cda8f9a7e68abd9cd18a2cacf10c74fa81cdf42d4374d15d327f1",
+            "score": 0.46327715
+          },
+          {
+            "citation": "rag:ksource_bfae21ce0b704ee5bf8cdac210368ac5:v1:kchunk_0d2a99bc417246d1832ef1b50ae3807e:0x92cad33fa2ce1d24f5e8163f3cc9e0913eac5d085538c678c3cb6941c7a2f7bc",
+            "sourceKey": "aeos-risk-review-rubric",
+            "partition": "PROTOCOL",
+            "heading": "Evidence sufficiency threshold",
+            "contentHash": "0x92cad33fa2ce1d24f5e8163f3cc9e0913eac5d085538c678c3cb6941c7a2f7bc",
+            "score": 0.42
+          },
+          {
+            "citation": "rag:ksource_da5ee7e9641d4b149acac3b5dc505dca:v1:kchunk_01a65190bf0d46cb96393deb0e357b32:0x4dee7b263d5db0291a2b4d429a447a0ab7b6b4dc853f992b4232d00d670286e0",
+            "sourceKey": "aeos-hold-outcome-memory",
+            "partition": "DECISION_MEMORY",
+            "heading": "Forbidden lesson",
+            "contentHash": "0x4dee7b263d5db0291a2b4d429a447a0ab7b6b4dc853f992b4232d00d670286e0",
+            "score": 0.405
+          }
+        ],
+        "position": "Approved risk and Decision Memory context independently challenges liquidity, volatility, peg stability, drawdown, and black-swan assumptions."
+      },
+      {
+        "role": "Compliance",
+        "id": "rmanifest_525927357b5e498ea09b08714b726330",
+        "query": "governance policy",
+        "queryHash": "0x309d43f9c70c68b0b140fda40d0e16d9afc17d070e2e13fa77ae197538bb4899",
+        "manifestHash": "0x077053acca2bf12435844d30681f4e3d5d24fe23a9dac1cfa661814602dcadad",
+        "status": "SUPPORTED",
+        "itemCount": 7,
+        "partitions": [
+          "GOVERNANCE",
+          "PROTOCOL"
+        ],
+        "sources": [
+          "aeos-contract-control-surface",
+          "aeos-governance-operating-policy",
+          "aeos-risk-review-rubric",
+          "aeos-treasury-authorization-boundary"
+        ],
+        "citations": [
+          {
+            "citation": "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_1cb99cf69d9d42219e1fab60f38fba06:0x8984daa95f23d15618a0ee1e253c7d23535fc507920e7f25837f0b6bd98fde6e",
+            "sourceKey": "aeos-treasury-authorization-boundary",
+            "partition": "GOVERNANCE",
+            "heading": "Required reverse Evidence requests",
+            "contentHash": "0x8984daa95f23d15618a0ee1e253c7d23535fc507920e7f25837f0b6bd98fde6e",
+            "score": 0.82087324
+          },
+          {
+            "citation": "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_cccc34d5f373462498f19c9591059a25:0x0d96802ab4a16c12c6fd81cafc2fbf2e8e02beaa904b4b53251c9be4c0b98f57",
+            "sourceKey": "aeos-treasury-authorization-boundary",
+            "partition": "GOVERNANCE",
+            "heading": "Current live boundary",
+            "contentHash": "0x0d96802ab4a16c12c6fd81cafc2fbf2e8e02beaa904b4b53251c9be4c0b98f57",
+            "score": 0.72085686
+          },
+          {
+            "citation": "rag:ksource_7adceaf0c26a44759f8aa7ba1c00e671:v1:kchunk_dee63374bd244181962b8df2796cbcf3:0x517808c17592fcccbe4bc7810c34c3ba7227cf906b58aacb80a6651abf8fa1b8",
+            "sourceKey": "aeos-governance-operating-policy",
+            "partition": "GOVERNANCE",
+            "heading": "Fail-closed governance response",
+            "contentHash": "0x517808c17592fcccbe4bc7810c34c3ba7227cf906b58aacb80a6651abf8fa1b8",
+            "score": 0.71812946
+          },
+          {
+            "citation": "rag:ksource_bfae21ce0b704ee5bf8cdac210368ac5:v1:kchunk_b7d22b7ca3a54223814cf0b4a0beafa2:0xe27405d7bdfe3c2ec8efbc14645afdca6d981aaa388f615ef29a5209658875a4",
+            "sourceKey": "aeos-risk-review-rubric",
+            "partition": "PROTOCOL",
+            "heading": "Independent challenge requirement",
+            "contentHash": "0xe27405d7bdfe3c2ec8efbc14645afdca6d981aaa388f615ef29a5209658875a4",
+            "score": 0.67
+          },
+          {
+            "citation": "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_6bf09bd5ec7f410eb381ccda62effd62:0x79bcb0814106f512e9ed8d7ce5e5e67db95de7f62c3e442c9616e70ec0108d5a",
+            "sourceKey": "aeos-treasury-authorization-boundary",
+            "partition": "GOVERNANCE",
+            "heading": "Permitted preparation",
+            "contentHash": "0x79bcb0814106f512e9ed8d7ce5e5e67db95de7f62c3e442c9616e70ec0108d5a",
+            "score": 0.5088549
+          },
+          {
+            "citation": "rag:ksource_a8f01de46d6e4c6fbe68024a2a1a914c:v1:kchunk_593b48843d1c4c8593e7704f657b4165:0x3e7f518c083c4a9620882de1120a42d1174a38be3cb3fd07fa70cf8591ca3d3a",
+            "sourceKey": "aeos-contract-control-surface",
+            "partition": "PROTOCOL",
+            "heading": "PolicyRegistry",
+            "contentHash": "0x3e7f518c083c4a9620882de1120a42d1174a38be3cb3fd07fa70cf8591ca3d3a",
+            "score": 0.48255432
+          },
+          {
+            "citation": "rag:ksource_a8f01de46d6e4c6fbe68024a2a1a914c:v1:kchunk_fd1b0c705ec1494ab05b9c2ebf8346f4:0xc0b793fd5e0eb16d98cba98feb8c18d3cb4c47abaefc15907079ec4ffe2fd47c",
+            "sourceKey": "aeos-contract-control-surface",
+            "partition": "PROTOCOL",
+            "heading": "TreasuryGuard",
+            "contentHash": "0xc0b793fd5e0eb16d98cba98feb8c18d3cb4c47abaefc15907079ec4ffe2fd47c",
+            "score": 0.45487429
+          }
+        ],
+        "position": "Approved governance and protocol context independently challenges active policy, allowlists, contract identity, and final authorization authority."
+      },
+      {
+        "role": "Portfolio",
+        "id": "rmanifest_ef92578b2ebc4bf5bca7bd98c5a520b1",
+        "query": "HOLD outcome",
+        "queryHash": "0xa241867911b80f65681dd9e58e597146de7733f1141b87de0131bd3c60822193",
+        "manifestHash": "0xb2b49477ddd9246b9ad8e83cd6ed4a01ab6dcf98360fae41196cf2652dfdbf48",
+        "status": "SUPPORTED",
+        "itemCount": 2,
+        "partitions": [
+          "DECISION_MEMORY"
+        ],
+        "sources": [
+          "aeos-hold-outcome-memory"
+        ],
+        "citations": [
+          {
+            "citation": "rag:ksource_da5ee7e9641d4b149acac3b5dc505dca:v1:kchunk_a1956a9759754e24bcc7eba58530b3f7:0x8436ac3b676cda8f9a7e68abd9cd18a2cacf10c74fa81cdf42d4374d15d327f1",
+            "sourceKey": "aeos-hold-outcome-memory",
+            "partition": "DECISION_MEMORY",
+            "heading": "Verified Outcome",
+            "contentHash": "0x8436ac3b676cda8f9a7e68abd9cd18a2cacf10c74fa81cdf42d4374d15d327f1",
+            "score": 0.46327715
+          },
+          {
+            "citation": "rag:ksource_da5ee7e9641d4b149acac3b5dc505dca:v1:kchunk_01a65190bf0d46cb96393deb0e357b32:0x4dee7b263d5db0291a2b4d429a447a0ab7b6b4dc853f992b4232d00d670286e0",
+            "sourceKey": "aeos-hold-outcome-memory",
+            "partition": "DECISION_MEMORY",
+            "heading": "Forbidden lesson",
+            "contentHash": "0x4dee7b263d5db0291a2b4d429a447a0ab7b6b4dc853f992b4232d00d670286e0",
+            "score": 0.405
+          }
+        ],
+        "position": "Approved Decision Memory supports retaining the current configuration because no Evidence-supported alternative candidate exists."
+      },
+      {
+        "role": "Treasury",
+        "id": "rmanifest_de905465b82a49f7b51b948bfcfb64ef",
+        "query": "governance policy",
+        "queryHash": "0x309d43f9c70c68b0b140fda40d0e16d9afc17d070e2e13fa77ae197538bb4899",
+        "manifestHash": "0x9707b095152786cb4e0ff30b47d27fe9c460d782e722514375d874801a6064d6",
+        "status": "SUPPORTED",
+        "itemCount": 5,
+        "partitions": [
+          "DECISION_MEMORY",
+          "GOVERNANCE"
+        ],
+        "sources": [
+          "aeos-governance-operating-policy",
+          "aeos-hold-outcome-memory",
+          "aeos-treasury-authorization-boundary"
+        ],
+        "citations": [
+          {
+            "citation": "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_1cb99cf69d9d42219e1fab60f38fba06:0x8984daa95f23d15618a0ee1e253c7d23535fc507920e7f25837f0b6bd98fde6e",
+            "sourceKey": "aeos-treasury-authorization-boundary",
+            "partition": "GOVERNANCE",
+            "heading": "Required reverse Evidence requests",
+            "contentHash": "0x8984daa95f23d15618a0ee1e253c7d23535fc507920e7f25837f0b6bd98fde6e",
+            "score": 0.82087324
+          },
+          {
+            "citation": "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_cccc34d5f373462498f19c9591059a25:0x0d96802ab4a16c12c6fd81cafc2fbf2e8e02beaa904b4b53251c9be4c0b98f57",
+            "sourceKey": "aeos-treasury-authorization-boundary",
+            "partition": "GOVERNANCE",
+            "heading": "Current live boundary",
+            "contentHash": "0x0d96802ab4a16c12c6fd81cafc2fbf2e8e02beaa904b4b53251c9be4c0b98f57",
+            "score": 0.72085686
+          },
+          {
+            "citation": "rag:ksource_7adceaf0c26a44759f8aa7ba1c00e671:v1:kchunk_dee63374bd244181962b8df2796cbcf3:0x517808c17592fcccbe4bc7810c34c3ba7227cf906b58aacb80a6651abf8fa1b8",
+            "sourceKey": "aeos-governance-operating-policy",
+            "partition": "GOVERNANCE",
+            "heading": "Fail-closed governance response",
+            "contentHash": "0x517808c17592fcccbe4bc7810c34c3ba7227cf906b58aacb80a6651abf8fa1b8",
+            "score": 0.71812946
+          },
+          {
+            "citation": "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_6bf09bd5ec7f410eb381ccda62effd62:0x79bcb0814106f512e9ed8d7ce5e5e67db95de7f62c3e442c9616e70ec0108d5a",
+            "sourceKey": "aeos-treasury-authorization-boundary",
+            "partition": "GOVERNANCE",
+            "heading": "Permitted preparation",
+            "contentHash": "0x79bcb0814106f512e9ed8d7ce5e5e67db95de7f62c3e442c9616e70ec0108d5a",
+            "score": 0.5088549
+          },
+          {
+            "citation": "rag:ksource_da5ee7e9641d4b149acac3b5dc505dca:v1:kchunk_01a65190bf0d46cb96393deb0e357b32:0x4dee7b263d5db0291a2b4d429a447a0ab7b6b4dc853f992b4232d00d670286e0",
+            "sourceKey": "aeos-hold-outcome-memory",
+            "partition": "DECISION_MEMORY",
+            "heading": "Forbidden lesson",
+            "contentHash": "0x4dee7b263d5db0291a2b4d429a447a0ab7b6b4dc853f992b4232d00d670286e0",
+            "score": 0.47046537
+          }
+        ],
+        "position": "Approved governance and Decision Memory context yields a preflight Evidence checklist only; no transaction is drafted."
+      }
+    ],
+    "positions": [
+      {
+        "role": "Governor",
+        "position": "Approved governance, protocol, and Decision Memory context supports coordination of a HOLD while unresolved economic Evidence gaps remain under human review.",
+        "retrievalManifestHash": "0x432a82d7f25572dbe2cf3d7e7e17c6b1f2e880e227f3fa259c4ac56ca5e73bf9",
+        "retrievalStatus": "SUPPORTED",
+        "knowledgeCitations": [
+          "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_1cb99cf69d9d42219e1fab60f38fba06:0x8984daa95f23d15618a0ee1e253c7d23535fc507920e7f25837f0b6bd98fde6e",
+          "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_cccc34d5f373462498f19c9591059a25:0x0d96802ab4a16c12c6fd81cafc2fbf2e8e02beaa904b4b53251c9be4c0b98f57",
+          "rag:ksource_7adceaf0c26a44759f8aa7ba1c00e671:v1:kchunk_dee63374bd244181962b8df2796cbcf3:0x517808c17592fcccbe4bc7810c34c3ba7227cf906b58aacb80a6651abf8fa1b8",
+          "rag:ksource_bfae21ce0b704ee5bf8cdac210368ac5:v1:kchunk_b7d22b7ca3a54223814cf0b4a0beafa2:0xe27405d7bdfe3c2ec8efbc14645afdca6d981aaa388f615ef29a5209658875a4",
+          "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_6bf09bd5ec7f410eb381ccda62effd62:0x79bcb0814106f512e9ed8d7ce5e5e67db95de7f62c3e442c9616e70ec0108d5a",
+          "rag:ksource_a8f01de46d6e4c6fbe68024a2a1a914c:v1:kchunk_593b48843d1c4c8593e7704f657b4165:0x3e7f518c083c4a9620882de1120a42d1174a38be3cb3fd07fa70cf8591ca3d3a",
+          "rag:ksource_da5ee7e9641d4b149acac3b5dc505dca:v1:kchunk_01a65190bf0d46cb96393deb0e357b32:0x4dee7b263d5db0291a2b4d429a447a0ab7b6b4dc853f992b4232d00d670286e0",
+          "rag:ksource_a8f01de46d6e4c6fbe68024a2a1a914c:v1:kchunk_fd1b0c705ec1494ab05b9c2ebf8346f4:0xc0b793fd5e0eb16d98cba98feb8c18d3cb4c47abaefc15907079ec4ffe2fd47c"
+        ]
+      },
+      {
+        "role": "Research",
+        "position": "Approved governance and protocol context explains the verified control state but does not establish current price, liquidity, volatility, or economic value.",
+        "retrievalManifestHash": "0x0fc51f829716e1f17343c168c7e0d643bf7a90f0038ab722865e9d534cb6878c",
+        "retrievalStatus": "SUPPORTED",
+        "knowledgeCitations": [
+          "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_1cb99cf69d9d42219e1fab60f38fba06:0x8984daa95f23d15618a0ee1e253c7d23535fc507920e7f25837f0b6bd98fde6e",
+          "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_cccc34d5f373462498f19c9591059a25:0x0d96802ab4a16c12c6fd81cafc2fbf2e8e02beaa904b4b53251c9be4c0b98f57",
+          "rag:ksource_7adceaf0c26a44759f8aa7ba1c00e671:v1:kchunk_dee63374bd244181962b8df2796cbcf3:0x517808c17592fcccbe4bc7810c34c3ba7227cf906b58aacb80a6651abf8fa1b8",
+          "rag:ksource_bfae21ce0b704ee5bf8cdac210368ac5:v1:kchunk_b7d22b7ca3a54223814cf0b4a0beafa2:0xe27405d7bdfe3c2ec8efbc14645afdca6d981aaa388f615ef29a5209658875a4",
+          "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_6bf09bd5ec7f410eb381ccda62effd62:0x79bcb0814106f512e9ed8d7ce5e5e67db95de7f62c3e442c9616e70ec0108d5a",
+          "rag:ksource_a8f01de46d6e4c6fbe68024a2a1a914c:v1:kchunk_593b48843d1c4c8593e7704f657b4165:0x3e7f518c083c4a9620882de1120a42d1174a38be3cb3fd07fa70cf8591ca3d3a",
+          "rag:ksource_a8f01de46d6e4c6fbe68024a2a1a914c:v1:kchunk_fd1b0c705ec1494ab05b9c2ebf8346f4:0xc0b793fd5e0eb16d98cba98feb8c18d3cb4c47abaefc15907079ec4ffe2fd47c"
+        ]
+      },
+      {
+        "role": "Strategy",
+        "position": "Approved authorization, risk, and prior HOLD context supports retaining HOLD until the required market Evidence is verified and frozen.",
+        "retrievalManifestHash": "0x6e8ea2708b1b9c48441e90ad2e504483007b0a62a9d0aa736f5e2a97687c7e47",
+        "retrievalStatus": "SUPPORTED",
+        "knowledgeCitations": [
+          "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_1cb99cf69d9d42219e1fab60f38fba06:0x8984daa95f23d15618a0ee1e253c7d23535fc507920e7f25837f0b6bd98fde6e",
+          "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_cccc34d5f373462498f19c9591059a25:0x0d96802ab4a16c12c6fd81cafc2fbf2e8e02beaa904b4b53251c9be4c0b98f57",
+          "rag:ksource_7adceaf0c26a44759f8aa7ba1c00e671:v1:kchunk_dee63374bd244181962b8df2796cbcf3:0x517808c17592fcccbe4bc7810c34c3ba7227cf906b58aacb80a6651abf8fa1b8",
+          "rag:ksource_bfae21ce0b704ee5bf8cdac210368ac5:v1:kchunk_b7d22b7ca3a54223814cf0b4a0beafa2:0xe27405d7bdfe3c2ec8efbc14645afdca6d981aaa388f615ef29a5209658875a4",
+          "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_6bf09bd5ec7f410eb381ccda62effd62:0x79bcb0814106f512e9ed8d7ce5e5e67db95de7f62c3e442c9616e70ec0108d5a",
+          "rag:ksource_a8f01de46d6e4c6fbe68024a2a1a914c:v1:kchunk_593b48843d1c4c8593e7704f657b4165:0x3e7f518c083c4a9620882de1120a42d1174a38be3cb3fd07fa70cf8591ca3d3a",
+          "rag:ksource_da5ee7e9641d4b149acac3b5dc505dca:v1:kchunk_01a65190bf0d46cb96393deb0e357b32:0x4dee7b263d5db0291a2b4d429a447a0ab7b6b4dc853f992b4232d00d670286e0",
+          "rag:ksource_a8f01de46d6e4c6fbe68024a2a1a914c:v1:kchunk_fd1b0c705ec1494ab05b9c2ebf8346f4:0xc0b793fd5e0eb16d98cba98feb8c18d3cb4c47abaefc15907079ec4ffe2fd47c"
+        ]
+      },
+      {
+        "role": "Quant",
+        "position": "Approved protocol context defines required liquidity, slippage, peg, volatility, and drawdown inputs; unsupported numerical calculation is refused.",
+        "retrievalManifestHash": "0xfced90b6056413f02348299fca7f0da3f7e41c3452bc9bb19b82694017ca8909",
+        "retrievalStatus": "SUPPORTED",
+        "knowledgeCitations": [
+          "rag:ksource_bfae21ce0b704ee5bf8cdac210368ac5:v1:kchunk_b7d22b7ca3a54223814cf0b4a0beafa2:0xe27405d7bdfe3c2ec8efbc14645afdca6d981aaa388f615ef29a5209658875a4",
+          "rag:ksource_bfae21ce0b704ee5bf8cdac210368ac5:v1:kchunk_0d2a99bc417246d1832ef1b50ae3807e:0x92cad33fa2ce1d24f5e8163f3cc9e0913eac5d085538c678c3cb6941c7a2f7bc",
+          "rag:ksource_bfae21ce0b704ee5bf8cdac210368ac5:v1:kchunk_ff6d98ddcb514fa5a68f2ed2b5c50401:0x328d6cd22a4d6cc9a02a40e506104ad37f41893798c5ecd7c5cea7663477af02",
+          "rag:ksource_a8f01de46d6e4c6fbe68024a2a1a914c:v1:kchunk_593b48843d1c4c8593e7704f657b4165:0x3e7f518c083c4a9620882de1120a42d1174a38be3cb3fd07fa70cf8591ca3d3a"
+        ]
+      },
+      {
+        "role": "Risk",
+        "position": "Approved risk and Decision Memory context independently challenges liquidity, volatility, peg stability, drawdown, and black-swan assumptions.",
+        "retrievalManifestHash": "0x494630dea044d29f5ffc07ed8f69dc47235910f14c11266a0ffb78635a9b711d",
+        "retrievalStatus": "SUPPORTED",
+        "knowledgeCitations": [
+          "rag:ksource_da5ee7e9641d4b149acac3b5dc505dca:v1:kchunk_a1956a9759754e24bcc7eba58530b3f7:0x8436ac3b676cda8f9a7e68abd9cd18a2cacf10c74fa81cdf42d4374d15d327f1",
+          "rag:ksource_bfae21ce0b704ee5bf8cdac210368ac5:v1:kchunk_0d2a99bc417246d1832ef1b50ae3807e:0x92cad33fa2ce1d24f5e8163f3cc9e0913eac5d085538c678c3cb6941c7a2f7bc",
+          "rag:ksource_da5ee7e9641d4b149acac3b5dc505dca:v1:kchunk_01a65190bf0d46cb96393deb0e357b32:0x4dee7b263d5db0291a2b4d429a447a0ab7b6b4dc853f992b4232d00d670286e0"
+        ]
+      },
+      {
+        "role": "Compliance",
+        "position": "Approved governance and protocol context independently challenges active policy, allowlists, contract identity, and final authorization authority.",
+        "retrievalManifestHash": "0x077053acca2bf12435844d30681f4e3d5d24fe23a9dac1cfa661814602dcadad",
+        "retrievalStatus": "SUPPORTED",
+        "knowledgeCitations": [
+          "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_1cb99cf69d9d42219e1fab60f38fba06:0x8984daa95f23d15618a0ee1e253c7d23535fc507920e7f25837f0b6bd98fde6e",
+          "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_cccc34d5f373462498f19c9591059a25:0x0d96802ab4a16c12c6fd81cafc2fbf2e8e02beaa904b4b53251c9be4c0b98f57",
+          "rag:ksource_7adceaf0c26a44759f8aa7ba1c00e671:v1:kchunk_dee63374bd244181962b8df2796cbcf3:0x517808c17592fcccbe4bc7810c34c3ba7227cf906b58aacb80a6651abf8fa1b8",
+          "rag:ksource_bfae21ce0b704ee5bf8cdac210368ac5:v1:kchunk_b7d22b7ca3a54223814cf0b4a0beafa2:0xe27405d7bdfe3c2ec8efbc14645afdca6d981aaa388f615ef29a5209658875a4",
+          "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_6bf09bd5ec7f410eb381ccda62effd62:0x79bcb0814106f512e9ed8d7ce5e5e67db95de7f62c3e442c9616e70ec0108d5a",
+          "rag:ksource_a8f01de46d6e4c6fbe68024a2a1a914c:v1:kchunk_593b48843d1c4c8593e7704f657b4165:0x3e7f518c083c4a9620882de1120a42d1174a38be3cb3fd07fa70cf8591ca3d3a",
+          "rag:ksource_a8f01de46d6e4c6fbe68024a2a1a914c:v1:kchunk_fd1b0c705ec1494ab05b9c2ebf8346f4:0xc0b793fd5e0eb16d98cba98feb8c18d3cb4c47abaefc15907079ec4ffe2fd47c"
+        ]
+      },
+      {
+        "role": "Portfolio",
+        "position": "Approved Decision Memory supports retaining the current configuration because no Evidence-supported alternative candidate exists.",
+        "retrievalManifestHash": "0xb2b49477ddd9246b9ad8e83cd6ed4a01ab6dcf98360fae41196cf2652dfdbf48",
+        "retrievalStatus": "SUPPORTED",
+        "knowledgeCitations": [
+          "rag:ksource_da5ee7e9641d4b149acac3b5dc505dca:v1:kchunk_a1956a9759754e24bcc7eba58530b3f7:0x8436ac3b676cda8f9a7e68abd9cd18a2cacf10c74fa81cdf42d4374d15d327f1",
+          "rag:ksource_da5ee7e9641d4b149acac3b5dc505dca:v1:kchunk_01a65190bf0d46cb96393deb0e357b32:0x4dee7b263d5db0291a2b4d429a447a0ab7b6b4dc853f992b4232d00d670286e0"
+        ]
+      },
+      {
+        "role": "Treasury",
+        "position": "Approved governance and Decision Memory context yields a preflight Evidence checklist only; no transaction is drafted.",
+        "retrievalManifestHash": "0x9707b095152786cb4e0ff30b47d27fe9c460d782e722514375d874801a6064d6",
+        "retrievalStatus": "SUPPORTED",
+        "knowledgeCitations": [
+          "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_1cb99cf69d9d42219e1fab60f38fba06:0x8984daa95f23d15618a0ee1e253c7d23535fc507920e7f25837f0b6bd98fde6e",
+          "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_cccc34d5f373462498f19c9591059a25:0x0d96802ab4a16c12c6fd81cafc2fbf2e8e02beaa904b4b53251c9be4c0b98f57",
+          "rag:ksource_7adceaf0c26a44759f8aa7ba1c00e671:v1:kchunk_dee63374bd244181962b8df2796cbcf3:0x517808c17592fcccbe4bc7810c34c3ba7227cf906b58aacb80a6651abf8fa1b8",
+          "rag:ksource_5fc1480adb8349e79770541673fab767:v1:kchunk_6bf09bd5ec7f410eb381ccda62effd62:0x79bcb0814106f512e9ed8d7ce5e5e67db95de7f62c3e442c9616e70ec0108d5a",
+          "rag:ksource_da5ee7e9641d4b149acac3b5dc505dca:v1:kchunk_01a65190bf0d46cb96393deb0e357b32:0x4dee7b263d5db0291a2b4d429a447a0ab7b6b4dc853f992b4232d00d670286e0"
+        ]
+      }
+    ],
+    "challenges": [
+      {
+        "code": "RISK_MARKET_EVIDENCE_REQUIRED",
+        "round": 2,
+        "status": "RESOLVED",
+        "raisedBy": "Risk",
+        "response": "Strategy retains HOLD and requests the missing market Evidence; no action is proposed.",
+        "challenge": "Approved risk context requires fresh liquidity, slippage, peg, volatility, drawdown, and black-swan Evidence before any asset-changing candidate may advance.",
+        "targetRole": "Strategy"
+      },
+      {
+        "code": "COMPLIANCE_AUTHORITY_EVIDENCE_REQUIRED",
+        "round": 2,
+        "status": "RESOLVED",
+        "raisedBy": "Compliance",
+        "response": "Strategy retains HOLD because authorization is not established; no transaction is drafted.",
+        "challenge": "Approved governance and contract context requires active policy, allowlists, target identity, Guard state, and final DAO authority Evidence before any action may advance.",
+        "targetRole": "Strategy"
+      }
+    ],
+    "agentRuns": 8,
+    "a2aMessages": 17,
+    "humanApprovalRequired": true
+  },
+  "truthBoundary": {
+    "verifiedClaim": "SOURCE_TRANSACTION_INCLUSION",
+    "approvedKnowledgeAvailable": true,
+    "marketStateVerified": false,
+    "economicTruthVerified": false
+  },
+  "controls": {
+    "manifestFrozen": true,
+    "agentRun": true,
+    "proposalCreated": false,
+    "signature": false,
+    "broadcast": false,
+    "assetExecutionAuthorized": false
+  },
+  "artifactHash": "0x2922bfcc2997f1d25c102fc5513f1d16ee08e1d83efd70ca2bc15f4d86849fa6"
+}

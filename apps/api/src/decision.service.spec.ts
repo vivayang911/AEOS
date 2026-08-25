@@ -33,6 +33,9 @@ describe("DecisionService",()=>{
     expect(result.recommendation.risks.map((risk:any)=>risk.code)).toEqual(expect.arrayContaining(["STALE_EVIDENCE","LOW_QUALITY_EVIDENCE"]));
     expect(result.recommendation.unresolvedDisagreements).toBe(4);
     expect(result.recommendation.dissent).toHaveLength(4);
+    const gapInserts=client.query.mock.calls.filter(([sql])=>String(sql).startsWith("INSERT INTO decision_evidence_gaps"));
+    expect(gapInserts).toHaveLength(2);
+    for(const insert of gapInserts){expect(typeof insert[1][12]).toBe("string");expect(JSON.parse(insert[1][12])).toEqual(["ev_old"])}
   });
 
   it("detects prompt injection fixtures as data and refuses the recommendation",async()=>{

@@ -36,6 +36,8 @@
     "reconcile:live-attestcoin-evidence": "npm run reconcile:live-attestcoin-evidence -w @aeos/api",
     "verify:live-attestcoin-reconciliation-db": "npm run verify:live-attestcoin-reconciliation-db -w @aeos/api",
     "run:live-eight-agent-decision": "npm run run:live-eight-agent-decision -w @aeos/api",
+    "run:contentful-eight-agent-decision": "npm run run:contentful-eight-agent-decision -w @aeos/api",
+    "verify:contentful-eight-agent-decision-db": "npm run verify:contentful-eight-agent-decision-db -w @aeos/api",
     "prepare:live-evidence-anchor-request": "npm run prepare:live-evidence-anchor-request -w @aeos/api",
     "start:live-evidence-anchor-wallet-handoff": "node scripts/live-evidence-anchor-wallet-handoff-server.cjs",
     "test:live-evidence-anchor-wallet-handoff": "node --test scripts/live-evidence-anchor-wallet-handoff-server.test.cjs",

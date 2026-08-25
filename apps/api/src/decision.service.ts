@@ -7,7 +7,7 @@ import { CreateDecisionDto, DecisionQueryDto, ReviewDecisionDto } from "./decisi
 import { advisoryTools, DecisionOutputValidationError, decisionRoles, hashValue, minimumEightAgentBudget, roleToolCallUsage, validateDecisionOutput } from "./decision-engine";
 import { ADVISORY_PROVIDER, AdvisoryProvider, AdvisoryProviderTimeoutError, DeterministicMockAdvisoryProvider, FrozenAdvisoryInput, immutableProviderInput } from "./advisory-provider";
 import { KnowledgeService } from "./knowledge.service";
-import { allowedKnowledgeCitations,buildRetrievalManifestBundle,RetrievalManifestBundle,unavailableRetrievalManifestBundle,validateRetrievalManifestBundle } from "./retrieval-manifest";
+import { allowedKnowledgeCitations,buildRoleRetrievalManifestBundle,RetrievalManifestBundle,ROLE_RETRIEVAL_FOCUS,unavailableRetrievalManifestBundle,validateRetrievalManifestBundle } from "./retrieval-manifest";
 import { deriveCommitteeEvidenceGaps } from "./committee-evidence-gap";
 import { EvidenceRequestService } from "./evidence-request.service";
 import { AdvisoryProviderReliabilityService } from "./advisory-provider-reliability.service";
@@ -75,16 +75,24 @@ export class DecisionService implements OnModuleInit {
     const decisionId=id("decision");
     const evidenceGaps=output.recommendation==="INSUFFICIENT_EVIDENCE"?deriveCommitteeEvidenceGaps(output.risks.map((risk:any)=>risk.code),evidence):[];
     const agentRunIds=new Map<string,string>();
-    await this.db.transaction(async client=>{
+    let persistenceStage="DECISION";
+    try{await this.db.transaction(async client=>{
       await client.query("INSERT INTO decisions(id,organization_id,objective,policy_version_id,evidence_snapshot_id,provider,schema_version,status,recommendation,input_hash,output_hash,citation_coverage,orchestration,job_id,retrieval_bundle_hash,parent_decision_id,revision_number) VALUES($1,$2,$3,$4,$5,$6,'decision.recommendation.v3','REVIEW_REQUIRED',$7,$8,$9,$10,$11,$12,$13,$14,$15)",[decisionId,input.organizationId,input.objective,policy.id,snapshot.id,this.provider.providerId,output,hash(inputSnapshot),hash(output),coverage,orchestration,jobId??null,retrievalBundle.bundleHash,input.parentDecisionId??null,input.revisionNumber??0]);
+      persistenceStage="RETRIEVAL_MANIFEST";
       for(const manifest of retrievalBundle.manifests)await client.query("INSERT INTO decision_retrieval_manifests(id,organization_id,decision_id,role,requester_role,query,query_hash,status,reason_code,has_conflicts,embedding_model,reranker_version,items,manifest_hash) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14)",[id("rmanifest"),input.organizationId,decisionId,manifest.role,requesterRole,manifest.query,manifest.queryHash,manifest.status,manifest.reasonCode,manifest.hasConflicts,manifest.embeddingModel,manifest.rerankerVersion,JSON.stringify(manifest.items),manifest.manifestHash]);
+      persistenceStage="CLAIM";
       for(const [ordinal,claim] of claims.entries())await client.query("INSERT INTO decision_claims(id,organization_id,decision_id,ordinal,text,materiality,confidence,evidence_ids,content_hash) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)",[id("claim"),input.organizationId,decisionId,ordinal,claim.text,claim.materiality,claim.confidence,JSON.stringify(claim.evidenceIds),hash(claim)]);
+      persistenceStage="CHALLENGE";
       for(const challenge of challenges)await client.query("INSERT INTO decision_challenges(id,organization_id,decision_id,round,raised_by,target_role,code,challenge,response,status,content_hash) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)",[id("challenge"),input.organizationId,decisionId,challenge.round,challenge.raisedBy,challenge.targetRole,challenge.code,challenge.challenge,challenge.response,challenge.status,hash(challenge)]);
+      persistenceStage="A2A_MESSAGE";
       for(const message of agentMessages)await client.query("INSERT INTO agent_messages(id,organization_id,decision_id,ordinal,round,sender_role,recipient_role,message_type,code,content,evidence_ids,input_hash,content_hash) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)",[id("message"),input.organizationId,decisionId,message.ordinal,message.round,message.senderRole,message.recipientRole,message.messageType,message.code,message.content,JSON.stringify(message.evidenceIds),hash(inputSnapshot),hash(message)]);
+      persistenceStage="AGENT_RUN";
       for(const position of positions){const runId=id("run");agentRunIds.set(position.role,runId);await client.query("INSERT INTO agent_runs(id,organization_id,decision_id,role,model_version,tool_permissions,input_hash,output,output_hash,run_state,attempts,budget_usage) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,'SUCCEEDED',1,$10)",[runId,input.organizationId,decisionId,position.role,this.provider.modelVersion,JSON.stringify(position.toolPermissions),hash(inputSnapshot),position,hash(position),{toolCalls:roleToolCallUsage[position.role as keyof typeof roleToolCallUsage]}])}
-      for(const gap of evidenceGaps)await client.query("INSERT INTO decision_evidence_gaps(id,organization_id,decision_id,schema_version,code,source_blocker,requesting_role,status,gap_type,source_chain_id,subject,rationale,supporting_evidence_ids,gap_hash,asset_execution_authorized)VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,false)",[id("gap"),input.organizationId,decisionId,gap.schemaVersion,gap.code,gap.sourceBlocker,gap.requestingRole,gap.status,gap.gapType,gap.sourceChainId,gap.subject,gap.rationale,gap.supportingEvidenceIds,gap.gapHash]);
+      persistenceStage="EVIDENCE_GAP";
+      for(const gap of evidenceGaps)await client.query("INSERT INTO decision_evidence_gaps(id,organization_id,decision_id,schema_version,code,source_blocker,requesting_role,status,gap_type,source_chain_id,subject,rationale,supporting_evidence_ids,gap_hash,asset_execution_authorized)VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,false)",[id("gap"),input.organizationId,decisionId,gap.schemaVersion,gap.code,gap.sourceBlocker,gap.requestingRole,gap.status,gap.gapType,gap.sourceChainId,gap.subject,gap.rationale,JSON.stringify(gap.supportingEvidenceIds),gap.gapHash]);
+      persistenceStage="AUDIT";
       await this.audit(client,input.organizationId,"decision.review_required",decisionId,{inputHash:hash(inputSnapshot),outputHash:hash(output),provider:this.provider.providerId,modelVersion:this.provider.modelVersion,citationCoverage:coverage,unresolvedDisagreements:output.unresolvedDisagreements},{type:"system",id:"decision-orchestrator"});
-    });
+    })}catch(error:any){const code=typeof error?.code==="string"?error.code:"ERROR";const wrapped=new Error("Decision persistence failed");wrapped.name=`DECISION_PERSIST_${persistenceStage}_${code}`;throw wrapped}
     if(this.evidenceRequests&&evidenceGaps.some(gap=>gap.status==="REQUESTABLE")&&(input.revisionNumber??0)===0)await this.evidenceRequests.fulfillCommitteeGaps(input.organizationId,decisionId,evidenceGaps,agentRunIds);
     return {id:decisionId,organizationId:input.organizationId,status:"REVIEW_REQUIRED",parentDecisionId:input.parentDecisionId??null,revisionNumber:input.revisionNumber??0,provider:this.provider.providerId,modelVersion:this.provider.modelVersion,policyVersionId:policy.id,evidenceSnapshotId:snapshot.id,evidenceManifestHash:snapshot.manifest_hash,retrievalBundleHash:retrievalBundle.bundleHash,retrievalManifests:retrievalBundle.manifests,recommendation:output,inputHash:hash(inputSnapshot),outputHash:hash(output)};
   }
@@ -230,8 +238,12 @@ export class DecisionService implements OnModuleInit {
 
   private async freezeRetrieval(org:string,objective:string,requesterRole="TREASURY_COMMITTEE"){
     if(!this.knowledge)return unavailableRetrievalManifestBundle(objective);
-    const result=await this.knowledge.search(org,requesterRole,{organizationId:org,query:objective,limit:8});
-    return validateRetrievalManifestBundle(buildRetrievalManifestBundle(objective,result));
+    const entries=await Promise.all(decisionRoles.map(async role=>{
+      const query=ROLE_RETRIEVAL_FOCUS[role];
+      const result=await this.knowledge!.search(org,requesterRole,{organizationId:org,query,limit:8});
+      return [role,{query,result}] as const;
+    }));
+    return validateRetrievalManifestBundle(buildRoleRetrievalManifestBundle(Object.fromEntries(entries) as Record<typeof decisionRoles[number],{query:string;result:any}>));
   }
 
   private async audit(client:PoolClient,org:string,eventType:string,objectId:string,data:unknown,actor:unknown,objectType="decision"){

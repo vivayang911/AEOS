@@ -50,6 +50,8 @@
     "reconcile:live-attestcoin-evidence": "npm run build && node scripts/reconcile-live-attestcoin-evidence.cjs",
     "verify:live-attestcoin-reconciliation-db": "npm run build && node scripts/verify-live-attestcoin-reconciliation-db.cjs",
     "run:live-eight-agent-decision": "npm run build && node scripts/run-live-eight-agent-decision.cjs",
+    "run:contentful-eight-agent-decision": "npm run build && node scripts/run-contentful-eight-agent-decision.cjs",
+    "verify:contentful-eight-agent-decision-db": "npm run build && node scripts/verify-contentful-eight-agent-decision-db.cjs",
     "prepare:live-evidence-anchor-request": "npm run build && node scripts/prepare-live-evidence-anchor-request.cjs",
     "verify:live-evidence-anchor-confirmation": "npm run build && node scripts/verify-live-evidence-anchor-confirmation.cjs",
     "verify:aeos-evidence-source-deployment": "npm run build && node scripts/verify-aeos-evidence-source-deployment.cjs",

@@ -46,7 +46,7 @@ export function citationCoverage(claims:DecisionClaim[]){
 }
 
 const rolePosition=(role:DecisionRole,recommendation:"HOLD"|"INSUFFICIENT_EVIDENCE",citations:string[],retrievalManifest?:{manifestHash:string;status:string;items:ReadonlyArray<{citation:string}>})=>{
-  const positions:Record<DecisionRole,string>={
+  const fallbackPositions:Record<DecisionRole,string>={
     Governor:recommendation==="HOLD"?"Committee evidence, challenges, and handoffs are complete; route HOLD to human review.":"Committee guardrails require refusal; unresolved challenges remain visible.",
     Research:recommendation==="HOLD"?"Verified Evidence was reviewed and no supported asset-changing opportunity was established.":"Available Evidence cannot support a reliable research conclusion.",
     Strategy:recommendation==="HOLD"?"No policy-consistent rebalance candidate is justified by the frozen snapshot.":"No strategy candidate may advance while Evidence or challenge blockers remain.",
@@ -56,8 +56,19 @@ const rolePosition=(role:DecisionRole,recommendation:"HOLD"|"INSUFFICIENT_EVIDEN
     Portfolio:recommendation==="HOLD"?"Portfolio retains the current allocation and proposes no executable action.":"Portfolio refuses to form an allocation recommendation.",
     Treasury:recommendation==="HOLD"?"Treasury checklist contains no transaction draft and awaits human governance review.":"Treasury produces no action draft while committee blockers remain."
   };
+  const contentPositions:Record<DecisionRole,string>={
+    Governor:"Approved governance, protocol, and Decision Memory context supports coordination of a HOLD while unresolved economic Evidence gaps remain under human review.",
+    Research:"Approved governance and protocol context explains the verified control state but does not establish current price, liquidity, volatility, or economic value.",
+    Strategy:"Approved authorization, risk, and prior HOLD context supports retaining HOLD until the required market Evidence is verified and frozen.",
+    Quant:"Approved protocol context defines required liquidity, slippage, peg, volatility, and drawdown inputs; unsupported numerical calculation is refused.",
+    Risk:"Approved risk and Decision Memory context independently challenges liquidity, volatility, peg stability, drawdown, and black-swan assumptions.",
+    Compliance:"Approved governance and protocol context independently challenges active policy, allowlists, contract identity, and final authorization authority.",
+    Portfolio:"Approved Decision Memory supports retaining the current configuration because no Evidence-supported alternative candidate exists.",
+    Treasury:"Approved governance and Decision Memory context yields a preflight Evidence checklist only; no transaction is drafted."
+  };
   const knowledgeCitations=retrievalManifest?.items.map(item=>item.citation)??[];
-  return {role,responsibility:role,position:positions[role],confidence:recommendation==="HOLD"?0.8:0,citations,...(retrievalManifest?{retrievalManifestHash:retrievalManifest.manifestHash,retrievalStatus:retrievalManifest.status}:{}),...(knowledgeCitations.length?{knowledgeCitations:[...knowledgeCitations]}:{}),toolPermissions:[...roleToolPermissions[role]],runState:"SUCCEEDED",attempts:1,assetExecutionAuthorized:false};
+  const position=knowledgeCitations.length?contentPositions[role]:fallbackPositions[role];
+  return {role,responsibility:role,position,confidence:recommendation==="HOLD"?0.8:0,citations,...(retrievalManifest?{retrievalManifestHash:retrievalManifest.manifestHash,retrievalStatus:retrievalManifest.status}:{}),...(knowledgeCitations.length?{knowledgeCitations:[...knowledgeCitations]}:{}),toolPermissions:[...roleToolPermissions[role]],runState:"SUCCEEDED",attempts:1,assetExecutionAuthorized:false};
 };
 
 function buildAgentMessages(citations:string[],challenges:DecisionChallenge[],recommendation:"HOLD"|"INSUFFICIENT_EVIDENCE"){
@@ -94,12 +105,19 @@ export function buildDecisionOutput(input:{objective:string;evidence:DecisionEvi
 
   const recommendation=blockers.length?"INSUFFICIENT_EVIDENCE" as const:"HOLD" as const;
   const citations=input.evidence.map(item=>item.id).sort();
+  const contentfulRag=Boolean(input.retrievalManifests?.some(manifest=>manifest.status==="SUPPORTED"&&manifest.items.length));
   const claims:DecisionClaim[]=[recommendation==="HOLD"
     ?{text:"Current verified snapshot supports no asset-changing action.",materiality:"MATERIAL",evidenceIds:citations,confidence:0.8}
     :{text:"The selected snapshot is insufficient for a governed high-impact recommendation.",materiality:"MATERIAL",evidenceIds:citations,confidence:1}];
+  const contentChallenges:DecisionChallenge[]=contentfulRag?[
+    {round:2,raisedBy:"Risk",targetRole:"Strategy",code:"RISK_MARKET_EVIDENCE_REQUIRED",challenge:"Approved risk context requires fresh liquidity, slippage, peg, volatility, drawdown, and black-swan Evidence before any asset-changing candidate may advance.",response:"Strategy retains HOLD and requests the missing market Evidence; no action is proposed.",status:"RESOLVED"},
+    {round:2,raisedBy:"Compliance",targetRole:"Strategy",code:"COMPLIANCE_AUTHORITY_EVIDENCE_REQUIRED",challenge:"Approved governance and contract context requires active policy, allowlists, target identity, Guard state, and final DAO authority Evidence before any action may advance.",response:"Strategy retains HOLD because authorization is not established; no transaction is drafted.",status:"RESOLVED"}
+  ]:[];
   const challenges:DecisionChallenge[]=blockers.length
-    ?blockers.flatMap(code=>(["Risk","Compliance"] as const).map(raisedBy=>({round:2,raisedBy,targetRole:"Strategy" as const,code,challenge:`${raisedBy} requires ${code} to be resolved before a strategy may advance.`,response:"Strategy cannot resolve this issue from the frozen snapshot.",status:"UNRESOLVED" as const})))
-    :[
+    ?[...blockers.flatMap(code=>(["Risk","Compliance"] as const).map(raisedBy=>({round:2,raisedBy,targetRole:"Strategy" as const,code,challenge:`${raisedBy} requires ${code} to be resolved before a strategy may advance.`,response:"Strategy cannot resolve this issue from the frozen snapshot.",status:"UNRESOLVED" as const}))),...contentChallenges]
+    :contentfulRag?[
+      ...contentChallenges
+    ]:[
       {round:2,raisedBy:"Risk",targetRole:"Strategy",code:"RISK_NO_ACTION_CONFIRMED",challenge:"Does the candidate create an unsupported risk exposure?",response:"No asset-changing candidate is proposed; HOLD remains advisory.",status:"RESOLVED"},
       {round:2,raisedBy:"Compliance",targetRole:"Strategy",code:"COMPLIANCE_NO_ACTION_CONFIRMED",challenge:"Does the candidate violate policy or governance constraints?",response:"No transaction or policy change is proposed; human review remains required.",status:"RESOLVED"}
     ];

@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { runAgentEvals, EvalDataset } from "./agent-eval.runner";
-import { buildDecisionOutput, hashValue } from "./decision-engine";
+import { buildDecisionOutput, decisionRoles, hashValue } from "./decision-engine";
 
 describe("Decision Engine",()=>{
   const evidence={id:"ev_1",value:{amount:"125000000"},verification:{status:"VERIFIED"},freshness:"FRESH",qualityScore:90,conflictGroupId:null};
@@ -19,6 +19,30 @@ describe("Decision Engine",()=>{
     expect(result.agentMessages.map(message=>message.ordinal)).toEqual(result.agentMessages.map((_,index)=>index));
     expect(result.agentMessages).toEqual(expect.arrayContaining([expect.objectContaining({messageType:"HANDOFF",senderRole:"Portfolio",recipientRole:"Treasury"})]));
     expect(result.positions.every(position=>position.assetExecutionAuthorized===false)).toBe(true);
+  });
+
+  it("uses frozen role-scoped Knowledge citations to produce contentful HOLD positions and independent challenges",()=>{
+    const manifests=decisionRoles.map(role=>({role,manifestHash:`0x${role.toLowerCase().padEnd(64,"0").slice(0,64)}`,status:"SUPPORTED",items:[{citation:`rag:source:v1:chunk_${role}:0xcontent`}]}));
+    const result=buildDecisionOutput({objective:"Review approved governance and risk context",evidence:[evidence],policy:{minimumEvidenceQuality:80},retrievalManifests:manifests});
+    expect(result.positions.every(position=>position.retrievalStatus==="SUPPORTED"&&position.knowledgeCitations?.length===1)).toBe(true);
+    expect(result.positions.find(position=>position.role==="Quant")?.position).toContain("unsupported numerical calculation is refused");
+    expect(result.positions.find(position=>position.role==="Treasury")?.position).toContain("no transaction is drafted");
+    expect(result.challenges).toEqual(expect.arrayContaining([
+      expect.objectContaining({raisedBy:"Risk",code:"RISK_MARKET_EVIDENCE_REQUIRED"}),
+      expect.objectContaining({raisedBy:"Compliance",code:"COMPLIANCE_AUTHORITY_EVIDENCE_REQUIRED"})
+    ]));
+    expect(result.output.actions).toEqual([]);
+    expect(result.output.assetExecutionAuthorized).toBe(false);
+  });
+
+  it("keeps stale Evidence fail-closed while approved Knowledge adds contentful positions and challenges",()=>{
+    const manifests=decisionRoles.map(role=>({role,manifestHash:`0x${role.toLowerCase().padEnd(64,"0").slice(0,64)}`,status:"SUPPORTED",items:[{citation:`rag:source:v1:chunk_${role}:0xcontent`}]}));
+    const result=buildDecisionOutput({objective:"Review stale Evidence with approved policy context",evidence:[{...evidence,freshness:"STALE"}],policy:{minimumEvidenceQuality:80},retrievalManifests:manifests});
+    expect(result.output.recommendation).toBe("INSUFFICIENT_EVIDENCE");
+    expect(result.positions.find(position=>position.role==="Strategy")?.position).toContain("retaining HOLD");
+    expect(result.challenges).toEqual(expect.arrayContaining([expect.objectContaining({code:"STALE_EVIDENCE",status:"UNRESOLVED"}),expect.objectContaining({code:"RISK_MARKET_EVIDENCE_REQUIRED",status:"RESOLVED"}),expect.objectContaining({code:"COMPLIANCE_AUTHORITY_EVIDENCE_REQUIRED",status:"RESOLVED"})]));
+    expect(result.output.actions).toEqual([]);
+    expect(result.output.assetExecutionAuthorized).toBe(false);
   });
 
   it("fails closed when policy budget cannot run all eight Agents",()=>{
