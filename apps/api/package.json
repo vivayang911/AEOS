@@ -22,6 +22,7 @@
     "verify:evidence-classification-db": "npm run build && node scripts/verify-evidence-classification-db.cjs",
     "verify:evidence-request-db": "npm run build && node scripts/verify-evidence-request-db.cjs",
     "verify:committee-gap-lineage-db": "npm run build && node scripts/verify-committee-gap-lineage-db.cjs",
+    "verify:live-reverse-evidence-request-db": "npm run build && node scripts/verify-live-reverse-evidence-request-db.cjs",
     "verify:organization-configuration-db": "npm run build && node scripts/verify-organization-configuration-db.cjs",
     "verify:command-security-db": "npm run build && node scripts/verify-command-security-db.cjs",
     "verify:alerts-db": "npm run build && node scripts/verify-alerts-db.cjs",

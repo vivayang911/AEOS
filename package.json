@@ -127,6 +127,7 @@
     "verify:evidence-classification-db": "npm run verify:evidence-classification-db -w @aeos/api",
     "verify:evidence-request-db": "npm run verify:evidence-request-db -w @aeos/api",
     "verify:committee-gap-lineage-db": "npm run verify:committee-gap-lineage-db -w @aeos/api",
+    "verify:live-reverse-evidence-request-db": "npm run verify:live-reverse-evidence-request-db -w @aeos/api",
     "verify:organization-configuration-db": "npm run verify:organization-configuration-db -w @aeos/api",
     "verify:command-security-db": "npm run verify:command-security-db -w @aeos/api",
     "verify:alerts-db": "npm run verify:alerts-db -w @aeos/api",

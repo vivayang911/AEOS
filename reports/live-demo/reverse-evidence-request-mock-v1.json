@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "aeos.reverse-evidence-request-receipt.v1",
+  "status": "MOCK_EVIDENCE_REQUEST_SATISFIED",
+  "recordedAt": "2026-08-25T02:34:23.563Z",
+  "request": {
+    "id": "evreq_bf3e479163564867b284bbbe81cc7de8",
+    "decisionId": "decision_6967bcf81c7e43e9bba64b3bb5f7101a",
+    "gapId": "gap_8edafe59c3ef4af8aa63a0be3a47feff",
+    "requestingRole": "Research",
+    "gapCode": "STALE_EVIDENCE",
+    "gapType": "BALANCE",
+    "sourceChainId": 11155111,
+    "subject": "0x444d510728fb8072351cb5d0e88432e6a8501dfa",
+    "requestHash": "0x6ea24b3b4c2a26d5d0e5ef803aacfbdd5951d933bd252c5db245fadd72484176",
+    "brokerVersion": "deterministic-mock-evidence-broker-v1",
+    "lifecycle": [
+      "PROPOSED",
+      "VALIDATED",
+      "QUEUED",
+      "DISCOVERING",
+      "NORMALIZED",
+      "INDEXED",
+      "SATISFIED"
+    ]
+  },
+  "lineage": {
+    "originalGapStatus": "REFUSAL_ONLY",
+    "originalGapHash": "0x227596ea14453b34745aebf067ae8731ff96d6168ad771bfaec9f2bbbb00a346",
+    "a2a": "Research->Governor",
+    "agentMessageId": "message_cfd7bbcfcaee434eb820ae6df099c054",
+    "linkHash": "0x3ede10222db4bd152e81f49cdfc3912c3ccbb2d67915fdf834ae0a876a680292",
+    "childDecisionId": null,
+    "originalGapImmutable": true
+  },
+  "evidence": {
+    "id": "ev_ebad0baaf9194a9bb067320ab4bf1cca",
+    "predicate": "asset.balance",
+    "contentHash": "0xf9bc3bd467ca26811504c31bad2b0a1c76ab0f26a8498bf9b74d4158c3c46225",
+    "rawContentHash": "0xe0ea5b99ab60100863706b66b87c6488d944bf37548eb69f1156c014961403a4",
+    "classificationHash": "0x2210e38dfc2baadb320121fa94709fc0a93b2558b48970bb69c83784fbfc060b",
+    "verificationStatus": "VERIFIED",
+    "recordedFreshnessStatus": "FRESH",
+    "observedAt": "2026-08-25T02:25:44.284Z",
+    "freshnessExpiresAt": "2026-08-25T02:30:44.284Z",
+    "currentlyFresh": false,
+    "qualityScore": 80,
+    "provider": "mock-attestcoin-demand-v1",
+    "mockOnly": true
+  },
+  "controls": {
+    "humanAuditPresent": true,
+    "crossTenantHidden": true,
+    "networkAuthority": false,
+    "signerCapability": false,
+    "broadcastCapability": false,
+    "assetExecutionAuthorized": false,
+    "automaticAgentRerun": false
+  }
+}
