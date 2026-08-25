@@ -40,9 +40,9 @@ export function freezeEvidenceRequest(input:EvidenceRequestInput):FrozenEvidence
 export type BrokerResult={status:"SATISFIED";mockFact:{subject:{type:"wallet";id:string};predicate:"asset.balance";value:{amount:string;decimals:number;symbol:string};chain:{id:number;blockNumber:number};source:{provider:string;reference:string};verificationStatus:"VERIFIED";observedAt:string}}|{status:"UNSATISFIED";reasonCode:"MOCK_PROOF_NOT_AVAILABLE"|"MOCK_DISCOVERY_EMPTY"};
 export class DeterministicMockEvidenceRequestBroker{
   readonly mode="mock-only";readonly networkAuthority=false;readonly signerCapability=false;readonly broadcastCapability=false;readonly assetExecutionAuthorized=false;
-  run(request:FrozenEvidenceRequest):BrokerResult{
+  run(request:FrozenEvidenceRequest,observedAt=new Date().toISOString()):BrokerResult{
     if(request.gapType!=="BALANCE")return {status:"UNSATISFIED",reasonCode:request.gapType==="TRANSACTION"?"MOCK_PROOF_NOT_AVAILABLE":"MOCK_DISCOVERY_EMPTY"};
-    const seed=BigInt(`0x${request.requestHash.slice(2,18)}`);const amount=(50_000_000n+seed%150_000_000n).toString();const observedAt="2026-08-12T00:00:00.000Z";
+    const seed=BigInt(`0x${request.requestHash.slice(2,18)}`);const amount=(50_000_000n+seed%150_000_000n).toString();
     return {status:"SATISFIED",mockFact:{subject:{type:"wallet",id:`eip155:${request.sourceChainId}:${request.subject}`},predicate:"asset.balance",value:{amount,decimals:6,symbol:"USDC"},chain:{id:request.sourceChainId,blockNumber:request.sourceChainId===11155111?6500000:25000000},source:{provider:"mock-attestcoin-demand-v1",reference:request.requestHash},verificationStatus:"VERIFIED",observedAt}};
   }
 }

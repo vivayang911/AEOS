@@ -8,3 +8,10 @@ export class CreateEvidenceRequestDto{
  @IsString()@MinLength(8)@MaxLength(500)rationale!:string;@IsArray()@ArrayMaxSize(20)@IsString({each:true})supportingEvidenceIds!:string[];@ValidateNested()@Type(()=>EvidenceRequestBudgetDto)budget!:EvidenceRequestBudgetDto;
 }
 
+export class ScopeCommitteeEvidenceGapDto{
+ @IsIn(["BALANCE"])gapType!:"BALANCE";
+ @Type(()=>Number)@IsInt()@IsIn([11155111,80002])sourceChainId!:number;
+ @IsEthereumAddress()subject!:string;
+ @IsString()@MinLength(12)@MaxLength(500)scopeRationale!:string;
+}
+
