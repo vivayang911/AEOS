@@ -1,5 +1,5 @@
 import { AbiCoder, Interface, keccak256 } from "ethers";
-import { buildBalanceObservationRequest, buildBalanceObserverDeploymentPlan, verifyBalanceObservationReceipt, verifyBalanceObserverDeploymentReadback } from "./balance-observer-engine";
+import { buildBalanceObservationRequest, buildBalanceObservationRequestFromCommitments, buildBalanceObserverDeploymentPlan, verifyBalanceObservationReceipt, verifyBalanceObserverDeploymentReadback } from "./balance-observer-engine";
 
 const reporter = "0x1111111111111111111111111111111111111111";
 const observer = "0x2222222222222222222222222222222222222222";
@@ -68,5 +68,11 @@ describe("AEOS Balance Observer request and receipt", () => {
     const other = buildBalanceObservationRequest({ chainId: 11155111, observerContract: observer, reporter, organizationId: "org_beta", treasuryId: "treasury_core", observationKey: "usdc-balance-1", token, account, tokenRuntimeBytecode: runtime });
     expect(other.observation.observationId).not.toBe(request.observation.observationId);
     expect(() => buildBalanceObservationRequest({ chainId: 11155111, observerContract: observer, reporter, organizationId: "org_alpha", treasuryId: "treasury_core", observationKey: "usdc-balance-1", token, account, tokenRuntimeBytecode: "0x" })).toThrow("TOKEN_CODE_INVALID");
+  });
+  it("accepts frozen tenant commitments without exposing raw tenant identifiers", () => {
+    const frozen = buildBalanceObservationRequestFromCommitments({ chainId: 11155111, observerContract: observer, reporter, observationKey: "usdc-balance-1", token, account, tokenRuntimeBytecode: runtime, organizationCommitment: request.observation.organizationCommitment, treasuryCommitment: request.observation.treasuryCommitment });
+    expect(frozen.observation).toEqual(request.observation);
+    expect(JSON.stringify(frozen)).not.toContain("org_alpha");
+    expect(() => buildBalanceObservationRequestFromCommitments({ chainId: 11155111, observerContract: observer, reporter, observationKey: "usdc-balance-1", token, account, tokenRuntimeBytecode: runtime, organizationCommitment: "0x12", treasuryCommitment: request.observation.treasuryCommitment })).toThrow("TENANT_COMMITMENT_INVALID");
   });
 });

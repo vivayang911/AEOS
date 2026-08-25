@@ -1,6 +1,6 @@
 # Sepolia Balance Observer runbook
 
-Status: `LOCAL_PREPARED / EXTERNAL_PENDING`.
+Status: `WALLET_HANDOFF_READY / EXTERNAL_PENDING`.
 
 ## Truth boundary
 
@@ -29,6 +29,16 @@ npm run security:balance-observer
 ```
 
 The deployment command prints a zero-value, unsigned and unsubmitted plan. It does not open a wallet or send a transaction.
+
+## Two-step wallet handoff
+
+```powershell
+npm run prepare:balance-observer-wallet-plan
+npm run test:balance-observer-wallet-handoff
+npm run start:balance-observer-wallet-handoff
+```
+
+Open `http://127.0.0.1:4191/`. The current frozen plan is `0xf3d531...2b031`, uses reporter pending nonces `2..3`, and predicts observer `0xb8c8...6da8e`. Step 1 deploys the exact compiled init code. Step 2 remains locked until the Step 1 wallet receipt is recorded, then independently checks the deployed observer runtime and USDC runtime before simulating `observeBalance`. Each step requires a separate button click and MetaMask confirmation; no batch, automatic continuation, private key, AEOS signer or server broadcaster exists. Wallet-RPC receipts are operational handoff records only and do not count as independent canonical finality.
 
 ## External acceptance sequence
 

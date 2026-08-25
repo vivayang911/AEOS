@@ -43,6 +43,15 @@ function deriveCommitments(input: { organizationId: string; treasuryId: string; 
   return { organizationCommitment, treasuryCommitment, observationId };
 }
 
+function validateFrozenCommitments(input: { organizationCommitment: string; treasuryCommitment: string; observationKey: string }) {
+  if (!digestPattern.test(input.organizationCommitment) || !digestPattern.test(input.treasuryCommitment)) throw new Error("BALANCE_OBSERVER_TENANT_COMMITMENT_INVALID");
+  const observationKey = bounded(input.observationKey, "OBSERVATION_KEY_INVALID");
+  const organizationCommitment = input.organizationCommitment.toLowerCase();
+  const treasuryCommitment = input.treasuryCommitment.toLowerCase();
+  const observationId = keccak256(AbiCoder.defaultAbiCoder().encode(["string", "bytes32", "string"], ["aeos.balance-observation.v1", treasuryCommitment, observationKey]));
+  return { organizationCommitment, treasuryCommitment, observationId };
+}
+
 export function buildBalanceObserverDeploymentPlan(input: {
   chainId: number;
   reporter: string;
@@ -134,24 +143,23 @@ export function verifyBalanceObserverDeploymentReadback(input: {
   };
 }
 
-export function buildBalanceObservationRequest(input: {
+type BalanceObservationBase = {
   chainId: number;
   observerContract: string;
   reporter: string;
-  organizationId: string;
-  treasuryId: string;
   observationKey: string;
   token: string;
   account: string;
   tokenRuntimeBytecode: string;
-}) {
+};
+
+function buildBalanceObservationRequestWithCommitments(input: BalanceObservationBase, commitments: { organizationCommitment: string; treasuryCommitment: string; observationId: string }) {
   if (input.chainId !== BALANCE_OBSERVER_CHAIN_ID) throw new Error("BALANCE_OBSERVER_CHAIN_INVALID");
   const observerContract = address(input.observerContract, "BALANCE_OBSERVER_ADDRESS_INVALID");
   const reporter = address(input.reporter, "BALANCE_OBSERVER_REPORTER_INVALID");
   const token = address(input.token, "BALANCE_OBSERVER_TOKEN_INVALID");
   const account = address(input.account, "BALANCE_OBSERVER_ACCOUNT_INVALID");
   const tokenCodeHash = keccak256(bytecode(input.tokenRuntimeBytecode, "BALANCE_OBSERVER_TOKEN_CODE_INVALID"));
-  const commitments = deriveCommitments(input);
   const data = observerInterface.encodeFunctionData("observeBalance", [
     commitments.observationId,
     commitments.organizationCommitment,
@@ -182,6 +190,14 @@ export function buildBalanceObservationRequest(input: {
     assetExecutionAuthorized: false,
   } as const;
   return { ...frozen, requestHash: sha256(frozen) };
+}
+
+export function buildBalanceObservationRequest(input: BalanceObservationBase & { organizationId: string; treasuryId: string }) {
+  return buildBalanceObservationRequestWithCommitments(input, deriveCommitments(input));
+}
+
+export function buildBalanceObservationRequestFromCommitments(input: BalanceObservationBase & { organizationCommitment: string; treasuryCommitment: string }) {
+  return buildBalanceObservationRequestWithCommitments(input, validateFrozenCommitments(input));
 }
 
 type ObservationRequest = ReturnType<typeof buildBalanceObservationRequest>;
