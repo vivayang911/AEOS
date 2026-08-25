@@ -41,6 +41,8 @@
     "fetch:live-balance-observer-proof": "npm run build && node scripts/fetch-live-balance-observer-proof.cjs",
     "prepare:live-balance-observer-verification-request": "npm run build && node scripts/prepare-live-balance-observer-verification-request.cjs",
     "prepare:live-balance-observer-wallet-handoff": "npm run build && node scripts/prepare-live-balance-observer-wallet-handoff.cjs",
+    "verify:live-balance-observer-submission": "npm run build && node scripts/verify-live-balance-observer-submission.cjs",
+    "test:live-balance-observer-submission": "npm run build && node --test scripts/verify-live-balance-observer-submission.test.cjs",
     "prepare:aeos-evidence-source-wallet-handoff": "npm run build && node scripts/prepare-aeos-evidence-source-wallet-handoff.cjs",
     "prepare:treasury-observation-commit": "npm run build && node scripts/prepare-treasury-observation-commit.cjs",
     "prepare:live-control-observation": "npm run build && node scripts/prepare-live-control-observation.cjs",
