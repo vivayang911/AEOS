@@ -10,6 +10,7 @@ const plan = buildBalanceObserverDeploymentPlan({
   reporter: required("AEOS_BALANCE_OBSERVER_REPORTER_ADDRESS"),
   creationBytecode: artifact.bytecode?.object,
   runtimeBytecode: artifact.deployedBytecode?.object,
+  reporterImmutableReferences: Object.values(artifact.deployedBytecode?.immutableReferences || {}).flat(),
   artifactCompiler: artifact.metadata?.compiler?.version || "unknown",
   artifactSource: "contracts/src/AEOSBalanceObserver.sol",
 });

@@ -2,12 +2,13 @@ const { createServer } = require("node:http");
 const { createHash } = require("node:crypto");
 const { existsSync, mkdirSync, readFileSync, writeFileSync } = require("node:fs");
 const { dirname, resolve } = require("node:path");
-const { keccak256 } = require("ethers");
+const { AbiCoder, concat, keccak256, zeroPadValue } = require("ethers");
 
 const HOST = "127.0.0.1";
 const PORT = Number(process.env.AEOS_BALANCE_OBSERVER_WALLET_PORT || 4191);
 const PLAN_PATH = resolve(process.env.AEOS_BALANCE_OBSERVER_WALLET_PLAN_PATH || resolve(__dirname, "../reports/deployment/balance-observer-wallet-plan.json"));
 const SUBMISSION_DIRECTORY = resolve(process.env.AEOS_BALANCE_OBSERVER_SUBMISSION_DIRECTORY || resolve(__dirname, "../reports/deployment/balance-observer-wallet-submissions"));
+const ARTIFACT_PATH = resolve(process.env.AEOS_BALANCE_OBSERVER_ARTIFACT_PATH || resolve(__dirname, "../contracts/out/AEOSBalanceObserver.sol/AEOSBalanceObserver.json"));
 const EXPECTED_CHAIN_ID = 11155111;
 
 const hash = (value) => /^0x[0-9a-f]{64}$/i.test(value || "");
@@ -16,6 +17,26 @@ const canonical = (value) => Array.isArray(value) ? `[${value.map(canonical).joi
 const sha256 = (value) => `0x${createHash("sha256").update(canonical(value)).digest("hex")}`;
 const requestIdentity = (tx) => ({ sequence: tx.sequence, nonce: tx.nonce, to: tx.to, value: tx.value, data: tx.data });
 function computePlanHash(plan) { const { generatedAt, planHash, ...frozen } = plan; return sha256(frozen); }
+function deriveRuntimeIdentity(plan) {
+  const artifact = JSON.parse(readFileSync(ARTIFACT_PATH, "utf8"));
+  const creationBytecode = artifact.bytecode?.object;
+  const runtimeTemplate = artifact.deployedBytecode?.object;
+  if (!/^0x[0-9a-f]+$/i.test(creationBytecode || "") || !/^0x[0-9a-f]+$/i.test(runtimeTemplate || "")) throw new Error("Balance Observer compiler artifact invalid");
+  const expectedInitCode = concat([creationBytecode, AbiCoder.defaultAbiCoder().encode(["address"], [plan.reporter])]);
+  if (expectedInitCode.toLowerCase() !== plan.transactions[0].data.toLowerCase()) throw new Error("Balance Observer artifact/init-code mismatch");
+  const templateHash = keccak256(runtimeTemplate);
+  const frozenTemplateHash = (plan.observer.runtimeBytecodeTemplateHash || plan.observer.runtimeBytecodeHash || "").toLowerCase();
+  if (templateHash.toLowerCase() !== frozenTemplateHash) throw new Error("Balance Observer runtime template mismatch");
+  const replacement = zeroPadValue(plan.reporter, 32).slice(2);
+  let body = runtimeTemplate.slice(2);
+  const references = Object.values(artifact.deployedBytecode?.immutableReferences || {}).flat();
+  if (references.length === 0) throw new Error("Balance Observer reporter immutable references missing");
+  for (const reference of references) {
+    if (!Number.isSafeInteger(reference.start) || reference.start < 0 || reference.length !== 32 || (reference.start + reference.length) * 2 > body.length) throw new Error("Balance Observer reporter immutable reference invalid");
+    body = `${body.slice(0, reference.start * 2)}${replacement}${body.slice((reference.start + reference.length) * 2)}`;
+  }
+  return { templateHash, runtimeBytecodeHash: keccak256(`0x${body}`), immutableReferenceCount: references.length };
+}
 
 function validatePlan(plan) {
   if (plan?.schemaVersion !== "aeos-balance-observer.wallet-plan.v1" || plan.chainId !== EXPECTED_CHAIN_ID) throw new Error("Unsupported Balance Observer wallet plan");
@@ -35,7 +56,12 @@ function validatePlan(plan) {
   return plan;
 }
 
-function readPlan() { return validatePlan(JSON.parse(readFileSync(PLAN_PATH, "utf8"))); }
+function readPlan() {
+  const frozenPlan = validatePlan(JSON.parse(readFileSync(PLAN_PATH, "utf8")));
+  const derived = deriveRuntimeIdentity(frozenPlan);
+  if (frozenPlan.observer.runtimeBytecodeTemplateHash && frozenPlan.observer.runtimeBytecodeHash.toLowerCase() !== derived.runtimeBytecodeHash.toLowerCase()) throw new Error("Balance Observer expected runtime mismatch");
+  return { ...frozenPlan, observer: { ...frozenPlan.observer, runtimeBytecodeTemplateHash: derived.templateHash, runtimeBytecodeHash: derived.runtimeBytecodeHash }, runtimeDerivation: { schemaVersion: "aeos-balance-observer.runtime-derivation.v1", basePlanHash: frozenPlan.planHash, reporter: frozenPlan.reporter, immutableReferenceCount: derived.immutableReferenceCount, runtimeBytecodeTemplateHash: derived.templateHash, runtimeBytecodeHash: derived.runtimeBytecodeHash } };
+}
 function recordPath(sequence, suffix) { return resolve(SUBMISSION_DIRECTORY, `${String(sequence).padStart(2, "0")}-${suffix}.json`); }
 function readProgress(plan) {
   const submissions = plan.transactions.flatMap((tx) => { const path = recordPath(tx.sequence, "submitted"); return existsSync(path) ? [JSON.parse(readFileSync(path, "utf8"))] : []; });

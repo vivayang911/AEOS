@@ -1,5 +1,5 @@
 import { AbiCoder, Interface, keccak256 } from "ethers";
-import { buildBalanceObservationRequest, buildBalanceObservationRequestFromCommitments, buildBalanceObserverDeploymentPlan, verifyBalanceObservationReceipt, verifyBalanceObserverDeploymentReadback } from "./balance-observer-engine";
+import { buildBalanceObservationRequest, buildBalanceObservationRequestFromCommitments, buildBalanceObserverDeploymentPlan, materializeBalanceObserverRuntimeBytecode, verifyBalanceObservationReceipt, verifyBalanceObserverDeploymentReadback } from "./balance-observer-engine";
 
 const reporter = "0x1111111111111111111111111111111111111111";
 const observer = "0x2222222222222222222222222222222222222222";
@@ -15,6 +15,13 @@ describe("AEOS Balance Observer deployment", () => {
     expect(first).toEqual(expect.objectContaining({ chainId: 11155111, signed: false, submitted: false, aeosSigningCapability: false, aeosBroadcastCapability: false, assetExecutionAuthorized: false }));
     expect(first.unsignedTransaction).toEqual(expect.objectContaining({ to: null, value: "0" }));
   });
+  it("materializes the configured reporter into every compiler immutable slot", () => {
+    const template = `0x${"00".repeat(80)}`;
+    const materialized = materializeBalanceObserverRuntimeBytecode({ runtimeBytecode: template, reporter, reporterImmutableReferences: [{ start: 4, length: 32 }, { start: 44, length: 32 }] });
+    expect(materialized.slice(2 + 4 * 2, 2 + 36 * 2)).toBe(`000000000000000000000000${reporter.slice(2)}`);
+    expect(materialized.slice(2 + 44 * 2, 2 + 76 * 2)).toBe(`000000000000000000000000${reporter.slice(2)}`);
+    expect(() => materializeBalanceObserverRuntimeBytecode({ runtimeBytecode: template, reporter, reporterImmutableReferences: [{ start: 60, length: 32 }] })).toThrow("IMMUTABLE_REFERENCE_INVALID");
+  });
   it("rejects wrong chain, zero reporter, and malformed bytecode", () => {
     expect(() => buildBalanceObserverDeploymentPlan({ ...base, chainId: 1 })).toThrow("CHAIN_INVALID");
     expect(() => buildBalanceObserverDeploymentPlan({ ...base, reporter: "0x0000000000000000000000000000000000000000" })).toThrow("REPORTER_INVALID");
@@ -22,7 +29,7 @@ describe("AEOS Balance Observer deployment", () => {
   });
   it("fails deployment readback closed on runtime, reporter, value, receipt, or finality drift", () => {
     const plan = buildBalanceObserverDeploymentPlan(base);
-    const readback = { expectedChainId: 11155111, actualChainId: 11155111, expectedReporter: reporter, actualReporter: reporter, expectedInitCodeHash: plan.unsignedTransaction.initCodeHash, expectedRuntimeBytecodeHash: plan.artifact.runtimeBytecodeTemplateHash, deploymentTransactionData: plan.unsignedTransaction.data, deploymentTransactionTo: null, deploymentTransactionValue: "0", deploymentTransactionHash: `0x${"55".repeat(32)}`, receiptStatus: 1, receiptTo: null, receiptContractAddress: observer, receiptBlockNumber: 10, latestBlockNumber: 11, minimumConfirmations: 2, address: observer, runtimeBytecode: runtime };
+    const readback = { expectedChainId: 11155111, actualChainId: 11155111, expectedReporter: reporter, actualReporter: reporter, expectedInitCodeHash: plan.unsignedTransaction.initCodeHash, expectedRuntimeBytecodeHash: plan.artifact.runtimeBytecodeHash, deploymentTransactionData: plan.unsignedTransaction.data, deploymentTransactionTo: null, deploymentTransactionValue: "0", deploymentTransactionHash: `0x${"55".repeat(32)}`, receiptStatus: 1, receiptTo: null, receiptContractAddress: observer, receiptBlockNumber: 10, latestBlockNumber: 11, minimumConfirmations: 2, address: observer, runtimeBytecode: runtime };
     expect(verifyBalanceObserverDeploymentReadback(readback)).toEqual(expect.objectContaining({ status: "VERIFIED", assetExecutionAuthorized: false }));
     for (const changed of [{ actualChainId: 1 }, { actualReporter: account }, { runtimeBytecode: "0x60026000" }, { deploymentTransactionValue: "1" }, { receiptStatus: 0 }, { latestBlockNumber: 10 }]) expect(verifyBalanceObserverDeploymentReadback({ ...readback, ...changed } as any).status).toBe("REJECTED");
   });

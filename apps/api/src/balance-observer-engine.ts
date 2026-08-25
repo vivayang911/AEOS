@@ -1,4 +1,4 @@
-import { AbiCoder, Interface, concat, getAddress, keccak256 } from "ethers";
+import { AbiCoder, Interface, concat, getAddress, keccak256, zeroPadValue } from "ethers";
 import { createHash } from "node:crypto";
 
 export const BALANCE_OBSERVER_CHAIN_ID = 11155111;
@@ -52,11 +52,33 @@ function validateFrozenCommitments(input: { organizationCommitment: string; trea
   return { organizationCommitment, treasuryCommitment, observationId };
 }
 
+type ImmutableReference = { start: number; length: number };
+
+export function materializeBalanceObserverRuntimeBytecode(input: { runtimeBytecode: string; reporter: string; reporterImmutableReferences?: ImmutableReference[] }) {
+  const template = bytecode(input.runtimeBytecode, "BALANCE_OBSERVER_BYTECODE_INVALID");
+  const reporter = address(input.reporter, "BALANCE_OBSERVER_REPORTER_INVALID");
+  const references = input.reporterImmutableReferences ?? [];
+  if (references.length === 0) return template;
+  const replacement = zeroPadValue(reporter, 32).slice(2);
+  let body = template.slice(2);
+  const occupied = new Set<number>();
+  for (const reference of references) {
+    if (!Number.isSafeInteger(reference.start) || reference.start < 0 || reference.length !== 32 || (reference.start + reference.length) * 2 > body.length) throw new Error("BALANCE_OBSERVER_IMMUTABLE_REFERENCE_INVALID");
+    for (let offset = reference.start; offset < reference.start + reference.length; offset += 1) {
+      if (occupied.has(offset)) throw new Error("BALANCE_OBSERVER_IMMUTABLE_REFERENCE_INVALID");
+      occupied.add(offset);
+    }
+    body = `${body.slice(0, reference.start * 2)}${replacement}${body.slice((reference.start + reference.length) * 2)}`;
+  }
+  return `0x${body}`;
+}
+
 export function buildBalanceObserverDeploymentPlan(input: {
   chainId: number;
   reporter: string;
   creationBytecode: string;
   runtimeBytecode: string;
+  reporterImmutableReferences?: ImmutableReference[];
   artifactCompiler: string;
   artifactSource: string;
 }) {
@@ -64,6 +86,7 @@ export function buildBalanceObserverDeploymentPlan(input: {
   const reporter = address(input.reporter, "BALANCE_OBSERVER_REPORTER_INVALID");
   const creationBytecode = bytecode(input.creationBytecode, "BALANCE_OBSERVER_BYTECODE_INVALID");
   const runtimeBytecode = bytecode(input.runtimeBytecode, "BALANCE_OBSERVER_BYTECODE_INVALID");
+  const expectedRuntimeBytecode = materializeBalanceObserverRuntimeBytecode({ runtimeBytecode, reporter, reporterImmutableReferences: input.reporterImmutableReferences });
   const data = concat([creationBytecode, AbiCoder.defaultAbiCoder().encode(["address"], [reporter])]);
   const frozen = {
     schemaVersion: "aeos-balance-observer.deployment-plan.v1",
@@ -74,6 +97,8 @@ export function buildBalanceObserverDeploymentPlan(input: {
       compiler: input.artifactCompiler,
       creationBytecodeHash: keccak256(creationBytecode),
       runtimeBytecodeTemplateHash: keccak256(runtimeBytecode),
+      runtimeBytecodeHash: keccak256(expectedRuntimeBytecode),
+      reporterImmutableReferences: input.reporterImmutableReferences ?? [],
     },
     constructor: { reporter },
     unsignedTransaction: { to: null, value: "0", data, initCodeHash: keccak256(data) },

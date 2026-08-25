@@ -40,6 +40,8 @@ npm run start:balance-observer-wallet-handoff
 
 Open `http://127.0.0.1:4191/`. The current frozen plan is `0xf3d531...2b031`, uses reporter pending nonces `2..3`, and predicts observer `0xb8c8...6da8e`. Step 1 deploys the exact compiled init code. Step 2 remains locked until the Step 1 wallet receipt is recorded, then independently checks the deployed observer runtime and USDC runtime before simulating `observeBalance`. Each step requires a separate button click and MetaMask confirmation; no batch, automatic continuation, private key, AEOS signer or server broadcaster exists. Wallet-RPC receipts are operational handoff records only and do not count as independent canonical finality.
 
+The compiler's deployed-bytecode artifact contains two reporter `immutableReferences`. Therefore `0x7a5a...be26` is only the unfilled runtime template hash; the reporter-bound expected Sepolia runtime hash is `0x159989...06bb`. The handoff derives the latter from the exact artifact, constructor reporter and immutable offsets, and also proves the frozen deployment init code equals the artifact plus ABI constructor arguments. Never bypass this distinction by accepting arbitrary code observed after deployment.
+
 ## External acceptance sequence
 
 1. Review the compiled surface and deployment plan hashes.
