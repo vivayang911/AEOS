@@ -5,7 +5,7 @@ const { JsonRpcProvider } = require("ethers");
 const { UscAttestcoinAdapter } = require("../dist/attestcoin-adapter");
 const ROOT = resolve(__dirname, "../../..");
 const FINALITY_PATH = resolve(ROOT, "reports/live-demo/live-balance-observer-finality-v1.json");
-const OUTPUT_PATH = resolve(ROOT, "reports/live-demo/live-balance-observer-usc-proof-v1.json");
+const OUTPUT_PATH = resolve(process.argv[2] || resolve(ROOT, "reports/live-demo/live-balance-observer-usc-proof-v1.json"));
 const canonical = (value) => Array.isArray(value) ? `[${value.map(canonical).join(",")}]` : value && typeof value === "object" ? `{${Object.entries(value).sort(([a],[b]) => a.localeCompare(b)).map(([key,item]) => `${JSON.stringify(key)}:${canonical(item)}`).join(",")}}` : JSON.stringify(value);
 const hash = (value) => `0x${createHash("sha256").update(canonical(value)).digest("hex")}`;
 async function main(){
