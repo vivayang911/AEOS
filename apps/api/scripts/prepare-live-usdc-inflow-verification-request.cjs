@@ -70,8 +70,8 @@ function validateVerificationArtifact(proofArtifact, requestArtifact) {
 }
 
 function main() {
-  const inputPath = resolve(process.env.AEOS_LIVE_USDC_PROOF_OUTPUT || resolve(__dirname, "../../../reports/live-demo/real-usdc-inflow-usc-proof-v1.json"));
-  const outputPath = resolve(process.env.AEOS_LIVE_USDC_VERIFICATION_REQUEST_OUTPUT || resolve(__dirname, "../../../reports/live-demo/real-usdc-inflow-usc-verification-request-v1.json"));
+  const inputPath = resolve(process.argv[2] || process.env.AEOS_LIVE_USDC_PROOF_OUTPUT || resolve(__dirname, "../../../reports/live-demo/real-usdc-inflow-usc-proof-v1.json"));
+  const outputPath = resolve(process.argv[3] || process.env.AEOS_LIVE_USDC_VERIFICATION_REQUEST_OUTPUT || resolve(__dirname, "../../../reports/live-demo/real-usdc-inflow-usc-verification-request-v1.json"));
   const requesterWallet = process.env.AEOS_LIVE_REQUESTER_WALLET || "0x444D510728FB8072351cB5d0E88432e6a8501DFA";
   const artifact = buildVerificationArtifact(JSON.parse(readFileSync(inputPath, "utf8")), requesterWallet);
   mkdirSync(dirname(outputPath), { recursive: true });

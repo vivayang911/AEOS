@@ -48,6 +48,8 @@
     "prepare:live-usdc-inflow-verification-request": "npm run build && node scripts/prepare-live-usdc-inflow-verification-request.cjs",
     "verify:live-usdc-inflow-verification-request": "npm run build && node scripts/verify-live-usdc-inflow-verification-request.cjs",
     "test:live-usdc-inflow-verification-request": "npm run build && node --test scripts/prepare-live-usdc-inflow-verification-request.test.cjs",
+    "prepare:live-usdc-inflow-wallet-handoff": "npm run build && node scripts/prepare-live-usdc-inflow-wallet-handoff.cjs",
+    "test:live-usdc-inflow-wallet-handoff": "npm run build && node --test scripts/prepare-live-usdc-inflow-wallet-handoff.test.cjs",
     "verify:live-attestcoin-proof": "npm run build && node scripts/verify-live-attestcoin-proof.cjs",
     "prepare:live-usc-verification-request": "npm run build && node scripts/prepare-live-usc-verification-request.cjs",
     "verify:live-usc-verification-request": "npm run build && node scripts/verify-live-usc-verification-request.cjs",

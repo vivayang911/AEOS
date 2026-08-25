@@ -24,7 +24,7 @@ async function main() {
   ]);
   if (!receipt) throw new Error("SOURCE_RECEIPT_NOT_FOUND");
   const artifact = buildArtifact({ sourceChainStatus, source, proof, receipt, latestSourceBlock, monitoredAddress, expectedAmountBaseUnits, observedAt: new Date().toISOString() });
-  const outputPath = resolve(process.env.AEOS_LIVE_USDC_PROOF_OUTPUT || resolve(__dirname, "../../../reports/live-demo/real-usdc-inflow-usc-proof-v1.json"));
+  const outputPath = resolve(process.argv[2] || process.env.AEOS_LIVE_USDC_PROOF_OUTPUT || resolve(__dirname, "../../../reports/live-demo/real-usdc-inflow-usc-proof-v1.json"));
   mkdirSync(dirname(outputPath), { recursive: true });
   writeFileSync(outputPath, `${JSON.stringify(artifact, null, 2)}\n`, { encoding: "utf8", flag: "wx" });
   console.log(JSON.stringify({

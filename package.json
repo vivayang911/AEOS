@@ -44,6 +44,7 @@
     "verify:live-evidence-anchor-confirmation": "npm run verify:live-evidence-anchor-confirmation -w @aeos/api",
     "start:usc-verification-wallet-handoff": "node scripts/usc-verification-wallet-handoff-server.cjs",
     "test:usc-verification-wallet-handoff": "node --test scripts/usc-verification-wallet-handoff-server.test.cjs",
+    "prepare:live-usdc-inflow-wallet-handoff": "npm run prepare:live-usdc-inflow-wallet-handoff -w @aeos/api",
     "verify:aeos-evidence-source-deployment": "npm run verify:aeos-evidence-source-deployment -w @aeos/api",
     "prepare:evidence-anchor-wallet-handoff": "npm run prepare:evidence-anchor-wallet-handoff -w @aeos/api",
     "start:evidence-anchor-wallet-handoff": "node scripts/evidence-anchor-wallet-handoff-server.cjs",
