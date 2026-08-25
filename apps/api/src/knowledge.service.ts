@@ -14,6 +14,10 @@ const hash=(value:unknown)=>hashText(canonical(value));
 @Injectable()
 export class KnowledgeService{
   constructor(private readonly db:DatabaseService){}
+  async listSources(org:string){
+    const result=await this.db.query<any>(`SELECT s.id,s.source_key,s.partition,s.version,s.title,s.content_hash,s.original_content_hash,s.scan_result,s.created_at,(SELECT e.status FROM knowledge_source_events e WHERE e.organization_id=s.organization_id AND e.source_id=s.id ORDER BY e.ordinal DESC LIMIT 1) status,(SELECT count(*)::int FROM knowledge_chunks c WHERE c.organization_id=s.organization_id AND c.source_id=s.id) chunk_count FROM knowledge_sources s WHERE s.organization_id=$1 ORDER BY s.created_at,s.id`,[org]);
+    return {items:result.rows.map(row=>({id:row.id,sourceKey:row.source_key,partition:row.partition,version:row.version,title:row.title,status:row.status,contentHash:row.content_hash,originalContentHash:row.original_content_hash,scanResult:row.scan_result,chunkCount:Number(row.chunk_count),retrievalStatus:row.status==="APPROVED"&&Number(row.chunk_count)>0?"AVAILABLE":"UNAVAILABLE",createdAt:new Date(row.created_at).toISOString(),assetExecutionAuthorized:false})),assetExecutionAuthorized:false};
+  }
   async createSource(org:string,actorId:string,input:CreateKnowledgeSourceDto){
     const scan=scanKnowledgeContent(input.content);if(scan.codes.includes("SECRET_MATERIAL_DETECTED"))throw new BadRequestException("Knowledge content contains prohibited secret material");
     const draftPreview=previewKnowledgeDocument(input.content);
@@ -27,7 +31,7 @@ export class KnowledgeService{
       await client.query("INSERT INTO knowledge_sources(id,organization_id,source_key,partition,version,title,redacted_content,acl_roles,valid_from,valid_until,supersedes_source_id,conflict_group_id,created_by,scan_result,original_content_hash,content_hash) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16)",[sourceId,org,input.sourceKey,input.partition,versionNumber,input.title,storedContent,JSON.stringify([...new Set(input.aclRoles)].sort()),validFrom,validUntil,input.supersedesSourceId??null,input.conflictGroupId??null,actorId,scan,scan.contentHash,contentHash]);
       await this.sourceEvent(client,org,sourceId,0,status,actorId,status==="QUARANTINED"?"Content quarantined before parsing":"Awaiting human approval");
       await this.audit(client,org,status==="QUARANTINED"?"knowledge.source_quarantined":"knowledge.source_created",sourceId,{version:versionNumber,partition:input.partition,contentHash,scanCodes:scan.codes},actorId);
-      return {id:sourceId,organizationId:org,sourceKey:input.sourceKey,version:versionNumber,status,partition:input.partition,contentHash,originalContentHash:scan.contentHash,redactionApplied:redacted!==input.content,embeddingModel:MOCK_EMBEDDING_MODEL,...draftPreview,assetExecutionAuthorized:false};
+      return {id:sourceId,organizationId:org,sourceKey:input.sourceKey,version:versionNumber,status,partition:input.partition,contentHash,originalContentHash:scan.contentHash,redactionApplied:redacted!==input.content,embeddingModel:MOCK_EMBEDDING_MODEL,retrievalStatus:"UNAVAILABLE_DRAFT",...draftPreview,assetExecutionAuthorized:false};
     });
   }
   async approveSource(org:string,sourceId:string,input:ApproveKnowledgeSourceDto){
@@ -35,11 +39,11 @@ export class KnowledgeService{
       const source=await this.lockSource(client,org,sourceId);const latest=await this.latestSourceEvent(client,org,sourceId);
       if(latest.status!=="DRAFT")throw new ConflictException("Only a DRAFT knowledge source can be approved");
       const chunks=chunkKnowledgeDocument(source.redacted_content);if(!chunks.length)throw new BadRequestException("Knowledge source produced no chunks");
-      for(const chunk of chunks)await client.query("INSERT INTO knowledge_chunks(id,organization_id,source_id,source_version,chunk_index,heading,content,embedding,embedding_model,acl_roles,valid_from,valid_until,conflict_group_id,content_hash) VALUES($1,$2,$3,$4,$5,$6,$7,$8::vector,$9,$10,$11,$12,$13,$14)",[id("kchunk"),org,sourceId,source.version,chunk.index,chunk.heading,chunk.content,vector(chunk.embedding),MOCK_EMBEDDING_MODEL,source.acl_roles,source.valid_from,source.valid_until,source.conflict_group_id,chunk.contentHash]);
+      for(const chunk of chunks)await client.query("INSERT INTO knowledge_chunks(id,organization_id,source_id,source_version,chunk_index,heading,content,embedding,embedding_model,acl_roles,valid_from,valid_until,conflict_group_id,content_hash) VALUES($1,$2,$3,$4,$5,$6,$7,$8::vector,$9,$10,$11,$12,$13,$14)",[id("kchunk"),org,sourceId,source.version,chunk.index,chunk.heading,chunk.content,vector(chunk.embedding),MOCK_EMBEDDING_MODEL,JSON.stringify(source.acl_roles),source.valid_from,source.valid_until,source.conflict_group_id,chunk.contentHash]);
       await this.sourceEvent(client,org,sourceId,latest.ordinal+1,"APPROVED",input.actorId,input.rationale);
       if(source.supersedes_source_id){const priorLatest=await this.latestSourceEvent(client,org,source.supersedes_source_id);if(priorLatest.status==="APPROVED")await this.sourceEvent(client,org,source.supersedes_source_id,priorLatest.ordinal+1,"RETIRED",input.actorId,`Superseded by ${sourceId}`)}
       await this.audit(client,org,"knowledge.source_approved",sourceId,{contentHash:source.content_hash,chunkCount:chunks.length,embeddingModel:MOCK_EMBEDDING_MODEL},input.actorId);
-      return {id:sourceId,status:"APPROVED",chunkCount:chunks.length,embeddingModel:MOCK_EMBEDDING_MODEL,assetExecutionAuthorized:false};
+      return {id:sourceId,status:"APPROVED",chunkCount:chunks.length,retrievalStatus:"AVAILABLE",embeddingModel:MOCK_EMBEDDING_MODEL,assetExecutionAuthorized:false};
     });
   }
   async transitionSource(org:string,sourceId:string,input:TransitionKnowledgeSourceDto){return this.db.transaction(async client=>{await this.lockSource(client,org,sourceId);const latest=await this.latestSourceEvent(client,org,sourceId);const allowed:Record<string,string[]>={APPROVED:["RETIRED","DELETION_REQUESTED"],DRAFT:["RETIRED","DELETION_REQUESTED"],RETIRED:["DELETION_REQUESTED"],DELETION_REQUESTED:["DELETED"]};if(!allowed[latest.status]?.includes(input.status))throw new ConflictException(`Knowledge source transition ${latest.status} -> ${input.status} is invalid`);await this.sourceEvent(client,org,sourceId,latest.ordinal+1,input.status,input.actorId,input.rationale);await this.audit(client,org,`knowledge.source_${input.status.toLowerCase()}`,sourceId,{previousStatus:latest.status,indexExcluded:input.status!=="RETIRED"?true:true},input.actorId);return {id:sourceId,status:input.status,indexExcluded:true,physicalBackupDeletionPending:input.status==="DELETED",assetExecutionAuthorized:false}})}

@@ -30,10 +30,12 @@ describe("authenticated controller authority boundary", () => {
     await new ExecutionController(execution).preflight(auth, "proposal_1", { actorId: "attacker", validForSeconds: 300 });
     expect(execution.preflight).toHaveBeenCalledWith("org_session", "proposal_1", { actorId: "user_session", validForSeconds: 300 });
 
-    const knowledge={createSource:jest.fn(),search:jest.fn(),createMemory:jest.fn()} as any;const knowledgeController=new KnowledgeController(knowledge);
+    const knowledge={listSources:jest.fn(),createSource:jest.fn(),search:jest.fn(),createMemory:jest.fn()} as any;const knowledgeController=new KnowledgeController(knowledge);
+    await knowledgeController.listSources(auth);
     await knowledgeController.createSource(auth,{organizationId:"org_attacker",sourceKey:"policy",partition:"GOVERNANCE",title:"Policy",content:"Approved text",aclRoles:["ADMIN"]});
     await knowledgeController.search(auth,{organizationId:"org_attacker",query:"policy",limit:8});
     expect(knowledge.createSource).toHaveBeenCalledWith("org_session","user_session",expect.objectContaining({organizationId:"org_attacker"}));
+    expect(knowledge.listSources).toHaveBeenCalledWith("org_session");
     expect(knowledge.search).toHaveBeenCalledWith("org_session",auth.role,expect.objectContaining({query:"policy"}));
   });
 });

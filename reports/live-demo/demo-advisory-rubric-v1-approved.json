@@ -1,0 +1,196 @@
+{
+  "schemaVersion": "aeos.demo-advisory-rubric-approved.v1",
+  "rubric": "DEMO_ADVISORY_RUBRIC_V1",
+  "recordedAt": "2026-08-25T00:20:18.077Z",
+  "organizationScoped": true,
+  "organizationName": "AEOS Hackathon Demo DAO",
+  "sourceCount": 5,
+  "approvedSourceCount": 5,
+  "persistedChunkCount": 22,
+  "retrievalStatus": "AVAILABLE",
+  "appendOnlyApprovalEvents": 10,
+  "independentApprovalAudits": 5,
+  "crossTenantHidden": true,
+  "sources": [
+    {
+      "sourceId": "ksource_7adceaf0c26a44759f8aa7ba1c00e671",
+      "sourceKey": "aeos-governance-operating-policy",
+      "partition": "GOVERNANCE",
+      "version": 1,
+      "status": "APPROVED",
+      "contentHash": "0xc82da0b0754245cf24dc17574c0044eef0c56789361f262e4b361b0e153f74ba",
+      "originalContentHash": "0x1063db19647f6a30e10f906bc43c1cee79075877792d1c2f4f1ecf2476876e74",
+      "approvalActorCommitment": "0x0508518a51427a23bf002d37c0b8e5c0f5f75f236871de4b69a4e4ffaaaf9240",
+      "eventSequence": [
+        "0:DRAFT",
+        "1:APPROVED"
+      ],
+      "approvalEventId": "ksevent_c771b2cc99e44301a6d04a3a3374e196",
+      "approvalPayloadHash": "0x7b379d9243e56704d0f31a8682f166db2c8593fee0df34d2ecbe30d527305ace",
+      "approvalAuditId": "audit_b9c838a7eba54bc3a91774caa0e8adba",
+      "approvalAuditHash": "0xdf4cc881aac331e05931575cf8f6c87c6eee98670ec2547750f2cc6ae52d3304",
+      "persistedChunkCount": 4,
+      "retrievalStatus": "AVAILABLE",
+      "chunkHashes": [
+        "0x6bd07e093ef85f532fb46c8a1bb5ea331038fabf2e0e7b093e1ee28760d8e3c4",
+        "0x32de08cf46732620706ab3d1380aeefba98b871edd592c875b191437f2ce2aaa",
+        "0x2d0c12da0a5726d0ee18ec29fb43cb82f1faa61cfbd526d570171cb2004899b2",
+        "0x517808c17592fcccbe4bc7810c34c3ba7227cf906b58aacb80a6651abf8fa1b8"
+      ],
+      "checks": {
+        "approved": true,
+        "safe": true,
+        "expectedChunkCount": true,
+        "deterministicChunks": true,
+        "independentHumanApproval": true,
+        "advisoryOnly": true
+      }
+    },
+    {
+      "sourceId": "ksource_5fc1480adb8349e79770541673fab767",
+      "sourceKey": "aeos-treasury-authorization-boundary",
+      "partition": "GOVERNANCE",
+      "version": 1,
+      "status": "APPROVED",
+      "contentHash": "0x79e1ed93e551562c61b2be6fb027a23eecd3a4bce7adaa7a21cca9a0173b87a1",
+      "originalContentHash": "0x2fd396bdb3186d5c7be53c0ef6c9b860a8ea3d056eeefb927cd05966c2fe2d4e",
+      "approvalActorCommitment": "0x0508518a51427a23bf002d37c0b8e5c0f5f75f236871de4b69a4e4ffaaaf9240",
+      "eventSequence": [
+        "0:DRAFT",
+        "1:APPROVED"
+      ],
+      "approvalEventId": "ksevent_f61deecb636244fc809a56c72260d9d5",
+      "approvalPayloadHash": "0x87db444d831237db0103e02e2bbfbb6dd205f962628df96e3017049e59463369",
+      "approvalAuditId": "audit_3fe70a10eb324d61bb32705918becd3a",
+      "approvalAuditHash": "0xaf1a9c965a8ffa9cfe01d6a478f3751e14d1a4173776ae11aef04a8bd7842d36",
+      "persistedChunkCount": 4,
+      "retrievalStatus": "AVAILABLE",
+      "chunkHashes": [
+        "0x0d96802ab4a16c12c6fd81cafc2fbf2e8e02beaa904b4b53251c9be4c0b98f57",
+        "0x79bcb0814106f512e9ed8d7ce5e5e67db95de7f62c3e442c9616e70ec0108d5a",
+        "0x073efc3339e6d414200b9df5f7272faa1360b47e846fa527fe5aba5d0f46e55a",
+        "0x8984daa95f23d15618a0ee1e253c7d23535fc507920e7f25837f0b6bd98fde6e"
+      ],
+      "checks": {
+        "approved": true,
+        "safe": true,
+        "expectedChunkCount": true,
+        "deterministicChunks": true,
+        "independentHumanApproval": true,
+        "advisoryOnly": true
+      }
+    },
+    {
+      "sourceId": "ksource_bfae21ce0b704ee5bf8cdac210368ac5",
+      "sourceKey": "aeos-risk-review-rubric",
+      "partition": "PROTOCOL",
+      "version": 1,
+      "status": "APPROVED",
+      "contentHash": "0x46b6becc7ec25c5576b5328477ad39cde032f82ecbb44818dcc6ab4cfb779d1f",
+      "originalContentHash": "0xf7f4cbe7550e7033dba9d909cb52c1837432811fe3332fa1b629bd8d422aaaf2",
+      "approvalActorCommitment": "0x0508518a51427a23bf002d37c0b8e5c0f5f75f236871de4b69a4e4ffaaaf9240",
+      "eventSequence": [
+        "0:DRAFT",
+        "1:APPROVED"
+      ],
+      "approvalEventId": "ksevent_466263fa933f444f9efccda45e8f1319",
+      "approvalPayloadHash": "0xb6dcf53b4aa94265dc8d7093865df79d3b533368a20766a8f6561ecd16e70392",
+      "approvalAuditId": "audit_f8b9a0bc6b5d473089274ce6f719047c",
+      "approvalAuditHash": "0x0f04d7c5581a86a7616f81a2effdf0658f0d5e283ed63effe263b7a1885f6a10",
+      "persistedChunkCount": 5,
+      "retrievalStatus": "AVAILABLE",
+      "chunkHashes": [
+        "0x4ae731e1f535abefa61a00c18624d0f4b43024cc04c0779284a75eb73453e920",
+        "0x92cad33fa2ce1d24f5e8163f3cc9e0913eac5d085538c678c3cb6941c7a2f7bc",
+        "0x328d6cd22a4d6cc9a02a40e506104ad37f41893798c5ecd7c5cea7663477af02",
+        "0xe27405d7bdfe3c2ec8efbc14645afdca6d981aaa388f615ef29a5209658875a4",
+        "0xbe65098c20e049e05f5bee4d99d0087fb58885b28fd851a0d305486aa7d9a8b6"
+      ],
+      "checks": {
+        "approved": true,
+        "safe": true,
+        "expectedChunkCount": true,
+        "deterministicChunks": true,
+        "independentHumanApproval": true,
+        "advisoryOnly": true
+      }
+    },
+    {
+      "sourceId": "ksource_a8f01de46d6e4c6fbe68024a2a1a914c",
+      "sourceKey": "aeos-contract-control-surface",
+      "partition": "PROTOCOL",
+      "version": 1,
+      "status": "APPROVED",
+      "contentHash": "0xd0db8fb9d02109422d5c7763da9ff90cac62eeba4bb2095da8e312c738cfa731",
+      "originalContentHash": "0xea09030e8670d28d727e9c028913a8e67766e1e304637f2fb2abfa52f78d67ba",
+      "approvalActorCommitment": "0x0508518a51427a23bf002d37c0b8e5c0f5f75f236871de4b69a4e4ffaaaf9240",
+      "eventSequence": [
+        "0:DRAFT",
+        "1:APPROVED"
+      ],
+      "approvalEventId": "ksevent_e1d20a0b51d347c9a77be65a90d0e5f2",
+      "approvalPayloadHash": "0x96daf958a098a3ea560f7c8ed553f815bb01b5206169d79e6fccf7ae50381c45",
+      "approvalAuditId": "audit_497e982900504a0b84465a90363f94fd",
+      "approvalAuditHash": "0x063396827aad77ae478813172195534753ece344ffe1ae5ce8dba3e5787a9074",
+      "persistedChunkCount": 5,
+      "retrievalStatus": "AVAILABLE",
+      "chunkHashes": [
+        "0x36c3620b6e12bbe8c9733e6c2d3060565ff7164a82f1408eef6bdf3d3d16138e",
+        "0x23283e0608ebffb167c0180f087ed9274dc12250ddcfd7bb24fcaf12bffa406d",
+        "0x3e7f518c083c4a9620882de1120a42d1174a38be3cb3fd07fa70cf8591ca3d3a",
+        "0xc0b793fd5e0eb16d98cba98feb8c18d3cb4c47abaefc15907079ec4ffe2fd47c",
+        "0x5a3e691371556bfe27de705a3853065ac4a61bdd8b7d410486d9669dcb0d6ef5"
+      ],
+      "checks": {
+        "approved": true,
+        "safe": true,
+        "expectedChunkCount": true,
+        "deterministicChunks": true,
+        "independentHumanApproval": true,
+        "advisoryOnly": true
+      }
+    },
+    {
+      "sourceId": "ksource_da5ee7e9641d4b149acac3b5dc505dca",
+      "sourceKey": "aeos-hold-outcome-memory",
+      "partition": "DECISION_MEMORY",
+      "version": 1,
+      "status": "APPROVED",
+      "contentHash": "0x524fc45607808bd7a38d2e638bad762ae995c68a99240150ba6127b8c12420c0",
+      "originalContentHash": "0xcc394ac19e07e51c911f3af2067db7d499264c3795ce8eb11cddc9c0926ce22a",
+      "approvalActorCommitment": "0x0508518a51427a23bf002d37c0b8e5c0f5f75f236871de4b69a4e4ffaaaf9240",
+      "eventSequence": [
+        "0:DRAFT",
+        "1:APPROVED"
+      ],
+      "approvalEventId": "ksevent_29c333e32df94de89d5b2e2f37bc1198",
+      "approvalPayloadHash": "0x41914a43264e5858843bee391567442faf3df2b4cfb0d72cce16c02fba9961e3",
+      "approvalAuditId": "audit_8b73e1db070045b590d5ce7272ece282",
+      "approvalAuditHash": "0x414bdd6175c8bf32786dbd3424d5b1e92d40bc40d3f62325921606e5ab36bace",
+      "persistedChunkCount": 4,
+      "retrievalStatus": "AVAILABLE",
+      "chunkHashes": [
+        "0x9763217f79542de0e53ab7a7abc1ec21edb7759791affbcd341fa5f04def5dd5",
+        "0x8436ac3b676cda8f9a7e68abd9cd18a2cacf10c74fa81cdf42d4374d15d327f1",
+        "0x1af1b41cf64a50e1b33a6b6e65fa96fbab65971b1204a06af2116017aced9dc3",
+        "0x4dee7b263d5db0291a2b4d429a447a0ab7b6b4dc853f992b4232d00d670286e0"
+      ],
+      "checks": {
+        "approved": true,
+        "safe": true,
+        "expectedChunkCount": true,
+        "deterministicChunks": true,
+        "independentHumanApproval": true,
+        "advisoryOnly": true
+      }
+    }
+  ],
+  "controls": {
+    "manifestFrozen": false,
+    "agentRun": false,
+    "signature": false,
+    "broadcast": false,
+    "assetExecutionAuthorized": false
+  },
+  "reportHash": "0x2b2a25c627a58173c3c0142fc4724855513cdc087974c9712c3c0db919dfc00b"
+}

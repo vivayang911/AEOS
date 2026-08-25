@@ -17,6 +17,7 @@
     "verify:eight-agent-db": "npm run build && node scripts/verify-eight-agent-db.cjs",
     "verify:rag-memory-db": "npm run build && node scripts/verify-rag-memory-db.cjs",
     "verify:demo-advisory-rubric-drafts": "npm run build && node scripts/verify-demo-advisory-rubric-drafts.cjs",
+    "verify:demo-advisory-rubric-approved": "npm run build && node scripts/verify-demo-advisory-rubric-approved.cjs",
     "verify:decision-retrieval-db": "npm run build && node scripts/verify-decision-retrieval-db.cjs",
     "verify:evidence-classification-db": "npm run build && node scripts/verify-evidence-classification-db.cjs",
     "verify:evidence-request-db": "npm run build && node scripts/verify-evidence-request-db.cjs",
