@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./styles.css";
 import "./chromatic.css";
+import "./p0-e2e.css";
 import { AppShell } from "./ui/app-shell";
 import { SessionProvider } from "./ui/session-context";
 import { LanguageProvider } from "./ui/language-context";

@@ -1,0 +1,42 @@
+# P0-3 Continuous Browser E2E
+
+Status: `IMPLEMENTED / REAL-BROWSER ACCEPTANCE PENDING`
+
+This runbook covers the normal AEOS application only. It does not use a temporary wallet page, does not expose a signing or broadcast API, and does not grant asset authority.
+
+## Required route
+
+1. Open `http://localhost:3000/?tour=p0e2e`.
+2. On Landing, complete `SIWE SIGN IN` in the governance wallet.
+3. Select the intended DAO organization. The server session, not the route, supplies `organization_id`.
+4. Continue through `Attestcoin`.
+5. Continue through `Evidence Explorer` and inspect an immutable Evidence record.
+6. Continue through `Decision Room` and inspect the frozen eight-role output and citations.
+7. Continue through `Governance`.
+8. Finish at `#verified-outcome`, where the accepted deterministic-withholding Outcome and its limits are visible.
+
+The persistent P0-3 guide keeps these checkpoints visible. It does not persist credentials or tenant identity in browser storage.
+
+## Acceptance matrix
+
+| Check | Current result | Evidence / limitation |
+|---|---|---|
+| Production build | PASS | 13 routes generated, including `/` Landing and `/governance` |
+| Route availability, 3 runs | PASS / HTTP SMOKE ONLY | Five route documents returned `200` in 319 ms, 31 ms and 25 ms |
+| Stylesheet delivery | PASS | production CSS returned `200`, 60,121 bytes |
+| API disconnect and restart | PASS / service boundary | only API PID 23068 was stopped; disconnect was observed; replacement API became live/ready with database ready |
+| Automatic client recovery implementation | PASS / code and contract tests | session poll retries every 2.5 seconds, restores server session and organization list, and never requests a wallet signature |
+| Browser refresh recovery implementation | PASS / code boundary | HttpOnly session is reread; CSRF remains intentionally absent until explicit SIWE reauthentication |
+| Three complete real-browser runs under 3 minutes | PENDING | the connected browser-control security policy denied localhost access, so HTTP smoke runs are not relabeled as browser E2E |
+| One visible API-disconnect browser recovery | PENDING | requires the real-browser run above |
+| One visible refresh recovery | PENDING | requires the real-browser run above |
+
+## Timing record requirements
+
+For each real-browser run record start/end time, duration, wallet/session state, selected organization, visited Evidence ID, visited Decision ID, visible governance state, visible Outcome ID, console errors and final authority banner. Every run must be below 180 seconds.
+
+The API-disconnect run must stop only the resolved API listener, preserve PostgreSQL and the frontend, observe `API CONNECTION INTERRUPTED`, restart the API hidden, and observe automatic recovery without a second wallet prompt. The refresh run must reload a read-only page and recover the same server-selected organization; writes must remain unavailable until SIWE restores the in-memory CSRF token.
+
+## Truth boundary
+
+Passing this E2E proves route continuity, tenant-session recovery and visibility of frozen records. It does not prove production availability, economic benefit, autonomous asset execution or causal AI/PID performance. `assetExecutionAuthorized=false` remains invariant.

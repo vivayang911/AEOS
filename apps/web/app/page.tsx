@@ -1,3 +1,11 @@
-import { redirect } from "next/navigation";
-
-export default function Home(){redirect("/dashboard")}
+"use client";
+import Link from "next/link";
+import {useSession} from "./ui/session-context";
+export default function Home(){
+ const auth=useSession(),active=auth.organizations.find(item=>item.id===auth.session?.activeOrganizationId);
+ return <section className="e2e-landing"><span className="section-kicker">AEOS / EVIDENCE FIRST / JUDGE ENTRY</span><h1>Verified evidence. Cited AI advice. DAO-controlled outcomes.</h1><p>Follow one accepted testnet lineage through the normal AEOS application. This route reads immutable organization-scoped records and never signs, broadcasts or authorizes an asset action.</p><div className="e2e-landing-grid">
+  <article id="identity"><small>01 / ENTERPRISE IDENTITY</small><h2>{auth.session?"SIWE session verified":"Verify governance signer"}</h2><p>SIWE establishes identity only. It does not grant a governance vote, transaction signature or treasury authority.</p>{!auth.session?<button className="primary-action" type="button" onClick={()=>void auth.connectWallet()} disabled={auth.phase==="signing"}>{auth.phase==="signing"?"CONFIRM IN WALLET":"SIWE SIGN IN"}</button>:<strong className="e2e-pass">PASS · {auth.session.walletAddress.slice(0,8)}…{auth.session.walletAddress.slice(-4)}</strong>}</article>
+  <article id="organization"><small>02 / TENANT BOUNDARY</small><h2>{active?.name??"Select organization"}</h2><p>The server session selects organization_id. Route parameters and object IDs never establish tenant authority.</p>{auth.session&&!active?<select aria-label="Select organization for E2E" value="" disabled={!auth.canMutate} onChange={event=>event.target.value&&void auth.selectOrganization(event.target.value)}><option value="">Select organization</option>{auth.organizations.map(org=><option key={org.id} value={org.id}>{org.name}</option>)}</select>:active?<strong className="e2e-pass">PASS · {active.membership.role} / RLS</strong>:<span className="e2e-wait">WAITING FOR SIWE</span>}</article>
+  <article><small>03 / ACCEPTANCE ROUTE</small><h2>Eight visible checkpoints</h2><p>Landing → SIWE → Organization → Attestcoin → Evidence → Decision → Governance → Outcome.</p><Link className={active?"primary-action":"disabled-action"} aria-disabled={!active} href={active?"/attestcoin?tour=p0e2e":"/?tour=p0e2e#identity"}>{active?"START CONTINUOUS E2E":"COMPLETE IDENTITY FIRST"}</Link></article>
+ </div>{auth.error&&<p className="inline-error" role="alert">{auth.error}</p>}<footer>HUMAN APPROVAL REQUIRED / true · ASSET EXECUTION AUTHORIZED / false · no temporary wallet page</footer></section>
+}
