@@ -22,9 +22,9 @@ P0-1 accepted checkpoint: earlier deadline failures remain preserved and are not
 
 ## P1 — award evidence
 
-- Deck: problem, verified-data architecture, live transaction trace, eight-Agent interaction, deterministic guardrails, DAO authority boundary, measured demo and roadmap.
-- Video: show Explorer first; then trace source transaction → Attestcoin/USC → Evidence → RAG/Agents → Decision → wallet-confirmed anchor. Never show fixture data as live.
-- ASC integration summary: use `docs/submission/asc-integration-summary.md`; replace every pending marker only with verified transaction evidence.
+- **Deck prepared locally:** `docs/submission/aeos-buidl-ctc-2026-fall.pptx` and `.pdf` contain 10 English slides covering the problem, verified-data architecture, live transaction trace, eight-Agent interaction, deterministic governance and safety boundary. PPTX visual/overflow QA passed; PDF contains 10 fixed 16:9 pages.
+- **Video recording pending:** `docs/submission/demo-video-script.md` and `aeos-demo-en.srt` define a 170-second three-act route. Record the Explorer → Evidence → Decision → Governance → Outcome lineage and never show fixture data as live.
+- **ASC integration summary updated:** `docs/submission/asc-integration-summary.md` now distinguishes completed live samples from remaining second-chain/market-state/production work.
 
 ## P2 — submission completeness
 

@@ -1,0 +1,39 @@
+1
+00:00:00,000 --> 00:00:15,000
+Treasury AI has a trust problem. Unverified data can create hallucinated advice, while wallet control creates unsafe authority. AEOS separates evidence, advice and execution.
+
+2
+00:00:15,000 --> 00:00:32,000
+AEOS uses Attestcoin as the verification boundary. A project-owned Sepolia observation is covered by the attestation network and verified by Creditcoin's native BlockProver.
+
+3
+00:00:32,000 --> 00:00:50,000
+This is not a mocked API response. AEOS checks the exact sender, target, calldata, zero value, canonical receipt and TransactionVerified event before accepting it.
+
+4
+00:00:50,000 --> 00:01:08,000
+The result becomes organization-scoped immutable Evidence. Hashes, freshness, quality, source lineage and duplicate attempts remain visible. A duplicate is never counted as a second economic fact.
+
+5
+00:01:08,000 --> 00:01:32,000
+Eight institutional roles analyze one frozen snapshot through different approved RAG partitions. Risk and Compliance challenge independently, and every output cites Evidence and its Retrieval Manifest.
+
+6
+00:01:32,000 --> 00:01:50,000
+A later Balance Observer proves twenty test USDC at one Sepolia block, but its freshness window has expired. All eight agents cite it and correctly keep HOLD instead of inventing a trade.
+
+7
+00:01:50,000 --> 00:02:14,000
+Advice cannot bypass governance. The Decision produced a proposal, one million votes for, a forty-thousand quorum, a sixty-second Timelock and a Guard outcome. Every transaction was confirmed by the human wallet.
+
+8
+00:02:14,000 --> 00:02:31,000
+Execution maintained the Treasury Guard pause, moved zero native value and created immutable Outcome Evidence. This proves deterministic withholding, not autonomous asset execution or investment performance.
+
+9
+00:02:31,000 --> 00:02:42,000
+Outcome feedback can inform PID, RAG and Skill candidates, but promotion remains governed and advisory. Historical Decisions are never rewritten.
+
+10
+00:02:42,000 --> 00:02:50,000
+Attestcoin establishes what happened. AI explains what should happen. The DAO decides what may happen. AEOS is evidence first, with the DAO in control.
