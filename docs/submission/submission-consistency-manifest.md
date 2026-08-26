@@ -1,6 +1,6 @@
 # AEOS submission consistency manifest
 
-Status: `MATERIALS PREPARED LOCALLY / PUBLIC PUSH AND VIDEO RECORDING PENDING`.
+Status: `PUBLIC REPOSITORY VERIFIED / VIDEO RECORDING AND HOSTED URLS PENDING`.
 
 ## Canonical positioning
 
@@ -20,14 +20,14 @@ Development disclosure: AEOS is AI-assisted. The human owner controls product an
 
 | Material | Canonical local path | Current status |
 | --- | --- | --- |
-| README | `README.md` | Updated; public push pending |
+| README | `README.md` | Public at commit `58948cf...d52f`; clean-clone PRD verification passed |
 | ASC integration summary | `docs/submission/asc-integration-summary.md` | Updated |
 | Deck source | `docs/submission/aeos-buidl-ctc-2026-fall.pptx` | 10 pages; visual QA passed |
 | Deck PDF | `docs/submission/aeos-buidl-ctc-2026-fall.pdf` | 10 pages; structure verified |
 | Video script | `docs/submission/demo-video-script.md` | 170-second script ready |
 | English subtitles | `docs/submission/aeos-demo-en.srt` | Ready |
 | Final video URL | — | Pending recording/upload |
-| Public repository | `https://github.com/vivayang911/AEOS` | Local commit ready; explicit public push confirmation pending |
+| Public repository | `https://github.com/vivayang911/AEOS` | Public `main` matched local `58948cf...d52f`; clean clone verified; `LOCAL-MANUALS/` excluded |
 | Demo URL | — | Pending hosting decision or documented local-demo route |
 
 ## Canonical public on-chain references
@@ -41,7 +41,8 @@ Development disclosure: AEOS is AI-assisted. The human owner controls product an
 
 ## Final release blockers
 
-1. Explicitly authorize public push of the complete current repository to `github.com/vivayang911/AEOS`, then verify the public tree and clean-clone setup.
-2. Record and upload the final 2:40–3:00 video; add its URL here and on DoraHacks.
+1. Record and upload the final 2:40–3:00 video; add its URL here and on DoraHacks.
+2. Publish the reviewed Deck PDF at a stable URL and record that URL here.
 3. Choose a public Demo URL or state the exact judge-local run path.
-4. Perform one final current official-rule check immediately before submission.
+4. After the final content freeze, rerun the Secret Scan, push, remote-commit comparison and clean-clone verification.
+5. Perform one final current official-rule check immediately before submission.

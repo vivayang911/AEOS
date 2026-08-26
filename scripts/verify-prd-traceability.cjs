@@ -72,9 +72,16 @@ for (const role of ['Governor', 'Research', 'Quant', 'Risk', 'Portfolio', 'Strat
 for (const marker of ['Opportunity Discovery', 'Monitoring Agent', 'A2A', 'institutional memory', 'Evidence Anchor ASC']) {
   if (!conceptReconciliation.includes(marker)) failures.push(`Concept reconciliation missing: ${marker}`);
 }
-for (const marker of ['ASC', 'testnet', 'public GitHub README', 'deck/whitepaper', 'demo video']) {
-  if (!competition.toLowerCase().includes(marker.toLowerCase()) && !matrix.toLowerCase().includes(marker.toLowerCase())) {
-    failures.push(`Competition gate not tracked: ${marker}`);
+const competitionGates = [
+  ['ASC', /\bASC\b/i],
+  ['testnet', /\btestnet\b/i],
+  ['public GitHub README', /public GitHub (?:with )?README/i],
+  ['deck/whitepaper', /deck(?:\/| or )whitepaper/i],
+  ['demo video', /demo video/i],
+];
+for (const [label, pattern] of competitionGates) {
+  if (!pattern.test(competition) && !pattern.test(matrix)) {
+    failures.push(`Competition gate not tracked: ${label}`);
   }
 }
 
