@@ -9,6 +9,14 @@ const competitionPath = path.join(root, 'docs', 'hackathon-competition-audit.md'
 const conceptReconciliationPath = path.join(root, 'docs', 'concept-competition-reconciliation.md');
 const failures = [];
 
+function baselineDigest(target) {
+  // Git may materialize the same tracked Markdown blob as LF or CRLF depending
+  // on checkout settings. The PRD baseline protects semantic text, so hash one
+  // canonical LF representation instead of treating line endings as changes.
+  const canonicalText = fs.readFileSync(target, 'utf8').replace(/\r\n?/g, '\n');
+  return crypto.createHash('sha256').update(canonicalText, 'utf8').digest('hex').toUpperCase();
+}
+
 const baseline = JSON.parse(fs.readFileSync(baselinePath, 'utf8'));
 const matrix = fs.readFileSync(matrixPath, 'utf8');
 const competition = fs.readFileSync(competitionPath, 'utf8');
@@ -29,7 +37,7 @@ for (const [relative, descriptor] of Object.entries(baseline.documents)) {
     failures.push(`Missing ${relative}`);
     continue;
   }
-  const digest = crypto.createHash('sha256').update(fs.readFileSync(target)).digest('hex').toUpperCase();
+  const digest = baselineDigest(target);
   if (digest !== descriptor.sha256) failures.push(`${relative} hash changed: ${digest}`);
 }
 
@@ -39,7 +47,7 @@ for (const [relative, descriptor] of Object.entries(baseline.conceptDocuments ??
     failures.push(`Missing concept input ${relative}`);
     continue;
   }
-  const digest = crypto.createHash('sha256').update(fs.readFileSync(target)).digest('hex').toUpperCase();
+  const digest = baselineDigest(target);
   if (digest !== descriptor.sha256) failures.push(`${relative} hash changed: ${digest}`);
 }
 
