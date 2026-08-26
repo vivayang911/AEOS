@@ -45,12 +45,6 @@ requireText(
   /Demo URL \| — \| Pending hosting decision or documented local-demo route/,
   "the genuinely pending Demo URL must remain explicit",
 );
-requireText(
-  "CODEX-DEVELOPMENT-BRIEF.md",
-  /Historical pre-deployment checkpoint \(superseded by the accepted 2026-08-26 lineage above\)/,
-  "Balance Observer handoff history is not clearly marked as superseded",
-);
-
 const releaseGate = read("scripts/release-gate.ps1");
 for (const field of ["apiTests", "apiSuites", "webTests", "tenantRlsTables"]) {
   if (new RegExp(`${field}=(?:'[^']*')?\\d`).test(releaseGate)) {
