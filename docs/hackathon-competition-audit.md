@@ -1,6 +1,6 @@
 # BUIDL CTC 2026 Fall competition audit
 
-Last reconciled: 2026-08-11
+Last reconciled: 2026-08-26
 
 ## Verified event baseline
 
@@ -42,18 +42,18 @@ This makes Attestcoin a core security dependency rather than an ornamental API c
 | Requirement or judging signal | Current evidence | Status | Required acceptance evidence |
 | --- | --- | --- | --- |
 | Clear track and real-world problem | AI-native DAO treasury governance; DeFi secondary framing | Strong | Use one consistent entry sentence and user story in README, deck and video |
-| Meaningful functional ASC integration | EvidenceAnchorASC, proof-job boundary, deterministic handoff and confirmation path exist; real proof-backed anchor sample remains absent | Partial/strong | Complete one real Sepolia → USC proof → `verifyAndAnchor` → Evidence/Decision trace |
+| Meaningful functional ASC integration | One real Sepolia → USC proof → immutable Evidence/Decision → user-confirmed `verifyAndAnchor` sample is canonically verified | **Pass / strong** | Keep exact transaction, event and truth-boundary evidence visible in the final demo |
 | Working ASC code inside project | EvidenceAnchorASC source, interface pinning, unit/fuzz/invariant/surface tests and deployment/readback tooling exist | **Pass** | Preserve reproducible test and setup documentation |
 | Testnet deployment | Verified Creditcoin Testnet contract `0x5DE8...62C2`, transaction `0xf8ef...4dd2`, exact init-code/getter/receipt/finality readback | **Pass** | Keep Blockscout links and immutable verification artifact in submission materials |
-| End-to-end cross-chain demo | Real backend flow stops before user-submitted CC3 confirmation | Partial | Record Sepolia source tx, proof/query identifiers, CC3 verification tx and resulting immutable Evidence ID |
-| AI differentiation | All eight PRD roles run with distinct least-privilege tools, immutable A2A messages, Risk/Compliance challenges, fixed schema, citation coverage, refusal and 21/21 evals | Strong local slice / overall partial | Integrate PRD/09 RAG/memory, then demonstrate a good Evidence case and a tampered/stale refusal using live ASC-backed Evidence |
+| End-to-end cross-chain demo | Source transaction, Proof Builder, Creditcoin verification, immutable Evidence, eight-Agent Decision and ASC anchor are recorded; inflow and balance child revisions are also verified | **Pass / strong technical slice** | Present the chain as one continuous judge-visible browser/video narrative |
+| AI differentiation | Eight roles have distinct least-privilege tools, approved role-partitioned RAG, immutable A2A, independent Risk/Compliance challenges, citations, refusal, child revisions and 21/21 evals | Strong / overall partial | Show the evidence ladder and explain why stale balance correctly preserves HOLD; add a fresh market-state contrast only if time permits |
 | Safety and governance | RLS, immutable snapshots, append-only audit, no signer/broadcast authority, TreasuryGuard tests | Strong | Explain the authority boundary in the first minute of the demo; do not over-focus on infrastructure |
 | Product/demo UX | Cockpit, Evidence Explorer and Decision Room are runnable | Partial/strong | Add a guided one-click demo narrative and surface live testnet provenance prominently |
-| Public GitHub with README | Local directory is not a Git repository | **Fail** | Confirm eligibility, initialize the authorized repository, preserve provenance, push public code and verify clean-clone setup |
-| Technical ASC documentation | Backend/runbooks exist but no contest-focused ASC setup guide | **Fail** | Add architecture diagram, exact contract flow, network config, deployment address and reproduction steps |
+| Public GitHub with README | Git repository and AI-assisted development disclosure exist locally; final current-state push/clean-clone verification remains | **Pending final push** | Secret-scan, commit, push `main`, then verify the public tree and setup from a clean clone |
+| Technical ASC documentation | Contest-focused ASC summary, deployment/runbooks, addresses, transaction links and reproduction commands exist | **Pass / final consistency review pending** | Keep the final Deck/video/README terminology identical |
 | Deck or whitepaper PDF | None found | **Fail** | Produce a concise 8–10 slide English deck or short whitepaper PDF |
 | Prototype demo video | None found | **Fail** | Record a 2–3 minute English-subtitled demo with visible source and destination Explorer evidence |
-| Originality during event window | Repository work predates the 2026-08-13 start date | **Eligibility risk** | Ask organizer whether pre-event foundation is allowed and what portion must be built during the event; retain truthful dated provenance |
+| Originality during event window | No organizer adjudication is recorded in the repository; AI-assisted development and human responsibility are disclosed without inventing a start date | **Open evidence item** | Preserve truthful Git/on-chain provenance and answer organizer questions factually if asked |
 | Team/submission metadata | Not stored in project | Open | Prepare member name, email, bio, role, residence/citizenship and optional social/resume URLs |
 
 ## Competitive advantages to preserve

@@ -1,0 +1,433 @@
+{
+  "schemaVersion": "aeos.live-economic-evidence.balance-observer-child-decision.v1",
+  "status": "CHILD_DECISION_FROZEN_AND_COMPARED",
+  "recordedAt": "2026-08-26T01:19:42.836Z",
+  "evidence": {
+    "id": "ev_8e74e45559234d308f7b684675790095",
+    "contentHash": "0x220bbf278dccfee5c383dbe78a710f43b1f3621279adbe55373e65138f2cbc4f",
+    "predicate": "asset.balance",
+    "freshnessStatus": "STALE",
+    "verificationStatus": "VERIFIED"
+  },
+  "lineage": {
+    "parentDecisionId": "decision_15bd74d60e344ba79c318153d827f759",
+    "childDecisionId": "decision_8047c40b442940c8a1b2ea268681b990",
+    "parentSnapshot": {
+      "id": "snap_dffcb30dff574692af71753deed7051f",
+      "manifestHash": "0x92af54d974956481203a8385b714c2d88a3e495833b62c4d9e7ed06d44540fa5",
+      "evidenceIds": [
+        "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+        "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+      ]
+    },
+    "parentSnapshotImmutable": true,
+    "childSnapshot": {
+      "id": "snap_a2ff8a79ae6b420a8e4f6569de9c8a99",
+      "manifestHash": "0x12a9184e11109b7590fb476354ff829b424c67e61d50b9bdc8aaa53ab89914e9",
+      "evidenceIds": [
+        "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+        "ev_8e74e45559234d308f7b684675790095",
+        "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+      ]
+    },
+    "parentEvidenceInherited": true,
+    "newEvidenceAdded": true
+  },
+  "retrieval": {
+    "bundleHash": "0xcfd83bae37d7e52f59ddc472219417e7a9c0172652558474cd903128a6d02a64",
+    "inheritedExactly": true,
+    "roleComparisons": [
+      {
+        "role": "Governor",
+        "retrievalManifestHash": "0x432a82d7f25572dbe2cf3d7e7e17c6b1f2e880e227f3fa259c4ac56ca5e73bf9",
+        "ragCitationCount": 8,
+        "ragCitationsChanged": false,
+        "evidenceCitations": {
+          "before": [
+            "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+            "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+          ],
+          "after": [
+            "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+            "ev_8e74e45559234d308f7b684675790095",
+            "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+          ],
+          "added": [
+            "ev_8e74e45559234d308f7b684675790095"
+          ]
+        },
+        "position": {
+          "before": "Approved governance, protocol, and Decision Memory context supports coordination of a HOLD while unresolved economic Evidence gaps remain under human review.",
+          "after": "Approved governance, protocol, and Decision Memory context supports coordination of a HOLD while unresolved economic Evidence gaps remain under human review.",
+          "changed": false
+        }
+      },
+      {
+        "role": "Research",
+        "retrievalManifestHash": "0x0fc51f829716e1f17343c168c7e0d643bf7a90f0038ab722865e9d534cb6878c",
+        "ragCitationCount": 7,
+        "ragCitationsChanged": false,
+        "evidenceCitations": {
+          "before": [
+            "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+            "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+          ],
+          "after": [
+            "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+            "ev_8e74e45559234d308f7b684675790095",
+            "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+          ],
+          "added": [
+            "ev_8e74e45559234d308f7b684675790095"
+          ]
+        },
+        "position": {
+          "before": "Approved governance and protocol context explains the verified control state but does not establish current price, liquidity, volatility, or economic value.",
+          "after": "Approved governance and protocol context explains the verified control state but does not establish current price, liquidity, volatility, or economic value.",
+          "changed": false
+        }
+      },
+      {
+        "role": "Strategy",
+        "retrievalManifestHash": "0x6e8ea2708b1b9c48441e90ad2e504483007b0a62a9d0aa736f5e2a97687c7e47",
+        "ragCitationCount": 8,
+        "ragCitationsChanged": false,
+        "evidenceCitations": {
+          "before": [
+            "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+            "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+          ],
+          "after": [
+            "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+            "ev_8e74e45559234d308f7b684675790095",
+            "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+          ],
+          "added": [
+            "ev_8e74e45559234d308f7b684675790095"
+          ]
+        },
+        "position": {
+          "before": "Approved authorization, risk, and prior HOLD context supports retaining HOLD until the required market Evidence is verified and frozen.",
+          "after": "Approved authorization, risk, and prior HOLD context supports retaining HOLD until the required market Evidence is verified and frozen.",
+          "changed": false
+        }
+      },
+      {
+        "role": "Quant",
+        "retrievalManifestHash": "0xfced90b6056413f02348299fca7f0da3f7e41c3452bc9bb19b82694017ca8909",
+        "ragCitationCount": 4,
+        "ragCitationsChanged": false,
+        "evidenceCitations": {
+          "before": [
+            "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+            "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+          ],
+          "after": [
+            "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+            "ev_8e74e45559234d308f7b684675790095",
+            "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+          ],
+          "added": [
+            "ev_8e74e45559234d308f7b684675790095"
+          ]
+        },
+        "position": {
+          "before": "Approved protocol context defines required liquidity, slippage, peg, volatility, and drawdown inputs; unsupported numerical calculation is refused.",
+          "after": "Approved protocol context defines required liquidity, slippage, peg, volatility, and drawdown inputs; unsupported numerical calculation is refused.",
+          "changed": false
+        }
+      },
+      {
+        "role": "Risk",
+        "retrievalManifestHash": "0x494630dea044d29f5ffc07ed8f69dc47235910f14c11266a0ffb78635a9b711d",
+        "ragCitationCount": 3,
+        "ragCitationsChanged": false,
+        "evidenceCitations": {
+          "before": [
+            "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+            "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+          ],
+          "after": [
+            "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+            "ev_8e74e45559234d308f7b684675790095",
+            "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+          ],
+          "added": [
+            "ev_8e74e45559234d308f7b684675790095"
+          ]
+        },
+        "position": {
+          "before": "Approved risk and Decision Memory context independently challenges liquidity, volatility, peg stability, drawdown, and black-swan assumptions.",
+          "after": "Approved risk and Decision Memory context independently challenges liquidity, volatility, peg stability, drawdown, and black-swan assumptions.",
+          "changed": false
+        }
+      },
+      {
+        "role": "Compliance",
+        "retrievalManifestHash": "0x077053acca2bf12435844d30681f4e3d5d24fe23a9dac1cfa661814602dcadad",
+        "ragCitationCount": 7,
+        "ragCitationsChanged": false,
+        "evidenceCitations": {
+          "before": [
+            "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+            "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+          ],
+          "after": [
+            "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+            "ev_8e74e45559234d308f7b684675790095",
+            "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+          ],
+          "added": [
+            "ev_8e74e45559234d308f7b684675790095"
+          ]
+        },
+        "position": {
+          "before": "Approved governance and protocol context independently challenges active policy, allowlists, contract identity, and final authorization authority.",
+          "after": "Approved governance and protocol context independently challenges active policy, allowlists, contract identity, and final authorization authority.",
+          "changed": false
+        }
+      },
+      {
+        "role": "Portfolio",
+        "retrievalManifestHash": "0xb2b49477ddd9246b9ad8e83cd6ed4a01ab6dcf98360fae41196cf2652dfdbf48",
+        "ragCitationCount": 2,
+        "ragCitationsChanged": false,
+        "evidenceCitations": {
+          "before": [
+            "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+            "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+          ],
+          "after": [
+            "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+            "ev_8e74e45559234d308f7b684675790095",
+            "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+          ],
+          "added": [
+            "ev_8e74e45559234d308f7b684675790095"
+          ]
+        },
+        "position": {
+          "before": "Approved Decision Memory supports retaining the current configuration because no Evidence-supported alternative candidate exists.",
+          "after": "Approved Decision Memory supports retaining the current configuration because no Evidence-supported alternative candidate exists.",
+          "changed": false
+        }
+      },
+      {
+        "role": "Treasury",
+        "retrievalManifestHash": "0x9707b095152786cb4e0ff30b47d27fe9c460d782e722514375d874801a6064d6",
+        "ragCitationCount": 5,
+        "ragCitationsChanged": false,
+        "evidenceCitations": {
+          "before": [
+            "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+            "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+          ],
+          "after": [
+            "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+            "ev_8e74e45559234d308f7b684675790095",
+            "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+          ],
+          "added": [
+            "ev_8e74e45559234d308f7b684675790095"
+          ]
+        },
+        "position": {
+          "before": "Approved governance and Decision Memory context yields a preflight Evidence checklist only; no transaction is drafted.",
+          "after": "Approved governance and Decision Memory context yields a preflight Evidence checklist only; no transaction is drafted.",
+          "changed": false
+        }
+      }
+    ]
+  },
+  "decisionComparison": {
+    "recommendation": {
+      "before": "INSUFFICIENT_EVIDENCE",
+      "after": "INSUFFICIENT_EVIDENCE",
+      "changed": false
+    },
+    "strategy": {
+      "role": "Strategy",
+      "retrievalManifestHash": "0x6e8ea2708b1b9c48441e90ad2e504483007b0a62a9d0aa736f5e2a97687c7e47",
+      "ragCitationCount": 8,
+      "ragCitationsChanged": false,
+      "evidenceCitations": {
+        "before": [
+          "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+          "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+        ],
+        "after": [
+          "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+          "ev_8e74e45559234d308f7b684675790095",
+          "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+        ],
+        "added": [
+          "ev_8e74e45559234d308f7b684675790095"
+        ]
+      },
+      "position": {
+        "before": "Approved authorization, risk, and prior HOLD context supports retaining HOLD until the required market Evidence is verified and frozen.",
+        "after": "Approved authorization, risk, and prior HOLD context supports retaining HOLD until the required market Evidence is verified and frozen.",
+        "changed": false
+      }
+    },
+    "risk": {
+      "before": [
+        {
+          "raisedBy": "Risk",
+          "targetRole": "Strategy",
+          "code": "STALE_EVIDENCE",
+          "status": "UNRESOLVED",
+          "challenge": "Risk requires STALE_EVIDENCE to be resolved before a strategy may advance.",
+          "response": "Strategy cannot resolve this issue from the frozen snapshot."
+        },
+        {
+          "raisedBy": "Risk",
+          "targetRole": "Strategy",
+          "code": "RISK_MARKET_EVIDENCE_REQUIRED",
+          "status": "RESOLVED",
+          "challenge": "Approved risk context requires fresh liquidity, slippage, peg, volatility, drawdown, and black-swan Evidence before any asset-changing candidate may advance.",
+          "response": "Strategy retains HOLD and requests the missing market Evidence; no action is proposed."
+        }
+      ],
+      "after": [
+        {
+          "raisedBy": "Risk",
+          "targetRole": "Strategy",
+          "code": "STALE_EVIDENCE",
+          "status": "UNRESOLVED",
+          "challenge": "Risk requires STALE_EVIDENCE to be resolved before a strategy may advance.",
+          "response": "Strategy cannot resolve this issue from the frozen snapshot."
+        },
+        {
+          "raisedBy": "Risk",
+          "targetRole": "Strategy",
+          "code": "RISK_MARKET_EVIDENCE_REQUIRED",
+          "status": "RESOLVED",
+          "challenge": "Approved risk context requires fresh liquidity, slippage, peg, volatility, drawdown, and black-swan Evidence before any asset-changing candidate may advance.",
+          "response": "Strategy retains HOLD and requests the missing market Evidence; no action is proposed."
+        }
+      ]
+    },
+    "compliance": {
+      "before": [
+        {
+          "raisedBy": "Compliance",
+          "targetRole": "Strategy",
+          "code": "STALE_EVIDENCE",
+          "status": "UNRESOLVED",
+          "challenge": "Compliance requires STALE_EVIDENCE to be resolved before a strategy may advance.",
+          "response": "Strategy cannot resolve this issue from the frozen snapshot."
+        },
+        {
+          "raisedBy": "Compliance",
+          "targetRole": "Strategy",
+          "code": "COMPLIANCE_AUTHORITY_EVIDENCE_REQUIRED",
+          "status": "RESOLVED",
+          "challenge": "Approved governance and contract context requires active policy, allowlists, target identity, Guard state, and final DAO authority Evidence before any action may advance.",
+          "response": "Strategy retains HOLD because authorization is not established; no transaction is drafted."
+        }
+      ],
+      "after": [
+        {
+          "raisedBy": "Compliance",
+          "targetRole": "Strategy",
+          "code": "STALE_EVIDENCE",
+          "status": "UNRESOLVED",
+          "challenge": "Compliance requires STALE_EVIDENCE to be resolved before a strategy may advance.",
+          "response": "Strategy cannot resolve this issue from the frozen snapshot."
+        },
+        {
+          "raisedBy": "Compliance",
+          "targetRole": "Strategy",
+          "code": "COMPLIANCE_AUTHORITY_EVIDENCE_REQUIRED",
+          "status": "RESOLVED",
+          "challenge": "Approved governance and contract context requires active policy, allowlists, target identity, Guard state, and final DAO authority Evidence before any action may advance.",
+          "response": "Strategy retains HOLD because authorization is not established; no transaction is drafted."
+        }
+      ]
+    },
+    "treasury": {
+      "role": "Treasury",
+      "retrievalManifestHash": "0x9707b095152786cb4e0ff30b47d27fe9c460d782e722514375d874801a6064d6",
+      "ragCitationCount": 5,
+      "ragCitationsChanged": false,
+      "evidenceCitations": {
+        "before": [
+          "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+          "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+        ],
+        "after": [
+          "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+          "ev_8e74e45559234d308f7b684675790095",
+          "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+        ],
+        "added": [
+          "ev_8e74e45559234d308f7b684675790095"
+        ]
+      },
+      "position": {
+        "before": "Approved governance and Decision Memory context yields a preflight Evidence checklist only; no transaction is drafted.",
+        "after": "Approved governance and Decision Memory context yields a preflight Evidence checklist only; no transaction is drafted.",
+        "changed": false
+      },
+      "preflightMessages": {
+        "before": [
+          {
+            "code": "PORTFOLIO_RECOMMENDATION",
+            "content": "Do not prepare an action draft.",
+            "evidenceIds": [
+              "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+              "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+            ]
+          },
+          {
+            "code": "TREASURY_CHECKLIST",
+            "content": "Treasury is blocked and has produced no action.",
+            "evidenceIds": [
+              "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+              "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+            ]
+          }
+        ],
+        "after": [
+          {
+            "code": "PORTFOLIO_RECOMMENDATION",
+            "content": "Do not prepare an action draft.",
+            "evidenceIds": [
+              "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+              "ev_8e74e45559234d308f7b684675790095",
+              "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+            ]
+          },
+          {
+            "code": "TREASURY_CHECKLIST",
+            "content": "Treasury is blocked and has produced no action.",
+            "evidenceIds": [
+              "ev_1fa9f5a0aba44a49bb308ec985dec0d8",
+              "ev_8e74e45559234d308f7b684675790095",
+              "ev_aa0b5dbc6fdf431aa6d9f20789c160bf"
+            ]
+          }
+        ]
+      }
+    },
+    "interpretation": "The verified observer transaction adds a block-specific balanceOf return. Its five-minute balance freshness window is expired, and it proves neither price, liquidity nor authorization. Deterministic guardrails therefore preserve INSUFFICIENT_EVIDENCE and operational HOLD; all eight roles cite the new fact but Treasury creates no transaction."
+  },
+  "truthBoundary": {
+    "verifiedClaim": "ATTESTCOIN_VERIFIED_BLOCK_SPECIFIC_TEST_USDC_BALANCE_OBSERVATION",
+    "currentAtObservationBlockOnly": true,
+    "continuouslyCurrent": false,
+    "priceVerified": false,
+    "liquidityVerified": false,
+    "staleEvidenceRemoved": false
+  },
+  "controls": {
+    "eightAgentRun": true,
+    "humanApprovalRequired": true,
+    "proposalCreated": false,
+    "signature": false,
+    "broadcast": false,
+    "assetExecutionAuthorized": false
+  },
+  "artifactHash": "0x7a08a1459b7580f4b7db3d53577650ec557ac542e9a3d4953e2cff224b724942"
+}

@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "aeos.live-economic-evidence.balance-observer-evidence-import.v1",
+  "status": "IMMUTABLE_EVIDENCE_IMPORTED",
+  "recordedAt": "2026-08-26T01:17:34.893Z",
+  "tenantBinding": "SERVER_RESOLVED_ACTIVE_SIWE_SESSION",
+  "rawTenantIdentifiersDisclosed": false,
+  "proofJobId": "uscjob_2cf09a759ba347a3a14c441f5e5519ad",
+  "evidenceId": "ev_8e74e45559234d308f7b684675790095",
+  "evidenceContentHash": "0x220bbf278dccfee5c383dbe78a710f43b1f3621279adbe55373e65138f2cbc4f",
+  "predicate": "asset.balance",
+  "freshnessPolicySeconds": 300,
+  "freshnessStatus": "STALE",
+  "freshnessExpiresAt": "2026-08-25T13:01:24.000Z",
+  "qualityScore": 80,
+  "sourceTransactionHash": "0x627a143fea4412d9871567a977e41438bf36d9ca4042a763cbb65a46ff886837",
+  "canonicalVerificationTransactionHash": "0xee31751f9b4416623454eb0617b18275f9169b3dd279b78c34ea8b3f75029c1b",
+  "equivalentDuplicateVerificationTransactionHashes": [
+    "0xf91b315ccf134c650c3a3500e6161e15237a3c6c90fb3ab3d987f02797ed202b"
+  ],
+  "idempotentReplay": false,
+  "controls": {
+    "immutableEvidenceCreated": true,
+    "organizationRlsRequired": true,
+    "signerCustody": false,
+    "broadcastCapability": false,
+    "assetExecutionAuthorized": false
+  },
+  "truthBoundary": {
+    "verifiedClaim": "ATTESTCOIN_BALANCE_OBSERVATION_TRANSACTION_INCLUSION_AND_CALLDATA",
+    "corroboratedClaim": "OBSERVER_EXECUTED_ERC20_BALANCEOF_AND_FROZE_RETURN_AT_SOURCE_BLOCK",
+    "currentAtObservationBlockOnly": true,
+    "continuouslyCurrent": false,
+    "priceVerified": false,
+    "liquidityVerified": false,
+    "realFinancialValueClaimed": false,
+    "childDecisionCreated": false
+  }
+}

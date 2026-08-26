@@ -19,12 +19,13 @@ Verified local artifacts:
 - live read-only Creditcoin ChainInfo source-support observation.
 - Creditcoin Testnet deployment transaction [`0xf8ef...4dd2`](https://creditcoin-testnet.blockscout.com/tx/0xf8efed6e45f8979ee13a995a293fef46d7ae58fb9a1de0dbb1e44e970c594dd2) and deployed contract [`0x5DE8...62C2`](https://creditcoin-testnet.blockscout.com/address/0x5DE85313c5622e3707C3fED8932F51e5991e62C2), with exact init-code, receipt/finality, bytecode and constructor readback verification.
 
-Pending before submission claims may be upgraded:
+Additional claims that remain pending before they may be upgraded:
 
-- approved, contentful role-partitioned RAG sources;
-- organization-scoped import and child-Decision use of the verified Sepolia test-USDC inflow, plus a genuinely second live source chain and broader proof-backed economic metric derivations;
-- a real DAO proposal/vote/queue/Timelock/Guard outcome rather than an Evidence anchor;
+- a genuinely second live source chain and broader proof-backed price/liquidity/authorization derivations;
+- governed Outcome feedback into reviewed PID/RAG/Skill promotion;
 - broader live error, reorg, coverage, load, fork and independent-audit acceptance.
+
+Already verified and no longer pending: five approved role-partitioned RAG sources; organization-scoped `asset.transfer.inflow` and block-specific `asset.balance` child Decisions with exact inherited Manifests; and a real Decision-bound Proposal/vote/quorum/Queue/Timelock/Guard withholding Outcome. These establish traceable advisory and withholding behavior, not asset execution or economic benefit.
 ## Project-owned Sepolia source binding
 
 AEOS no longer plans to demonstrate the USC path with an arbitrary public Sepolia transaction. The locally verified `AEOSTreasuryEvidenceSource` produces the project-owned source event. Its commitment domain includes Sepolia chain ID, contract, immutable reporter, observation ID, hash-only organization/Treasury identity, immutable Evidence payload hash and observation time. It has one nonpayable write method, no external-call opcode, no upgrade path and no asset authority.
