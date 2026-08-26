@@ -1,5 +1,7 @@
 # AEOS 24-hour context summary — 2026-08-25
 
+> Superseded current-status notice (2026-08-26): the Balance Observer path described below as pending was subsequently completed as a bounded live sample. Canonical lineage was imported as immutable `asset.balance` Evidence `ev_8e74...0095`, child Snapshot `snap_a2ff...8a99` and eight-Agent Decision `decision_8047...b990`. The Decision correctly remained HOLD because the 300-second observation was stale and did not prove price, liquidity or authorization. The dated body is preserved as append-only historical context.
+
 ## Accepted facts
 
 - The owner approved five `DEMO_ADVISORY_RUBRIC_V1` sources; 22 immutable chunks are available to the eight formal Agent roles.

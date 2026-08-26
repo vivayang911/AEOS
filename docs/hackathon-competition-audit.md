@@ -49,10 +49,10 @@ This makes Attestcoin a core security dependency rather than an ornamental API c
 | AI differentiation | Eight roles have distinct least-privilege tools, approved role-partitioned RAG, immutable A2A, independent Risk/Compliance challenges, citations, refusal, child revisions and 21/21 evals | Strong / overall partial | Show the evidence ladder and explain why stale balance correctly preserves HOLD; add a fresh market-state contrast only if time permits |
 | Safety and governance | RLS, immutable snapshots, append-only audit, no signer/broadcast authority, TreasuryGuard tests | Strong | Explain the authority boundary in the first minute of the demo; do not over-focus on infrastructure |
 | Product/demo UX | Cockpit, Evidence Explorer and Decision Room are runnable | Partial/strong | Add a guided one-click demo narrative and surface live testnet provenance prominently |
-| Public GitHub with README | Git repository and AI-assisted development disclosure exist locally; final current-state push/clean-clone verification remains | **Pending final push** | Secret-scan, commit, push `main`, then verify the public tree and setup from a clean clone |
+| Public GitHub with README | Public repository exists; AI-assisted development disclosure, setup, live evidence and honest limitations are present locally | **Pending current-state push verification** | Secret-scan, push `main`, verify the remote commit, then perform clean-clone setup verification |
 | Technical ASC documentation | Contest-focused ASC summary, deployment/runbooks, addresses, transaction links and reproduction commands exist | **Pass / final consistency review pending** | Keep the final Deck/video/README terminology identical |
-| Deck or whitepaper PDF | None found | **Fail** | Produce a concise 8–10 slide English deck or short whitepaper PDF |
-| Prototype demo video | None found | **Fail** | Record a 2–3 minute English-subtitled demo with visible source and destination Explorer evidence |
+| Deck or whitepaper PDF | Ten-slide English PPTX and fixed-layout PDF exist; PPTX overflow and PDF page checks passed | **Prepared locally / URL pending** | Publish the final PDF and enter its stable URL in the submission form |
+| Prototype demo video | A 170-second English recording script and synchronized SRT exist; no final rendered video is claimed | **Script complete / recording pending** | Record and publish the 2–3 minute demo with visible source and destination Explorer evidence |
 | Originality during event window | No organizer adjudication is recorded in the repository; AI-assisted development and human responsibility are disclosed without inventing a start date | **Open evidence item** | Preserve truthful Git/on-chain provenance and answer organizer questions factually if asked |
 | Team/submission metadata | Not stored in project | Open | Prepare member name, email, bio, role, residence/citizenship and optional social/resume URLs |
 
@@ -73,14 +73,14 @@ The detailed concept-to-PRD adoption and the ten-role-to-eight-Agent mapping are
 
 The event hard requirements override broad product completeness. Until all P0 competition gates pass, development order is:
 
-1. Obtain organizer clarification on pre-event code eligibility; do not misrepresent creation dates.
-2. Implement the minimal non-asset-moving AEOS Evidence Anchor ASC and its unit/fuzz tests.
-3. Build a wallet-explicit Sepolia → proof → Creditcoin ASC → immutable Evidence vertical slice.
-4. Deploy and record the testnet address/transactions/Explorer links.
-5. Initialize and publish the GitHub repository only after local acceptance and user approval.
-6. Add contest-focused README/ASC technical documentation and a reproducible judge demo mode.
-7. Produce deck/whitepaper and demo video.
-8. Resume Strategy, Governance, Audit and Settings cockpit breadth after the required contest path is demonstrably live.
+1. Preserve truthful Git/on-chain provenance and do not invent a project start date or organizer ruling.
+2. Keep the completed non-asset-moving Evidence Anchor ASC and live 11-step evidence reproducible.
+3. Push the reconciled public repository only after secret and history checks.
+4. Publish the prepared Deck PDF and record/publish the scripted prototype video.
+5. Complete one judge-visible browser path across Attestcoin, Evidence, Decision, Governance and Outcome.
+6. Add fresh price/liquidity/authorization Evidence only if it does not displace submission completion.
+7. Perform final clean-clone and material/URL consistency checks.
+8. Resume broader PRD production, resilience and frontend breadth after submission gates are complete.
 
 ## Definition of competition-ready
 
@@ -97,3 +97,5 @@ AEOS must not be described as competition-ready until all of the following are t
 ## 2026-08-22 source-semantic hardening
 
 Competition readiness improved with a live, read-back-verified project-owned Sepolia source contract rather than an unrelated transaction. The hash-only, reporter-bound contract and deterministic wallet handoff preserve Evidence-first and DAO-control boundaries. This is meaningful technical differentiation, but it is not eligibility completion: the Sepolia observation event and full Attestcoin → Creditcoin `verifyAndAnchor` → immutable Evidence → eight-Agent Decision path are not live yet. The immediate next step is the frozen source observation call, not another deployment or an Attestcoin API key.
+
+> Superseded status notice (2026-08-26): the path described above as not yet live subsequently completed one bounded 11-step sample. The paragraph is retained as a dated checkpoint. Current submission blockers are the public remote refresh/clean-clone check, hosted Deck and video URLs, final video recording, and continuous browser rehearsal—not the original source observation or ASC anchor.

@@ -1,6 +1,8 @@
 # Live Attestcoin / USC and DAO finality runbook
 
-Status: `LIVE SOURCE DISCOVERY VERIFIED / TRANSACTION AND DAO FINALITY EXTERNAL_PENDING` (2026-08-21).
+Status: `ONE LIVE ATTESTCOIN 11-STEP SAMPLE + DECISION-BOUND DAO FINALITY ACCEPTED / BROADER PRD PARTIAL` (reconciled 2026-08-26).
+
+The source-discovery and configuration material below is retained for reproducibility. It supersedes the 2026-08-21 checkpoint that lacked transactions and DAO finality: AEOS now has one canonical Attestcoin-to-ASC sample, a deployed Governor/Timelock/PolicyRegistry/TreasuryGuard stack, and one Decision-bound HOLD Proposal → Vote → Queue → 60-second Timelock → Execute → immutable Outcome lineage. Failed governance Attempts 1–2 remain append-only history. The accepted action was zero-value withholding; it does not prove asset execution or economic benefit, and independent Safe integration remains outside this bounded acceptance.
 
 ## Facts verified from primary sources and read-only chain observation
 
@@ -32,7 +34,7 @@ ATTESTCOIN_PROOF_BUILDER_URL=https://prover.cc3-testnet.creditcoin.network/
 
 Before accepting a source transaction, the adapter now requires the configured Sepolia identity to be present in current ChainInfo readback. Before building a proof, the latest attested height must cover the transaction block. These checks are read-only and create no signing or broadcast capability.
 
-## Real DAO finality sample
+## Real DAO finality configuration and reproduction
 
 AEOS already has an `oz-readonly` Governor adapter, but a real sample cannot be configured from a wallet address alone. It requires:
 
@@ -56,4 +58,4 @@ GOVERNANCE_MIN_CONFIRMATIONS=2
 
 Then create/bind the AEOS Proposal with `content.governor.proposalId`, and an authorized human operator calls `POST /api/v1/proposals/{id}/sync-governor` with CSRF and idempotency headers. AEOS reads `state`, `proposalSnapshot`, `proposalDeadline`, `quorum`, `proposalVotes`, `clock` and `CLOCK_MODE` at one confirmed block and stores an immutable organization-scoped observation.
 
-No live AEOS Governor address or proposal ID currently exists in the workspace. An unrelated project's proposal, a Mock observation or a manually typed terminal state must not be used as the positive sample. Contract deployment/proposal creation/voting remains a human-wallet action; AEOS only prepares or observes and cannot sign, vote, queue, execute or move assets.
+Historical note: at the 2026-08-21 discovery checkpoint no live AEOS Governor address or proposal ID existed. A later AEOS-specific deployment and Decision-bound Attempt 3 supplied the accepted positive sample. An unrelated proposal, Mock observation or manually typed terminal state still must never be substituted. Contract deployment, proposal creation, voting, Queue and Execute remain human-wallet actions; AEOS only prepares and observes and cannot sign, vote, broadcast or move assets.

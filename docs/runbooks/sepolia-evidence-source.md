@@ -1,6 +1,8 @@
 # Sepolia AEOS Treasury Evidence Source runbook
 
-Status: `LOCAL_VERIFIED / WALLET DEPLOYMENT EXTERNAL_PENDING`.
+Status: `DEPLOYED / READBACK VERIFIED / ONE COMPLETE 11-STEP SAMPLE ACCEPTED` (reconciled 2026-08-26).
+
+The preparation and wallet-handoff instructions below remain the reproducible procedure. They are no longer a statement that deployment is pending. One bounded live lineage has completed Sepolia observation, USC proof, user-controlled Creditcoin verification, immutable tenant Evidence/Snapshot/eight-Agent Decision, user-controlled `EvidenceAnchorASC.verifyAndAnchor` and canonical `EvidenceAnchored` reconciliation. This does not complete broader PRD-07 error/reorg/load coverage or authorize AEOS to sign, broadcast or move assets.
 
 This runbook creates the project-owned source transaction that Attestcoin/USC will prove. It does not give AEOS a private key, signer, broadcaster or asset-execution authority.
 

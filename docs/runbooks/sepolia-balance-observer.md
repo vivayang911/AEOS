@@ -1,6 +1,8 @@
 # Sepolia Balance Observer runbook
 
-Status: `WALLET_HANDOFF_READY / EXTERNAL_PENDING`.
+Status: `BOUNDED LIVE SAMPLE ACCEPTED / BROADER PRD PARTIAL` (reconciled 2026-08-26).
+
+The original wallet-handoff procedure below is retained as a reproducible runbook, not as the current completion state. The accepted sample includes Sepolia deployment `0x7ba8...3a88`, observation `0x627a...6837`, canonical Creditcoin `TransactionVerified`, immutable organization-scoped `asset.balance` Evidence `ev_8e74...0095`, child Snapshot `snap_a2ff...8a99` and child Decision `decision_8047...b990`. The observation is deliberately `STALE` after its frozen 300-second window; it proves 20,000,000 test-USDC base units at source block 11,564,181, not current price, liquidity, authorization or economic value.
 
 ## Truth boundary
 
@@ -42,7 +44,7 @@ Open `http://127.0.0.1:4191/`. The current frozen plan is `0xf3d531...2b031`, us
 
 The compiler's deployed-bytecode artifact contains two reporter `immutableReferences`. Therefore `0x7a5a...be26` is only the unfilled runtime template hash; the reporter-bound expected Sepolia runtime hash is `0x159989...06bb`. The handoff derives the latter from the exact artifact, constructor reporter and immutable offsets, and also proves the frozen deployment init code equals the artifact plus ABI constructor arguments. Never bypass this distinction by accepting arbitrary code observed after deployment.
 
-## External acceptance sequence
+## Reproduction and acceptance sequence
 
 1. Review the compiled surface and deployment plan hashes.
 2. Human wallet deploys the exact zero-value observer request on Sepolia.
@@ -58,4 +60,4 @@ The compiler's deployed-bytecode artifact contains two reporter `immutableRefere
 
 Any mismatch, stale observation, unsupported proof, missing event, changed runtime, wrong tenant or failed finality leaves the request rejected and produces no verified Evidence.
 
-Current live checkpoint: deployment `0x7ba8...3a88` and observation `0x627a...6837` pass independent Sepolia finality/event/storage verification. Proof bundle `0x543443...97b94` is statically verified and request `0x11ed2c...d81d99` passes Creditcoin simulation. The separate manual `verifyAndEmit` page is `http://127.0.0.1:4193/`; it must not be treated as submitted until the owner confirms MetaMask and a separate canonical `TransactionVerified` verifier passes.
+Historical handoff checkpoint: deployment `0x7ba8...3a88` and observation `0x627a...6837` passed independent Sepolia finality/event/storage verification. Proof bundle `0x543443...97b94` was statically verified and request `0x11ed2c...d81d99` passed Creditcoin simulation. Later user-controlled submissions and independent finality verification completed the accepted lineage described at the top. The duplicate verification transaction remains disclosed and is not counted as a second economic fact.
