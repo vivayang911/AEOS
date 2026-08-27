@@ -1,6 +1,6 @@
 # P0-3 Continuous Browser E2E
 
-Status: `IMPLEMENTED / REAL-BROWSER ACCEPTANCE PENDING`
+Status: `ACCEPTED / BOUNDED LOCAL CHROME E2E`
 
 This runbook covers the normal AEOS application only. It does not use a temporary wallet page, does not expose a signing or broadcast API, and does not grant asset authority.
 
@@ -22,14 +22,16 @@ The persistent P0-3 guide keeps these checkpoints visible. It does not persist c
 | Check | Current result | Evidence / limitation |
 |---|---|---|
 | Production build | PASS | 13 routes generated, including `/` Landing and `/governance` |
-| Route availability, 3 runs | PASS / HTTP SMOKE ONLY | Five route documents returned `200` in 319 ms, 31 ms and 25 ms |
+| Route availability, 3 runs | PASS / REAL CHROME | complete runs finished in 77.356 s, 114.719 s and 15.485 s |
 | Stylesheet delivery | PASS | production CSS returned `200`, 60,121 bytes |
 | API disconnect and restart | PASS / service boundary | only API PID 23068 was stopped; disconnect was observed; replacement API became live/ready with database ready |
 | Automatic client recovery implementation | PASS / code and contract tests | session poll retries every 2.5 seconds, restores server session and organization list, and never requests a wallet signature |
 | Browser refresh recovery implementation | PASS / code boundary | HttpOnly session is reread; CSRF remains intentionally absent until explicit SIWE reauthentication |
-| Three complete real-browser runs under 3 minutes | PENDING | the connected browser-control security policy denied localhost access, so HTTP smoke runs are not relabeled as browser E2E |
-| One visible API-disconnect browser recovery | PENDING | requires the real-browser run above |
-| One visible refresh recovery | PENDING | requires the real-browser run above |
+| Three complete real-browser runs under 3 minutes | PASS | all three traversed Landing through the accepted Outcome with the same SIWE tenant context and `assetExecutionAuthorized=false` |
+| One visible API-disconnect browser recovery | PASS | run 2 displayed `API CONNECTION INTERRUPTED`, recovered automatically after only the API was restarted and required no second wallet prompt |
+| One visible refresh recovery | PASS | run 3 reloaded `/decisions?tour=p0e2e`, recovered the HttpOnly session and server-selected organization, then reached Governance/Outcome |
+
+The measured evidence is frozen in `reports/testing/p0-3-real-browser-acceptance-2026-08-27.md`. Extension-channel warnings were observed, so this acceptance does not make a global zero-console-noise claim. The Governance page also exposed zero tenant Proposal API records in this session while separately rendering the explicitly labeled accepted Outcome replay; chain-synchronized Proposal UI remains broader PRD work.
 
 ## Timing record requirements
 

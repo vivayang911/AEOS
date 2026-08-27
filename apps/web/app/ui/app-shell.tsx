@@ -9,6 +9,7 @@ import {P0E2eGuide} from "./p0-e2e-guide";
 
 const navigation=[
   {href:"/dashboard",label:"Cockpit",short:"OV",caption:"Treasury overview"},
+  {href:"/verification",label:"Judge Verification",short:"JV",caption:"Proof index"},
   {href:"/attestcoin",label:"Attestcoin Oracle",short:"AC",caption:"Verified data flow"},
   {href:"/evidence",label:"Evidence Explorer",short:"EV",caption:"Immutable facts"},
   {href:"/decisions",label:"Decision Room",short:"DR",caption:"Eight-Agent committee"},

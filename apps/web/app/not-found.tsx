@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 const destinations=[
-  ["Cockpit","/dashboard"],["Attestcoin Oracle","/attestcoin"],["Evidence Explorer","/evidence"],["Decision Room","/decisions"],["Strategy & PID","/strategies"],
+  ["Cockpit","/dashboard"],["Judge Verification","/verification"],["Attestcoin Oracle","/attestcoin"],["Evidence Explorer","/evidence"],["Decision Room","/decisions"],["Strategy & PID","/strategies"],
   ["RAG Knowledge","/knowledge"],["Skills Center","/skills"],["Governance","/governance"],["Audit Log","/audit"],["Settings","/settings"],
 ];
 
