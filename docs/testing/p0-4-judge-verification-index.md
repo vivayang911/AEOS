@@ -8,7 +8,7 @@ Status: `LOCAL_VERIFIED / PUBLICATION PENDING`
 
 ## Indexed checks
 
-The page contains 13 checks covering:
+The page contains 14 checks covering:
 
 1. Sepolia source observation.
 2. Frozen Attestcoin/USC Proof artifact.
@@ -23,17 +23,19 @@ The page contains 13 checks covering:
 11. Zero-value Guard Execute.
 12. Immutable Outcome Evidence artifact.
 13. P0-3 bounded real-Chrome acceptance record.
+14. The accepted sample's immutable, organization-scoped chain-finality Proposal projection.
 
 Every row separates `PROVES` from `DOES NOT PROVE`, displays its full immutable reference and links to either a public explorer/repository artifact or the organization-scoped AEOS record. The page performs no API write, RPC request, wallet request, signature or broadcast.
 
 ## Local acceptance
 
-- Web contract tests: 26/26 PASS, including the dedicated P0-4 zero-authority test.
+- Web contract tests: 27/27 PASS, including the dedicated P0-4 zero-authority test.
 - Web typecheck: PASS.
 - Next production build: PASS, 14 routes including `/verification`.
-- Real Chrome: heading and authority boundary visible, 14 table rows (one header plus 13 checks), no horizontal overflow and no AEOS application error.
+- Previous real-Chrome acceptance: heading and authority boundary visible, 14 table rows (one header plus the then-current 13 checks), no horizontal overflow and no AEOS application error.
+- The new 14th check requires one post-build browser render before the expanded index can be relabeled browser-accepted.
 - PRD integrity and submission-fact gates are rerun after documentation reconciliation.
 
 ## Honest boundary
 
-This is a locally verified judge index, not a hosted Demo. Until the new commit is published, the repository link for the P0-3 report is prospective and may return 404 on public GitHub. Current market-state Evidence, chain-synchronized Proposal UI, a second source chain, staging/production E2E, independent audit and economic-performance proof remain outside this acceptance.
+This is a locally verified judge index, not a hosted Demo. Until the new commit is published, newly added repository references may be unavailable on public GitHub. The accepted sample's Proposal projection is tenant-visible after SIWE and does not establish a generic chain indexer. Current market-state Evidence, generic indexing/reorg recovery, a genuinely second source chain, staging/production E2E, independent audit and economic-performance proof remain outside this acceptance.
