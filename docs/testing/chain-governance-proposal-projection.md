@@ -1,6 +1,6 @@
 # Chain-synchronized Governance Proposal projection
 
-Status: `DATABASE_AND_BUILD_VERIFIED / RUNNING_API_RESTART_PENDING`
+Status: `ACCEPTED / BOUNDED LOCAL BROWSER`
 
 ## Problem closed by this slice
 
@@ -35,8 +35,12 @@ Projection ID: `govproposal_373660b9f448b74b8d852ba7e82b706a`
 Content hash: `0x373660b9f448b74b8d852ba7e82b706a18c89881660cdf2502f162009fbbbc66`  
 Calldata hash: `0xb9c8eb5497a428e71e4fc9f013de93215835678079aaec32852635536856a42f`
 
+## Browser acceptance
+
+After the API and production Web processes were manually restarted, the user completed a fresh SIWE signature and selected the Demo DAO. A supplied Chrome screenshot shows `1 visible / RLS`, the exact HOLD title, `EXECUTED`, `CANONICAL CHAIN FINALITY`, bounded Decision/content/calldata references and `ASSET EXECUTION AUTHORIZED / false`. The user also confirmed refresh recovery. The frozen record is `reports/testing/chain-governance-proposal-browser-acceptance-2026-08-27.md`.
+
 ## Honest boundary
 
-This closes the missing tenant read-model linkage for one accepted governance sample. It does not prove a generic indexer, reorg recovery for imported projections, staging/production operation, economic benefit, autonomous execution or asset authority. The running API process still needs to be restarted on the new build and the Governance page rechecked in a real signed-in browser; the automated process-control approval was unavailable during this batch.
+This closes the missing tenant read-model linkage for one accepted governance sample. It does not prove a generic indexer, reorg recovery for imported projections, staging/production operation, economic benefit, autonomous execution or asset authority. Browser acceptance is based on the user-supplied screenshot and explicit refresh confirmation because browser-control security denied an independent localhost read.
 
 `ASSET EXECUTION AUTHORIZED / false`
