@@ -470,14 +470,14 @@ paths:
   /proposals:
     get:
       summary: List immutable organization-scoped governance proposal drafts
-      responses: { '200': { description: Proposal drafts } }
+      responses: { '200': { description: Organization-scoped Proposal drafts plus immutable canonical-chain finality projections; recordSource and onchainFinalityVerified distinguish them } }
     post:
       summary: Build a deterministic ERC20 proposal draft from an approved Decision and passing Simulation
       responses: { '201': { description: Immutable non-executable proposal draft with decoded calldata }, '400': { description: Approval, simulation, snapshot, policy, action, or calldata consistency guard failed }, '404': { description: Referenced organization-scoped object not found } }
   /proposals/{id}:
     get:
       summary: Read a proposal content hash, provenance chain, decoded action, and transaction arrays
-      responses: { '200': { description: Proposal draft }, '404': { description: Not found without cross-tenant leakage } }
+      responses: { '200': { description: Organization-scoped Proposal draft or immutable canonical-chain finality projection }, '404': { description: Not found without cross-tenant leakage } }
   /governance-adapter:
     get:
       summary: Describe the active observation-only governance adapter and its authority boundary

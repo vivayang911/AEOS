@@ -80,6 +80,8 @@
     "verify:live-governance-hold-attempt-3-vote": "npm run verify:live-governance-hold-attempt-3-vote -w @aeos/api",
     "verify:live-governance-hold-attempt-3-queue": "npm run verify:live-governance-hold-attempt-3-queue -w @aeos/api",
     "verify:live-governance-hold-attempt-3-execute": "npm run verify:live-governance-hold-attempt-3-execute -w @aeos/api",
+    "reconcile:live-governance-proposal-projection": "npm run reconcile:live-governance-proposal-projection -w @aeos/api",
+    "verify:chain-governance-projection-db": "npm run verify:chain-governance-projection-db -w @aeos/api",
     "import:live-governance-hold-outcome-evidence": "npm run import:live-governance-hold-outcome-evidence -w @aeos/api",
     "prepare:live-governance-voting-period-recovery": "npm run prepare:live-governance-voting-period-recovery -w @aeos/api",
     "verify:live-governance-recovery-finality": "npm run verify:live-governance-recovery-finality -w @aeos/api",

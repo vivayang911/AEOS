@@ -31,7 +31,7 @@ The persistent P0-3 guide keeps these checkpoints visible. It does not persist c
 | One visible API-disconnect browser recovery | PASS | run 2 displayed `API CONNECTION INTERRUPTED`, recovered automatically after only the API was restarted and required no second wallet prompt |
 | One visible refresh recovery | PASS | run 3 reloaded `/decisions?tour=p0e2e`, recovered the HttpOnly session and server-selected organization, then reached Governance/Outcome |
 
-The measured evidence is frozen in `reports/testing/p0-3-real-browser-acceptance-2026-08-27.md`. Extension-channel warnings were observed, so this acceptance does not make a global zero-console-noise claim. The Governance page also exposed zero tenant Proposal API records in this session while separately rendering the explicitly labeled accepted Outcome replay; chain-synchronized Proposal UI remains broader PRD work.
+The measured evidence is frozen in `reports/testing/p0-3-real-browser-acceptance-2026-08-27.md`. Extension-channel warnings were observed, so this acceptance does not make a global zero-console-noise claim. The Governance page also exposed zero tenant Proposal API records in this historical run while separately rendering the explicitly labeled accepted Outcome replay. That diagnosed gap is now addressed at the database, service and UI-build layers by the immutable chain Proposal projection documented in `chain-governance-proposal-projection.md`; a new-build API restart and signed-in browser recheck remain pending.
 
 ## Timing record requirements
 
