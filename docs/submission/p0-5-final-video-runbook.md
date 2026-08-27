@@ -17,7 +17,7 @@ P0-5 is complete only when all of the following exist:
 
 1. Restart only the AEOS Web/API processes if required; verify `/health/live`, `/health/ready`, `/dashboard` and `/verification` before opening the recorder.
 2. SIWE sign in and select `AEOS Hackathon Demo DAO` before recording. Do not show the signature prompt.
-3. Open the twelve tabs listed in `demo-video-script.md`; wait for every page to finish loading.
+3. Open the thirteen tabs listed in `demo-video-script.md`; wait for every page to finish loading. The first Creditcoin transaction is the preserved stale-continuity-proof failure; the second is the fresh successful verification. Never describe the failed attempt as accepted Evidence.
 4. Preselect child Decision `decision_8047...b990` and scroll each AEOS page to the exact panel used in the shot.
 5. Collapse bookmarks, close unrelated tabs, enable Do Not Disturb and hide wallet-extension popovers.
 6. Set the capture canvas and output to 1920×1080 at 30 fps. Record one ten-second test and confirm that hashes and subtitles are legible.
@@ -32,10 +32,11 @@ Record the screen actions first using the fixed timecodes. Narration may be reco
 
 1. Remove all loading, cursor hunting and dead air.
 2. Keep explorer status/hash/event sections on screen long enough to read; do not fake or replace them with fixture screenshots.
-3. Burn in `aeos-demo-en.srt` using a high-contrast lower-third style with safe margins.
-4. Normalize speech without clipping and keep background music absent or quiet enough not to reduce intelligibility.
-5. Export H.264/AAC MP4 at 1920×1080, 30 fps, 160–180 seconds. Use a visually lossless-enough bitrate for small text; 8–16 Mbps is a reasonable 1080p range, not an acceptance guarantee.
-6. Name the final file `AEOS-BUIDL-CTC-2026-Fall-Demo-v1.mp4` and retain the raw recording separately.
+3. Preserve the failure/success contrast: show the real rejected stale proof briefly, then the fresh proof accepted by BlockProver. This is a fail-closed safety demonstration, not a second economic fact.
+4. Burn in `aeos-demo-en.srt` using a high-contrast lower-third style with safe margins.
+5. Normalize speech without clipping and keep background music absent or quiet enough not to reduce intelligibility.
+6. Export H.264/AAC MP4 at 1920×1080, 30 fps, 160–180 seconds. Use a visually lossless-enough bitrate for small text; 8–16 Mbps is a reasonable 1080p range, not an acceptance guarantee.
+7. Name the final file `AEOS-BUIDL-CTC-2026-Fall-Demo-v1.mp4` and retain the raw recording separately.
 
 ## Local verification
 

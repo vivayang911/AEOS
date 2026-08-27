@@ -22,9 +22,9 @@ Development disclosure: AEOS is AI-assisted. The human owner controls product an
 | --- | --- | --- |
 | README | `README.md` | Public at commit `58948cf...d52f`; clean-clone PRD verification passed |
 | ASC integration summary | `docs/submission/asc-integration-summary.md` | Updated |
-| Deck source | `docs/submission/aeos-buidl-ctc-2026-fall.pptx` | 10 pages; visual QA passed |
-| Deck PDF | `docs/submission/aeos-buidl-ctc-2026-fall.pdf` | 10 pages; structure verified |
-| Video script | `docs/submission/demo-video-script.md` | 170-second Judge Mode-first script ready |
+| Deck source | `docs/submission/aeos-buidl-ctc-2026-fall.pptx` | 10 pages; official-score narrative revised; visual/template QA passed |
+| Deck PDF | `docs/submission/aeos-buidl-ctc-2026-fall.pdf` | 10 pages; regenerated from the reviewed slide renders and visually verified |
+| Video script | `docs/submission/demo-video-script.md` | 170-second Judge Mode-first script with a real stale-proof refusal followed by fresh-proof success |
 | English subtitles | `docs/submission/aeos-demo-en.srt` | 10 contiguous cues / exactly 170 seconds |
 | Recording/publishing runbook | `docs/submission/p0-5-final-video-runbook.md` | Preproduction ready; recording pending |
 | Final video URL | — | Pending recording/upload |
@@ -44,6 +44,14 @@ Development disclosure: AEOS is AI-assisted. The human owner controls product an
 
 1. Record and upload the final 2:40–3:00 video; add its URL here and on DoraHacks.
 2. Publish the reviewed Deck PDF at a stable URL and record that URL here.
+
+## Official-claim boundaries
+
+- Meaningful Attestcoin integration and depth of protocol utilization are official judging criteria; AEOS demonstrates a functional source-chain inclusion proof, canonical Creditcoin verification and Decision-bound ASC anchoring.
+- “No bridge custody” describes this verified-data path only. AEOS does not claim to replace every bridge or prove arbitrary off-chain truth.
+- The AI track language permits verified data to inform decisions and trigger on-chain transactions. In AEOS, “trigger” means preparing a governed workflow; AI has no signer, broadcaster or asset authority.
+- Official materials state that the top three enter CEIP fast-track due diligence. No per-project investment amount is claimed.
+- CertiK audit credits and Skynet Boost are event rewards, not evidence that AEOS has completed a CertiK audit.
 3. Choose a public Demo URL or state the exact judge-local run path.
 4. After the final content freeze, rerun the Secret Scan, push, remote-commit comparison and clean-clone verification.
 5. Perform one final current official-rule check immediately before submission.

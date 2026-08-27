@@ -23,6 +23,7 @@ function validatePreproduction() {
   const requiredScriptFacts = [
     "Judge Mode (`/dashboard`)",
     "https://sepolia.etherscan.io/tx/0xf035fdf437b434629087abf81bdf4100997c45e95f97ce8b945985f33291abab",
+    "https://creditcoin-testnet.blockscout.com/tx/0xabee56d376bfa486236c02c16eb438097a12c2ec07a636b330290f3861d42c55",
     "https://creditcoin-testnet.blockscout.com/tx/0x1011f237c21733a59472b82c7a14c01e79d99e23ffb3fba1ce4905655a4fb860",
     "http://localhost:3000/evidence/ev_aa0b5dbc6fdf431aa6d9f20789c160bf",
     "http://localhost:3000/decisions?decision=decision_8047c40b442940c8a1b2ea268681b990",

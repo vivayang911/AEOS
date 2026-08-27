@@ -4,11 +4,11 @@ Treasury AI has two dangerous failure modes: unverified data can create hallucin
 
 2
 00:00:14,000 --> 00:00:31,000
-AEOS uses Attestcoin as its verification boundary. This project-owned Sepolia observation was canonically included, then covered by a frozen Merkle and continuity proof.
+AEOS uses Attestcoin as its verification boundary. A stale continuity proof failed closed and remained auditable; AEOS did not convert that failed attempt into Evidence.
 
 3
 00:00:31,000 --> 00:00:48,000
-Creditcoin's native BlockProver accepted the exact source transaction inclusion proof. AEOS verifies sender, target, calldata, zero value, canonical receipt and the TransactionVerified event before accepting it.
+After refreshing the Merkle and continuity proof, Creditcoin's native BlockProver accepted the exact source transaction inclusion. AEOS then verified sender, target, calldata, zero value, receipt and event.
 
 4
 00:00:48,000 --> 00:01:05,000

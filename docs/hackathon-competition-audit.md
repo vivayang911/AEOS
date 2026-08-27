@@ -6,12 +6,14 @@ Last reconciled: 2026-08-26
 
 Primary event page: <https://dorahacks.io/hackathon/buidl-ctc-2026-fall/detail>
 
-The DoraHacks page is client-rendered and was not reliably machine-readable during this audit. The current event facts below were cross-checked against the indexed event summary at <https://www.competehub.dev/en/competitions/dorahacksbuidl-ctc-2026-fall> and current official Creditcoin USC documentation at <https://docs.creditcoin.org/usc>.
+The current event facts below were rechecked against the live official DoraHacks event page at <https://dorahacks.io/hackathon/buidl-ctc-2026-fall/detail>, the first-party Creditcoin Attestcoin page at <https://creditcoin.org/Deploy>, and the USC architecture documentation at <https://docs.creditcoin.org/usc/overview/usc-architecture-overview>.
 
 - Event window: 2026-08-13 through 2026-09-06.
 - Theme: Attestcoin Smart Contracts (ASCs) and cross-chain applications.
 - Tracks: DeFi, RWA, DePIN, Gaming and AI.
 - Prize pool: USD 15,000; the top three receive CEIP fast-track access.
+- The official event page describes the CEIP benefit as fast-track entry to due diligence; it does not establish a guaranteed per-project investment amount.
+- Winning teams receive 8K CertiK repository-audit credits and three months of Skynet Boost. These rewards are not a completed audit claim.
 - A complete project must contain meaningful, functional ASC integration, working ASC code, and technical setup/use documentation.
 - Submission requires project/team information, an ASC integration summary, a public GitHub repository with README, a deck or whitepaper PDF URL, and a prototype demo video URL.
 - The project must be original work created during the hackathon, deployed on a testnet, and free of third-party IP infringement.
@@ -53,6 +55,7 @@ This makes Attestcoin a core security dependency rather than an ornamental API c
 | Technical ASC documentation | Contest-focused ASC summary, deployment/runbooks, addresses, transaction links and reproduction commands exist | **Pass / final consistency review pending** | Keep the final Deck/video/README terminology identical |
 | Deck or whitepaper PDF | Ten-slide English PPTX and fixed-layout PDF exist; PPTX overflow and PDF page checks passed | **Prepared locally / URL pending** | Publish the final PDF and enter its stable URL in the submission form |
 | Prototype demo video | A 170-second English recording script and synchronized SRT exist; no final rendered video is claimed | **Script complete / recording pending** | Record and publish the 2–3 minute demo with visible source and destination Explorer evidence |
+| Fail-closed safety demonstration | A real stale-continuity-proof verification transaction is preserved and was not accepted as Evidence; a later fresh proof succeeded | **Ready for recording** | Show failure briefly, then the canonical success; never count the failed attempt as an economic fact |
 | Originality during event window | No organizer adjudication is recorded in the repository; AI-assisted development and human responsibility are disclosed without inventing a start date | **Open evidence item** | Preserve truthful Git/on-chain provenance and answer organizer questions factually if asked |
 | Team/submission metadata | Not stored in project | Open | Prepare member name, email, bio, role, residence/citizenship and optional social/resume URLs |
 

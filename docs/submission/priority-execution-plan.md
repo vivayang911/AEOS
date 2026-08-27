@@ -22,8 +22,8 @@ P0-1 accepted checkpoint: earlier deadline failures remain preserved and are not
 
 ## P1 — award evidence
 
-- **Deck prepared locally:** `docs/submission/aeos-buidl-ctc-2026-fall.pptx` and `.pdf` contain 10 English slides covering the problem, verified-data architecture, live transaction trace, eight-Agent interaction, deterministic governance and safety boundary. PPTX visual/overflow QA passed; PDF contains 10 fixed 16:9 pages.
-- **Video recording pending:** `docs/submission/demo-video-script.md` and `aeos-demo-en.srt` define a 170-second three-act route. Record the Explorer → Evidence → Decision → Governance → Outcome lineage and never show fixture data as live.
+- **Deck prepared locally:** `docs/submission/aeos-buidl-ctc-2026-fall.pptx` and `.pdf` contain 10 English slides covering the problem, independent-attestor/Merkle/continuity trust boundary, live transaction trace, eight-Agent interaction, deterministic governance, safety controls and a cautiously scoped CEIP path. No unverified investment amount or completed-audit claim is made.
+- **Video recording pending:** `docs/submission/demo-video-script.md` and `aeos-demo-en.srt` define a 170-second three-act route. It now contrasts the real stale-continuity-proof rejection with the later fresh successful verification before continuing through Evidence → Decision → Governance → Outcome. Record this exact distinction and never show fixture data as live.
 - **ASC integration summary updated:** `docs/submission/asc-integration-summary.md` now distinguishes completed live samples from remaining second-chain/market-state/production work.
 
 ## P2 — submission completeness
