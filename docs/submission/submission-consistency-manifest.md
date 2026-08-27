@@ -24,8 +24,9 @@ Development disclosure: AEOS is AI-assisted. The human owner controls product an
 | ASC integration summary | `docs/submission/asc-integration-summary.md` | Updated |
 | Deck source | `docs/submission/aeos-buidl-ctc-2026-fall.pptx` | 10 pages; visual QA passed |
 | Deck PDF | `docs/submission/aeos-buidl-ctc-2026-fall.pdf` | 10 pages; structure verified |
-| Video script | `docs/submission/demo-video-script.md` | 170-second script ready |
-| English subtitles | `docs/submission/aeos-demo-en.srt` | Ready |
+| Video script | `docs/submission/demo-video-script.md` | 170-second Judge Mode-first script ready |
+| English subtitles | `docs/submission/aeos-demo-en.srt` | 10 contiguous cues / exactly 170 seconds |
+| Recording/publishing runbook | `docs/submission/p0-5-final-video-runbook.md` | Preproduction ready; recording pending |
 | Final video URL | — | Pending recording/upload |
 | Public repository | `https://github.com/vivayang911/AEOS` | Public `main` matched local `58948cf...d52f`; clean clone verified; `LOCAL-MANUALS/` excluded |
 | Demo URL | — | Pending hosting decision or documented local-demo route |

@@ -131,6 +131,7 @@
     "verify:treasury-guard-manifest": "npm run verify:treasury-guard-manifest -w @aeos/api",
     "verify:prd": "node scripts/verify-prd-traceability.cjs",
     "verify:submission-facts": "node scripts/verify-submission-facts.cjs",
+    "verify:video-package": "node scripts/verify-video-package.cjs",
     "release:gate": "powershell -ExecutionPolicy Bypass -File scripts/release-gate.ps1",
     "security:secrets": "npm run security:secrets -w @aeos/api",
     "security:gate": "powershell -ExecutionPolicy Bypass -File scripts/security-gate.ps1",
