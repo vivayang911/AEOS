@@ -27,17 +27,17 @@ for (const path of canonicalStatusDocuments) {
 
 requireText(
   "README.md",
-  /Public repository status:[^\n]+58948cf61953c6405b0963cc7a247607d846d52f/,
+  /Public repository status:[^\n]+3e7b3742cd6d807e49c502218397e02b59131846/,
   "verified public-repository checkpoint is missing",
 );
 requireText(
   "docs/submission/submission-consistency-manifest.md",
-  /PUBLIC REPOSITORY VERIFIED \/ LOCAL NARRATED VIDEO PREPARED \/ MANUAL PLAYBACK \+ HOSTED URLS PENDING/,
+  /PUBLIC REPOSITORY VERIFIED \/ LOCAL NARRATED VIDEO HUMAN-ACCEPTED \/ HOSTED VIDEO URL PENDING/,
   "canonical submission status is not reconciled",
 );
 requireText(
   "docs/submission/submission-consistency-manifest.md",
-  /Local narrated video \| `LOCAL-MANUALS\/submission\/AEOS-Judge-Mode-180s-Narrated-v4-final\.mp4` \| Local only; 180-second, 1920×1080 render with narration playback fixed at `1\.0` and gain reduced to `0\.42`; not public and not yet accepted by normal-speed human playback/,
+  /Local narrated video \| `LOCAL-MANUALS\/submission\/AEOS-Judge-Mode-180s-Narrated-v4-final\.mp4` \| Local only; 180-second, 1920×1080 render with narration playback fixed at `1\.0` and gain reduced to `0\.42`; normal-speed human audio\/visual acceptance passed; not public/,
   "the local narrated-video boundary is missing",
 );
 requireText(
@@ -69,7 +69,7 @@ process.stdout.write(
   `${JSON.stringify({
     status: "PASS",
     canonicalStatusDocuments: canonicalStatusDocuments.length,
-    publicRepositoryCheckpoint: "58948cf61953c6405b0963cc7a247607d846d52f",
+    publicRepositoryCheckpoint: "3e7b3742cd6d807e49c502218397e02b59131846",
     localNarratedVideoPrepared: true,
     finalVideoHosted: false,
     demoUrlPublished: false,
