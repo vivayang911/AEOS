@@ -32,18 +32,23 @@ requireText(
 );
 requireText(
   "docs/submission/submission-consistency-manifest.md",
-  /PUBLIC REPOSITORY VERIFIED \/ VIDEO RECORDING AND HOSTED URLS PENDING/,
+  /PUBLIC REPOSITORY VERIFIED \/ LOCAL NARRATED VIDEO PREPARED \/ MANUAL PLAYBACK \+ HOSTED URLS PENDING/,
   "canonical submission status is not reconciled",
 );
 requireText(
   "docs/submission/submission-consistency-manifest.md",
-  /Final video URL \| — \| Pending recording\/upload/,
+  /Local narrated video \| `LOCAL-MANUALS\/submission\/AEOS-Judge-Mode-180s-Narrated-v4-final\.mp4` \| Local only; 180-second, 1920×1080 render with narration playback fixed at `1\.0` and gain reduced to `0\.42`; not public and not yet accepted by normal-speed human playback/,
+  "the local narrated-video boundary is missing",
+);
+requireText(
+  "docs/submission/submission-consistency-manifest.md",
+  /Final video URL \| — \| Pending manual playback acceptance and upload/,
   "the genuinely pending final video must remain explicit",
 );
 requireText(
   "docs/submission/submission-consistency-manifest.md",
-  /Demo URL \| — \| Pending hosting decision or documented local-demo route/,
-  "the genuinely pending Demo URL must remain explicit",
+  /Demo URL \| — \| No hosted URL; exact read-only reproduction route documented in `docs\/submission\/judge-local-run\.md`/,
+  "the unhosted Demo boundary or exact local reproduction route is missing",
 );
 const releaseGate = read("scripts/release-gate.ps1");
 for (const field of ["apiTests", "apiSuites", "webTests", "tenantRlsTables"]) {
@@ -65,6 +70,7 @@ process.stdout.write(
     status: "PASS",
     canonicalStatusDocuments: canonicalStatusDocuments.length,
     publicRepositoryCheckpoint: "58948cf61953c6405b0963cc7a247607d846d52f",
+    localNarratedVideoPrepared: true,
     finalVideoHosted: false,
     demoUrlPublished: false,
     releaseCountsHardCoded: false,

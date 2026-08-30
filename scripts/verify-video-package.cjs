@@ -53,7 +53,7 @@ function validatePreproduction() {
     previousEnd = endMs;
     return { index: offset + 1, startMs, endMs };
   });
-  if (cues[0].startMs !== 0 || previousEnd !== 170000) fail(`SRT must span exactly 170 seconds; observed ${previousEnd / 1000}`);
+  if (cues[0].startMs !== 0 || previousEnd !== 180000) fail(`SRT must span exactly 180 seconds; observed ${previousEnd / 1000}`);
   return { cueCount: cues.length, durationSeconds: previousEnd / 1000, requiredFacts: requiredScriptFacts.length };
 }
 

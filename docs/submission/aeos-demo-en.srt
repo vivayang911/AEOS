@@ -1,39 +1,39 @@
 1
-00:00:00,000 --> 00:00:14,000
-Treasury AI has two dangerous failure modes: unverified data can create hallucinated advice, while wallet control can create unsafe authority. AEOS separates evidence, advice and execution.
+00:00:00,000 --> 00:00:17,000
+Multi-chain DAO treasury decisions depend on data scattered across networks, block explorers and external APIs. This data is difficult to verify independently, and AI can amplify treasury risk when it relies on incorrect or stale information.
 
 2
-00:00:14,000 --> 00:00:31,000
-AEOS uses Attestcoin as its verification boundary. A stale continuity proof failed closed and remained auditable; AEOS did not convert that failed attempt into Evidence.
+00:00:17,000 --> 00:00:34,000
+AEOS is an evidence-first AI governance system. It turns cryptographically verified cross-chain treasury events into cited, auditable institutional recommendations, while every asset action remains controlled by DAO voting and a Timelock.
 
 3
-00:00:31,000 --> 00:00:48,000
-After refreshing the Merkle and continuity proof, Creditcoin's native BlockProver accepted the exact source transaction inclusion. AEOS then verified sender, target, calldata, zero value, receipt and event.
+00:00:34,000 --> 00:00:53,000
+Attestcoin is the factual verification boundary. It is neither an asset-custody bridge nor an AI decision-maker. It lets Creditcoin verify that a supported source-chain transaction was included. Only successfully verified data may become immutable AEOS Evidence.
 
 4
-00:00:48,000 --> 00:01:05,000
-The result becomes organization-scoped immutable Evidence. Its hash, freshness, quality and source lineage remain visible under tenant isolation. A duplicate verification never becomes a second economic fact.
+00:00:53,000 --> 00:01:11,000
+When a continuity proof was stale, AEOS failed closed and preserved the audit trail. After refreshing the Merkle and continuity proof, Creditcoin's native BlockProver verified inclusion, and AEOS checked sender, target, calldata, receipt and event logs.
 
 5
-00:01:05,000 --> 00:01:29,000
-Exactly eight institutional roles analyze one frozen snapshot through different approved RAG partitions. Quant refuses unsupported numbers, Risk and Compliance challenge independently, and every output cites Evidence and its Retrieval Manifest.
+00:01:11,000 --> 00:01:35,000
+The result becomes organization-scoped immutable Evidence. Exactly eight institutional roles analyze one frozen snapshot through approved RAG partitions. Research explains, Strategy proposes, Quant refuses unsupported numbers, and Risk and Compliance challenge independently. Every output cites Evidence and its Retrieval Manifest.
 
 6
-00:01:29,000 --> 00:01:47,000
-A later observer proved twenty test USDC at one Sepolia block, but that balance became stale. All eight agents cite it and correctly keep HOLD instead of inventing a trade.
+00:01:35,000 --> 00:01:54,000
+AEOS then verified a test-USDC inflow and twenty test USDC at one Sepolia block. But a point-in-time balance does not prove current price, liquidity or authorization. When Evidence is stale or insufficient, all eight Agents keep HOLD instead of inventing a trade.
 
 7
-00:01:47,000 --> 00:02:09,000
-The Decision was anchored, but advice still could not bypass governance. Attempt three reached one million For votes, a forty-thousand quorum, a sixty-second Timelock, and execution only after human wallet confirmations.
+00:01:54,000 --> 00:02:12,000
+Even after the AI Decision and Evidence Snapshot were anchored, they could not bypass DAO governance. Attempt three reached one million For votes, exceeded the forty-thousand quorum, entered a sixty-second Timelock, and executed only after human wallet confirmations.
 
 8
-00:02:09,000 --> 00:02:29,000
-Execution kept TreasuryGuard paused, moved zero native value and created immutable Outcome Evidence. This proves deterministic withholding, not autonomous trading, investment performance or causal AI benefit.
+00:02:12,000 --> 00:02:29,000
+Execution kept TreasuryGuard paused, moved zero native value and created immutable Outcome Evidence. This proves deterministic withholding based on Evidence, not autonomous trading, investment performance or causal economic benefit from AI.
 
 9
-00:02:29,000 --> 00:02:41,000
-Outcome Evidence can inform PID, RAG and Skill candidates, but promotion remains governed and advisory. Historical Evidence, snapshots and Decisions are never rewritten.
+00:02:29,000 --> 00:02:45,000
+AEOS initially serves multi-chain DAO treasuries, protocol foundations, on-chain funds and institutional digital-asset teams, turning fragmented cross-chain activity into verifiable, cited and auditable governance decisions.
 
 10
-00:02:41,000 --> 00:02:50,000
-Attestcoin establishes what happened. AI explains what should happen. The DAO decides what may happen. AEOS is evidence first, with the DAO in control.
+00:02:45,000 --> 00:03:00,000
+Future research will use zero-knowledge proofs to protect sensitive balances, positions and risk parameters. Attestcoin proves what happened, AI explains what should happen, and the DAO always decides what may execute.

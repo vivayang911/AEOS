@@ -21,7 +21,8 @@ Verified local artifacts:
 
 Additional claims that remain pending before they may be upgraded:
 
-- a genuinely second live source chain and broader proof-backed price/liquidity/authorization derivations;
+- a genuinely second live source chain: the organizer FAQ identifies Ethereum Mainnet `chainKey=3` alongside Sepolia `chainKey=1`; AEOS has not yet accepted a Mainnet sample;
+- broader proof-backed price/liquidity/authorization derivations;
 - governed Outcome feedback into reviewed PID/RAG/Skill promotion;
 - broader live error, reorg, coverage, load, fork and independent-audit acceptance.
 
