@@ -1,6 +1,6 @@
 # AEOS submission consistency manifest
 
-Status: `PUBLIC REPOSITORY VERIFIED / LOCAL NARRATED VIDEO HUMAN-ACCEPTED / HOSTED VIDEO URL PENDING`.
+Status: `PUBLIC REPOSITORY + DECK + HUMAN-ACCEPTED VIDEO PUBLISHED / DORAHACKS SUBMISSION PENDING`.
 
 ## Canonical positioning
 
@@ -20,16 +20,16 @@ Development disclosure: AEOS is AI-assisted. The human owner controls product an
 
 | Material | Canonical local path | Current status |
 | --- | --- | --- |
-| README | `README.md` | Public final-content commit `3e7b374...31846`; remote hash and zero-finding Secret Scan verified; final clean-clone check pending |
+| README | `README.md` | Final-content checkpoint `3e7b374...31846`; fresh clone of `25e4549...73aa1` passed PRD verification; zero-finding Secret Scan verified |
 | ASC integration summary | `docs/submission/asc-integration-summary.md` | Updated |
 | Deck source | `docs/submission/aeos-buidl-ctc-2026-fall.pptx` | 10 pages; official-score narrative and Adoption Path revised; visual, overflow and template-fidelity QA passed |
 | Deck PDF | `docs/submission/aeos-buidl-ctc-2026-fall.pdf` | 10 pages; regenerated from the reviewed slide renders and visually verified page by page |
 | Video script | `docs/submission/demo-video-script.md` | 170-second Judge Mode-first script with a real stale-proof refusal followed by fresh-proof success |
 | English subtitles | `docs/submission/aeos-demo-en.srt` | 10 contiguous cues / exactly 170 seconds |
-| Recording/publishing runbook | `docs/submission/p0-5-final-video-runbook.md` | v3 rejected for speed/pitch/level; native-rate v4 passed normal-speed human review; strict codec confirmation and publishing remain pending |
+| Recording/publishing runbook | `docs/submission/p0-5-final-video-runbook.md` | v3 rejected for speed/pitch/level; native-rate v4 passed human review and was published; strict codec confirmation remains pending |
 | Local narrated video | `LOCAL-MANUALS/submission/AEOS-Judge-Mode-180s-Narrated-v4-final.mp4` | Local only; 180-second, 1920×1080 render with narration playback fixed at `1.0` and gain reduced to `0.42`; normal-speed human audio/visual acceptance passed; not public |
-| Final video URL | — | Pending manual playback acceptance and upload |
-| Public repository | `https://github.com/vivayang911/AEOS` | Public `main` matched local `3e7b374...31846`; `.tmp/`, `LOCAL-MANUALS/` and video excluded; final clean clone pending |
+| Final video URL | `https://www.youtube.com/watch?v=71CnpHXIdgw` | YouTube oEmbed confirmed title `AEOS` and an embeddable player; URL availability verified, local hash/duration/codec not inferred from oEmbed |
+| Public repository | `https://github.com/vivayang911/AEOS` | Fresh clone of public `25e4549...73aa1` passed PRD verification; `.tmp/`, `LOCAL-MANUALS/` and video absent |
 | Demo URL | — | No hosted URL; exact read-only reproduction route documented in `docs/submission/judge-local-run.md` |
 
 ## Canonical public on-chain references
@@ -43,8 +43,8 @@ Development disclosure: AEOS is AI-assisted. The human owner controls product an
 
 ## Final release blockers
 
-1. Upload only the human-accepted 180-second v4 and add its URL here and on DoraHacks. The rejected v3 must not be published.
-2. Publish the reviewed Deck PDF at a stable URL and record that URL here.
+1. Completed: human-accepted v4 published at `https://www.youtube.com/watch?v=71CnpHXIdgw`; rejected v3 was not published.
+2. Completed: reviewed Deck PDF is public through the GitHub repository.
 3. Confirm the organizer accepts the documented judge-local path, or provide a hosted Demo URL if the form requires one.
 4. Obtain bounded external user discovery: 2-3 consented practitioner interviews. Social impressions and replies are not adoption.
 5. After the final content freeze, rerun the Secret Scan, push, remote-commit comparison and clean-clone verification.

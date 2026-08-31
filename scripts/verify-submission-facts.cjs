@@ -32,7 +32,7 @@ requireText(
 );
 requireText(
   "docs/submission/submission-consistency-manifest.md",
-  /PUBLIC REPOSITORY VERIFIED \/ LOCAL NARRATED VIDEO HUMAN-ACCEPTED \/ HOSTED VIDEO URL PENDING/,
+  /PUBLIC REPOSITORY \+ DECK \+ HUMAN-ACCEPTED VIDEO PUBLISHED \/ DORAHACKS SUBMISSION PENDING/,
   "canonical submission status is not reconciled",
 );
 requireText(
@@ -42,8 +42,8 @@ requireText(
 );
 requireText(
   "docs/submission/submission-consistency-manifest.md",
-  /Final video URL \| — \| Pending manual playback acceptance and upload/,
-  "the genuinely pending final video must remain explicit",
+  /Final video URL \| `https:\/\/www\.youtube\.com\/watch\?v=71CnpHXIdgw` \| YouTube oEmbed confirmed title `AEOS` and an embeddable player; URL availability verified, local hash\/duration\/codec not inferred from oEmbed/,
+  "the verified hosted video URL or its evidence boundary is missing",
 );
 requireText(
   "docs/submission/submission-consistency-manifest.md",
@@ -71,7 +71,7 @@ process.stdout.write(
     canonicalStatusDocuments: canonicalStatusDocuments.length,
     publicRepositoryCheckpoint: "3e7b3742cd6d807e49c502218397e02b59131846",
     localNarratedVideoPrepared: true,
-    finalVideoHosted: false,
+    finalVideoHosted: true,
     demoUrlPublished: false,
     releaseCountsHardCoded: false,
     assetExecutionAuthorized: false,
